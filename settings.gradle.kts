@@ -14,6 +14,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "DareStory"
-include(":app")
+include(":presentation")
 include(":domain")
 include(":data")
