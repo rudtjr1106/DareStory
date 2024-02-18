@@ -6,6 +6,12 @@ object Kotlin {
 
 object Google {
     const val HILT_CORE = "com.google.dagger:hilt-core:2.42"
+}
 
+object AndroidX{
+    const val LIFECYCLE_RUNTIME_KTX =
+        "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE_KTX}"
+    const val LIFECYCLE_VIEW_MODEL_KTX =
+        "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.VIEW_MODEL_KTX}"
 }
 
