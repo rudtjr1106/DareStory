@@ -2,4 +2,55 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Color -->
+    <color name="purple_100">#F9F0FF</color>
+    <color name="purple_200">#EFDBFF</color>
+    <color name="purple_300">#D3ADF7</color>
+    <color name="purple_400">#B37FEB</color>
+    <color name="purple_500">#9254DE</color>
+    <color name="purple_600">#722ED1</color>
+    <color name="purple_700">#531DAB</color>
+    <color name="purple_800">#391085</color>
+    <color name="purple_900">#22075E</color>
+
+    <!-- Primary Color(Dark) -->
+    <color name="dark_purple_100">#1A1325</color>
+    <color name="dark_purple_200">#24163A</color>
+    <color name="dark_purple_300">#301C4D</color>
+    <color name="dark_purple_400">#3E2069</color>
+    <color name="dark_purple_500">#51258F</color>
+    <color name="dark_purple_600">#642AB5</color>
+    <color name="dark_purple_700">#854ECA</color>
+    <color name="dark_purple_800">#AB7AE0</color>
+    <color name="dark_purple_900">#CDA8F0</color>
+
+    <!-- Gray Color -->
+    <color name="gray_100">#F8F9FA</color>
+    <color name="gray_200">#E9ECEF</color>
+    <color name="gray_300">#DEE2E6</color>
+    <color name="gray_400">#CED4DA</color>
+    <color name="gray_500">#ADB5BD</color>
+    <color name="gray_600">#6C757D</color>
+    <color name="gray_700">#495057</color>
+    <color name="gray_800">#343A40</color>
+    <color name="gray_900">#212529</color>
+
+    <!-- Background Gary Color -->
+    <color name="bg_gray_50">#E8E8EA</color>
+    <color name="bg_gray_100">#B8B8BE</color>
+    <color name="bg_gray_200">#95969F</color>
+    <color name="bg_gray_300">#656673</color>
+    <color name="bg_gray_400">#474858</color>
+    <color name="bg_gray_500">#191A2E</color>
+    <color name="bg_gray_600">#21223B</color>
+    <color name="bg_gray_700">#121221</color>
+    <color name="bg_gray_800">#0E0E19</color>
+    <color name="bg_gray_900">#0B0B13</color>
+
+    <!-- Default Color -->
+    <color name="background">#191A2E</color>
+    <color name="error">#CB3140</color>
+    <color name="check">#43CA51</color>
+
 </resources>
