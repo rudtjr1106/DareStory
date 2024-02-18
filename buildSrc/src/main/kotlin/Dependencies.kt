@@ -1,17 +1,30 @@
 object Kotlin {
-    const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
+    const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.K_STDLIB}"
     const val COROUTINES_CORE =
-        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.K_COROUTINES_CORE}"
+    const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.K_COROUTINES}"
 }
 
 object Google {
-    const val HILT_CORE = "com.google.dagger:hilt-core:2.42"
+    const val MATERIAL = "com.google.android.material:material:${Versions.MATERIAL}"
+    const val HILT_CORE = "com.google.dagger:hilt-core:${Versions.HILT}"
+    const val HILT_COMPILER = "com.google.dagger:hilt-compiler:${Versions.HILT}"
+    const val HILT_ANDROID = "com.google.dagger:hilt-android:${Versions.HILT}"
 }
 
 object AndroidX{
+    const val CORE = "androidx.core:core-ktx:${Versions.CORE}"
+    const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.APPCOMPAT}"
     const val LIFECYCLE_RUNTIME_KTX =
         "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE_KTX}"
     const val LIFECYCLE_VIEW_MODEL_KTX =
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.VIEW_MODEL_KTX}"
+    const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:${Versions.CONSTRAINT_LAYOUT}"
+
+    const val TIMBER = "com.jakewharton.timber:timber:${Versions.TIMBER}"
+
+    const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:${Versions.FRAGMENT_KTX}"
+    const val NAVIGATION_FRAGMENT_KTX = "androidx.navigation:navigation-fragment-ktx:${Versions.NAVIGATION}"
+    const val NAVIGATION_UI_KTX = "androidx.navigation:navigation-ui-ktx:${Versions.NAVIGATION}"
 }
 

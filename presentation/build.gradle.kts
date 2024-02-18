@@ -1,6 +1,9 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    id("com.android.library")
+    kotlin("android")
+    kotlin("kapt")
+    id("dagger.hilt.android.plugin")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -8,11 +11,8 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.darestory"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,21 +41,30 @@ android {
 
 dependencies {
     implementation(project(":domain"))
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    implementation(AndroidX.CORE)
+    implementation(AndroidX.APPCOMPAT)
+    implementation(Google.MATERIAL)
+    implementation(AndroidX.CONSTRAINT_LAYOUT)
+    implementation(AndroidX.FRAGMENT_KTX)
+    implementation(AndroidX.NAVIGATION_UI_KTX)
+    implementation(AndroidX.NAVIGATION_FRAGMENT_KTX)
+    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
 
     //Timber
-    implementation("com.jakewharton.timber:timber:4.7.1")
+    implementation(AndroidX.TIMBER)
 
     //코루틴
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    implementation(Kotlin.COROUTINES_CORE)
+    implementation(Kotlin.COROUTINES)
 
     //
     implementation(AndroidX.LIFECYCLE_VIEW_MODEL_KTX)
     implementation(AndroidX.LIFECYCLE_RUNTIME_KTX)
+
+    //힐트
+    implementation(Google.HILT_ANDROID)
+    implementation(Google.HILT_CORE)
+    kapt(Google.HILT_COMPILER)
+
 }
