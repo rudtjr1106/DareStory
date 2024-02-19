@@ -66,4 +66,6 @@ dependencies {
     implementation(Google.HILT_CORE)
     kapt(Google.HILT_COMPILER)
 
+    implementation("androidx.core:core-splashscreen:1.0.0-beta01")
+
 }
