@@ -39,7 +39,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, PageState.Default, Logi
 
     private fun sortEvent(event: LoginEvent){
         when(event){
-            LoginEvent.GoSignUpEvent -> goToSignUp()
+            LoginEvent.SignUpTextClickEvent -> goToSignUp()
+            LoginEvent.FindPasswordTextClickEvent -> TODO()
+            LoginEvent.LoginButtonClickEvent -> TODO()
         }
     }
 
