@@ -10,6 +10,8 @@ object Google {
     const val HILT_CORE = "com.google.dagger:hilt-core:${Versions.HILT}"
     const val HILT_COMPILER = "com.google.dagger:hilt-compiler:${Versions.HILT}"
     const val HILT_ANDROID = "com.google.dagger:hilt-android:${Versions.HILT}"
+    const val FIREBASE_BOM = "com.google.firebase:firebase-bom:${Versions.BOM}"
+    const val FIREBASE_AUTH = "com.google.firebase:firebase-auth-ktx"
 }
 
 object AndroidX{

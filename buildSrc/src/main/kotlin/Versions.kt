@@ -10,6 +10,7 @@ object Versions {
     /* [ Google ] */
     const val MATERIAL = "1.11.0"
     const val HILT = "2.44"
+    const val BOM = "32.3.1"
 
     /* [ Android ] */
     const val CORE = "1.12.0"
