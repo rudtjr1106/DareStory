@@ -2,18 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:background="@android:color/transparent"
-        app:cardCornerRadius="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:background="#21223B"
             android:layout_width="match_parent"
+            android:background="@drawable/inset_dialog"
             android:paddingBottom="16dp"
-            android:layout_height="wrap_content">
+            tools:layout_height="wrap_content"
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/text_title"
@@ -39,15 +34,30 @@
                 app:layout_constraintTop_toBottomOf="@id/text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+            
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_no"
+                app:layout_constraintTop_toBottomOf="@id/text_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_yes"
+                tools:text="취소"
 
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="5dp"
+                android:textColor="@color/gray_200"
+                android:textAppearance="@style/btn2"
+                android:background="@drawable/bg_rectangle_radius_4_empty_dark_purple_700"
+                android:layout_width="0dp"
+                android:layout_height="36dp"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_yes"
                 app:layout_constraintTop_toBottomOf="@id/text_content"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_no"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="확인"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="5dp"
                 android:textColor="@color/gray_300"
                 android:textAppearance="@style/btn2"
                 android:background="@drawable/bg_rectangle_radius_4_filled_dark_purple_700"
@@ -55,9 +65,5 @@
                 android:layout_height="36dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-    </androidx.cardview.widget.CardView>
 
 </layout>
