@@ -3,9 +3,11 @@ package com.example.darestory.ui.sign.login
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.darestory.PageState
+import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentLoginBinding
 import com.example.darestory.ui.common.CommonDialog
+import com.example.darestory.ui.common.InputDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +18,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, PageState.Default, Logi
 ) {
 
     @Inject
-    lateinit var commonDialog: CommonDialog
+    lateinit var inputDialog: InputDialog
 
     override val viewModel: LoginViewModel by viewModels()
 
@@ -56,14 +58,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, PageState.Default, Logi
     }
 
     private fun showFindPasswordDialog(){
-        commonDialog
-            .setTitle("제목")
-            .setDescription("내용입니다")
-            .setPositiveButton("확인") {
-                commonDialog.dismiss()
+        inputDialog
+            .setTitle(R.string.input_email)
+            .setPositiveButton(R.string.word_confirm) {
+                //TODO 이메일 전송
+                inputDialog.dismiss()
             }
-            .setNegativeButton("취소") {
-                commonDialog.dismiss()
+            .setNegativeButton(R.string.word_cancel) {
+                inputDialog.dismiss()
             }
             .show()
     }

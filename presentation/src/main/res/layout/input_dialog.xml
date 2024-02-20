@@ -10,18 +10,6 @@
         android:background="@drawable/inset_dialog"
         tools:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/image_check"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/ic_check_filled_white"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/text_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <TextView
             android:id="@+id/text_title"
             android:layout_width="wrap_content"
@@ -30,23 +18,24 @@
             android:layout_marginBottom="4dp"
             android:textAppearance="@style/h4"
             android:textColor="@color/gray_200"
-            app:layout_constraintBottom_toTopOf="@id/text_content"
+            app:layout_constraintBottom_toTopOf="@id/edit_text_input"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="제목입니다" />
 
-        <TextView
-            android:id="@+id/text_content"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/edit_text_input"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textAppearance="@style/body2"
-            android:textColor="@color/gray_500"
-
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@android:color/transparent"
+            android:paddingHorizontal="4dp"
+            android:textColor="@color/white"
+            android:textAppearance="@style/body1"
             app:layout_constraintBottom_toTopOf="@id/btn_yes"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="내용입니다" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_no"
@@ -57,7 +46,6 @@
             android:background="@drawable/bg_rectangle_radius_4_empty_dark_purple_700"
             android:textAppearance="@style/btn2"
             android:textColor="@color/gray_200"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_yes"
             app:layout_constraintStart_toStartOf="parent"

@@ -11,58 +11,36 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.example.darestory.R
-import com.example.darestory.databinding.CommonDialogBinding
+import com.example.darestory.databinding.InputDialogBinding
 import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 
-class CommonDialog@Inject constructor(@ActivityContext private val context: Context) {
+class InputDialog@Inject constructor(@ActivityContext private val context: Context) {
 
     private val builder: AlertDialog.Builder by lazy {
         AlertDialog.Builder(context).setView(binding.root)
     }
 
-    private val binding: CommonDialogBinding by lazy {
-        DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.common_dialog, null, false)
+    private val binding: InputDialogBinding by lazy {
+        DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.input_dialog, null, false)
     }
 
     private var dialog: AlertDialog? = null
 
-    fun setTitle(@StringRes messageId: Int): CommonDialog {
+    fun setTitle(@StringRes messageId: Int): InputDialog {
         binding.textTitle.apply {
             text = context.getText(messageId)
         }
         return this
     }
 
-    fun setTitle(message: CharSequence): CommonDialog {
+    fun setTitle(message: CharSequence): InputDialog {
         binding.textTitle.apply {
             text = message
         }
         return this
     }
-
-    fun showIcon() : CommonDialog {
-        binding.textTitle.visibility = View.GONE
-        binding.imageCheck.visibility = View.VISIBLE
-        return this
-    }
-
-    fun setDescription(@StringRes messageId: Int?): CommonDialog {
-        binding.textContent.apply {
-            visibility = View.VISIBLE
-            text = messageId?.let { context.getText(it) }
-        }
-        return this
-    }
-
-    fun setDescription(message: CharSequence): CommonDialog {
-        binding.textContent.apply {
-            text = message
-        }
-        return this
-    }
-
-    fun setPositiveButton(@StringRes textId: Int, onClickListener: (view: View) -> (Unit)): CommonDialog {
+    fun setPositiveButton(@StringRes textId: Int, onClickListener: (view: View) -> (Unit)): InputDialog {
         binding.btnYes.apply {
             text = context.getText(textId)
             setOnClickListener(onClickListener)
@@ -71,7 +49,7 @@ class CommonDialog@Inject constructor(@ActivityContext private val context: Cont
         return this
     }
 
-    fun setPositiveButton(text: CharSequence, onClickListener: (view: View) -> (Unit)): CommonDialog {
+    fun setPositiveButton(text: CharSequence, onClickListener: (view: View) -> (Unit)): InputDialog {
         binding.btnYes.apply {
             this.text = text
             setOnClickListener(onClickListener)
@@ -80,7 +58,7 @@ class CommonDialog@Inject constructor(@ActivityContext private val context: Cont
         return this
     }
 
-    fun setNegativeButton(@StringRes textId: Int, onClickListener: (view: View) -> (Unit)): CommonDialog {
+    fun setNegativeButton(@StringRes textId: Int, onClickListener: (view: View) -> (Unit)): InputDialog {
         binding.btnNo.apply {
             visibility = View.VISIBLE
             text = context.getText(textId)
@@ -90,7 +68,7 @@ class CommonDialog@Inject constructor(@ActivityContext private val context: Cont
         return this
     }
 
-    fun setNegativeButton(text: CharSequence, onClickListener: (view: View) -> (Unit)): CommonDialog {
+    fun setNegativeButton(text: CharSequence, onClickListener: (view: View) -> (Unit)): InputDialog {
         binding.btnNo.apply {
             visibility = View.VISIBLE
             this.text = text
