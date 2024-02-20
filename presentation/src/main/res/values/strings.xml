@@ -1,14 +1,23 @@
 <resources>
     <string name="app_name">DareStory</string>
-    <string name="email">이메일</string>
     <string name="input_email">이메일을 입력해 주세요.</string>
-    <string name="password">비밀번호</string>
     <string name="input_password">비밀번호를 입력해 주세요.</string>
-    <string name="login">로그인</string>
     <string name="find_password">비밀번호 찾기 |</string>
-    <string name="sign_up">회원가입</string>
 
     <!-- 단어 -->
     <string name="word_cancel">취소</string>
     <string name="word_confirm">확인</string>
+    <string name="word_sign_up">회원가입</string>
+    <string name="word_password">비밀번호</string>
+    <string name="word_email">이메일</string>
+    <string name="word_login">로그인</string>
+
+    <!--회원가입 -->
+    <string name="sign_up_first_page">1 / 3</string>
+    <string name="sign_up_hint_email">DareStory123</string>
+    <string name="sign_up_divide_email">\@</string>
+    <string name="sign_up_naver_address">naver.com</string>
+    <string name="sign_up_password_hint">********</string>
+    <string name="sign_up_about_service_personal_info">가입을 진행할 경우, 서비스 약관 및\n개인정보 처리방침에 동의한 것으로 간주합니다.</string>
+    <string name="word_next">다음</string>
 </resources>
