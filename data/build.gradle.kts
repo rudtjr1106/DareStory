@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -38,4 +39,5 @@ dependencies {
     implementation(AndroidX.APPCOMPAT)
     implementation(Google.MATERIAL)
     implementation(AndroidX.CONSTRAINT_LAYOUT)
+    implementation("com.google.firebase:firebase-auth:22.3.1")
 }
