@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    kotlin("kapt")
 }
 
 android {
@@ -39,5 +40,9 @@ dependencies {
     implementation(AndroidX.APPCOMPAT)
     implementation(Google.MATERIAL)
     implementation(AndroidX.CONSTRAINT_LAYOUT)
-    implementation("com.google.firebase:firebase-auth:22.3.1")
+
+    //힐트
+    implementation(Google.HILT_ANDROID)
+    implementation(Google.HILT_CORE)
+    kapt(Google.HILT_COMPILER)
 }
