@@ -2,18 +2,16 @@ package com.example.darestory.ui.sign.login
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.darestory.PageState
 import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentLoginBinding
-import com.example.darestory.ui.common.CommonDialog
 import com.example.darestory.ui.common.InputDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<FragmentLoginBinding, PageState.Default, LoginViewModel>(
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPageState, LoginViewModel>(
     FragmentLoginBinding::inflate
 ) {
 

@@ -15,4 +15,8 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideSignUpUseCase(repository: SignRepository) = SignUpUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideLoginUseCase(repository: SignRepository) = SignUpUseCase(repository)
 }

@@ -6,6 +6,7 @@ import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentSignupEmailPasswordBinding
 import com.example.darestory.ui.common.spinner.SpinnerDialog
+import com.example.darestory.util.DareLog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,7 +14,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SignUpEmailPasswordFragment : BaseFragment<FragmentSignupEmailPasswordBinding, SignUpEmailPasswordPageState, SignUpEmailPasswordViewModel>(
     FragmentSignupEmailPasswordBinding::inflate
-) {
+), SpinnerDialog.OnItemSelectedListener {
 
     @Inject
     lateinit var spinnerDialog: SpinnerDialog
@@ -55,10 +56,15 @@ class SignUpEmailPasswordFragment : BaseFragment<FragmentSignupEmailPasswordBind
     private fun onClickSpinner(){
         val items = resources.getStringArray(R.array.email_domain_array)
         spinnerDialog.setItems(items.toList())
+        spinnerDialog.setOnItemSelectedListener(this)
         spinnerDialog.show()
     }
 
     override fun onStart() {
         super.onStart()
+    }
+
+    override fun onItemSelected(itemName: String) {
+        binding.textEmailAddress.text = itemName
     }
 }

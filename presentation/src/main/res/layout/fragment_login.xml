@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="android.view.View" />
         <variable
             name="vm"
             type="com.example.darestory.ui.sign.login.LoginViewModel" />
@@ -44,6 +44,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/bg_line_edit_text"
+            android:text="@={vm.uiState.email}"
+            android:afterTextChanged="@{()->vm.onEmailChangedAfter()}"
             android:hint="@string/input_email"
             android:textAppearance="@style/body1"
             android:textColor="@color/white"
@@ -51,13 +53,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/text_email"
             app:layout_constraintTop_toBottomOf="@id/text_email" />
+        
+        <ImageView
+            android:id="@+id/image_btn_reset_email"
+            app:layout_constraintTop_toTopOf="@id/edit_text_email_input"
+            app:layout_constraintBottom_toBottomOf="@id/edit_text_email_input"
+            app:layout_constraintEnd_toEndOf="@id/edit_text_email_input"
+            android:background="@drawable/ic_close_white"
+            android:onClick="@{()->vm.onClickEmailResetButton()}"
+            android:visibility="@{vm.uiState.emailIsEmpty ? View.INVISIBLE : View.VISIBLE}"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
 
         <ImageView
             android:id="@+id/image_line_edit_email"
             app:layout_constraintTop_toBottomOf="@id/edit_text_email_input"
             app:layout_constraintStart_toStartOf="@id/edit_text_email_input"
             app:layout_constraintEnd_toEndOf="@id/edit_text_email_input"
-            android:background="@drawable/img_line_gray_600"
+            android:background="@{vm.uiState.emailIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_purple_dark_600}"
             android:layout_marginTop="2dp"
             android:layout_width="0dp"
             android:layout_height="1dp"/>
@@ -80,6 +93,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
+            android:text="@={vm.uiState.password}"
+            android:afterTextChanged="@{()->vm.onPasswordChangedAfter()}"
             android:background="@drawable/bg_line_edit_text"
             android:hint="@string/input_password"
             android:textAppearance="@style/body1"
@@ -90,11 +105,22 @@
             app:layout_constraintTop_toBottomOf="@id/text_password" />
 
         <ImageView
+            android:id="@+id/image_btn_reset_password"
+            app:layout_constraintTop_toTopOf="@id/edit_text_password_input"
+            app:layout_constraintBottom_toBottomOf="@id/edit_text_password_input"
+            app:layout_constraintEnd_toEndOf="@id/edit_text_password_input"
+            android:background="@drawable/ic_close_white"
+            android:onClick="@{()->vm.onClickPasswordResetButton()}"
+            android:visibility="@{vm.uiState.passwordIsEmpty ? View.INVISIBLE : View.VISIBLE}"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+
+        <ImageView
             android:id="@+id/image_line_edit_password"
             app:layout_constraintTop_toBottomOf="@id/edit_text_password_input"
             app:layout_constraintStart_toStartOf="@id/edit_text_password_input"
             app:layout_constraintEnd_toEndOf="@id/edit_text_password_input"
-            android:background="@drawable/img_line_gray_600"
+            android:background="@{vm.uiState.passwordIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_purple_dark_600}"
             android:layout_marginTop="2dp"
             android:layout_width="0dp"
             android:layout_height="1dp"/>

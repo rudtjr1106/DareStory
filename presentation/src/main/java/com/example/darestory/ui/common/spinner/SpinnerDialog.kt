@@ -9,13 +9,17 @@ import android.view.Window
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.darestory.R
-import com.example.darestory.databinding.CommonDialogBinding
 import com.example.darestory.databinding.SpinnerDialogBinding
-import com.example.darestory.util.DareLog
 import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 
 class SpinnerDialog@Inject constructor(@ActivityContext private val context: Context) {
+
+    interface OnItemSelectedListener {
+        fun onItemSelected(itemName: String)
+    }
+
+    private var onItemSelectedListener: OnItemSelectedListener? = null
 
     private var items: List<String> = listOf()
 
@@ -32,7 +36,7 @@ class SpinnerDialog@Inject constructor(@ActivityContext private val context: Con
     private val spinnerAdapter: SpinnerAdapter by lazy {
         SpinnerAdapter(object : SpinnerAdapter.SpinnerDelegate {
             override fun onItemClick(name: String) {
-                DareLog.D(name)
+                onItemSelectedListener?.onItemSelected(name)
                 dismiss()
             }
         })
@@ -40,14 +44,14 @@ class SpinnerDialog@Inject constructor(@ActivityContext private val context: Con
 
     fun setItems(items: List<String>): SpinnerDialog {
         this.items = items
-        return this
-    }
-
-    fun show() {
         binding.recyclerItem.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = spinnerAdapter
         }
+        return this
+    }
+
+    fun show() {
         dialog = builder.create()
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -55,9 +59,15 @@ class SpinnerDialog@Inject constructor(@ActivityContext private val context: Con
         dialog?.show()
     }
 
+    fun setOnItemSelectedListener(listener: OnItemSelectedListener): SpinnerDialog {
+        this.onItemSelectedListener = listener
+        return this
+    }
+
     private fun dismiss() {
         val parentViewGroup = binding.root.parent as? ViewGroup
         parentViewGroup?.removeView(binding.root)
         dialog?.dismiss()
     }
+
 }
