@@ -2,6 +2,7 @@ package com.example.darestory.ui.sign.signUpEmailPassword
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
+import com.example.darestory.util.DareLog
 import com.example.domain.model.SignUpVo
 import com.example.domain.usecase.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,9 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpEmailPasswordViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCase
-) :
+class SignUpEmailPasswordViewModel @Inject constructor() :
     BaseViewModel<SignUpEmailPasswordPageState>() {
 
     private val emailStateFlow: MutableStateFlow<String> = MutableStateFlow("")
@@ -32,6 +31,10 @@ class SignUpEmailPasswordViewModel @Inject constructor(
         updateNextButton(flag)
     }
 
+    fun onClickSpinner(){
+        emitEventFlow(SignUpEmailPasswordEvent.OnClickSpinner)
+    }
+
     fun onClickNextButton(){
         emitEventFlow(SignUpEmailPasswordEvent.GoToNext(uiState.email.value, uiState.password.value))
     }
@@ -43,7 +46,6 @@ class SignUpEmailPasswordViewModel @Inject constructor(
     private fun updateNextButton(isEnable : Boolean){
         viewModelScope.launch {
             isButtonEnableStateFlow.update { isEnable }
-            signUpUseCase(SignUpVo("sk", "asd"))
         }
     }
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="email_domain_array">
+        <item>daum.net</item>
+        <item>gmail.com</item>
+        <item>hanmail.net</item>
+        <item>kakao.com</item>
+        <item>nate.com</item>
+        <item>naver.com</item>
+        <item>outlook.com</item>
+        <item>tistory.com</item>
+        <item>yahoo.com</item>
+    </string-array>
+</resources>

@@ -99,11 +99,6 @@ class CommonDialog@Inject constructor(@ActivityContext private val context: Cont
         return this
     }
 
-
-    fun create() {
-        dialog = builder.create()
-    }
-
     fun show() {
         dialog = builder.create()
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

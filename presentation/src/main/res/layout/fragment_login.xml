@@ -52,6 +52,16 @@
             app:layout_constraintStart_toStartOf="@id/text_email"
             app:layout_constraintTop_toBottomOf="@id/text_email" />
 
+        <ImageView
+            android:id="@+id/image_line_edit_email"
+            app:layout_constraintTop_toBottomOf="@id/edit_text_email_input"
+            app:layout_constraintStart_toStartOf="@id/edit_text_email_input"
+            app:layout_constraintEnd_toEndOf="@id/edit_text_email_input"
+            android:background="@drawable/img_line_gray_600"
+            android:layout_marginTop="2dp"
+            android:layout_width="0dp"
+            android:layout_height="1dp"/>
+
         <TextView
             android:id="@+id/text_password"
             android:layout_width="wrap_content"
@@ -78,6 +88,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/text_password"
             app:layout_constraintTop_toBottomOf="@id/text_password" />
+
+        <ImageView
+            android:id="@+id/image_line_edit_password"
+            app:layout_constraintTop_toBottomOf="@id/edit_text_password_input"
+            app:layout_constraintStart_toStartOf="@id/edit_text_password_input"
+            app:layout_constraintEnd_toEndOf="@id/edit_text_password_input"
+            android:background="@drawable/img_line_gray_600"
+            android:layout_marginTop="2dp"
+            android:layout_width="0dp"
+            android:layout_height="1dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_login"
