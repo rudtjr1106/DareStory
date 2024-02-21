@@ -50,7 +50,7 @@
 
     <!-- Default Color -->
     <color name="background">#191A2E</color>
-    <color name="error">#CB3140</color>
-    <color name="check">#43CA51</color>
+    <color name="error">#B02A37</color>
+    <color name="check">#49AA19</color>
 
 </resources>

@@ -29,13 +29,33 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="20dp"
-            android:backgroundTint="@android:color/transparent"
+            android:background="@drawable/bg_line_edit_text"
             android:paddingHorizontal="4dp"
             android:textColor="@color/white"
             android:textAppearance="@style/body1"
             app:layout_constraintBottom_toTopOf="@id/btn_yes"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/image_btn_reset_edit_text"
+            app:layout_constraintTop_toTopOf="@id/edit_text_input"
+            app:layout_constraintBottom_toBottomOf="@id/edit_text_input"
+            app:layout_constraintEnd_toEndOf="@id/edit_text_input"
+            android:background="@drawable/ic_close_white"
+            android:visibility="gone"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+
+        <ImageView
+            android:id="@+id/image_line_edit_text"
+            app:layout_constraintTop_toBottomOf="@id/edit_text_input"
+            app:layout_constraintStart_toStartOf="@id/edit_text_input"
+            app:layout_constraintEnd_toEndOf="@id/edit_text_input"
+            android:background="@drawable/img_line_gray_600"
+            android:layout_marginTop="2dp"
+            android:layout_width="0dp"
+            android:layout_height="1dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_no"

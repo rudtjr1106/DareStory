@@ -9,13 +9,15 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import com.example.darestory.R
 import com.example.darestory.databinding.InputDialogBinding
+import com.example.darestory.util.DareLog
 import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 
-class InputDialog@Inject constructor(@ActivityContext private val context: Context) {
+class InputDialog @Inject constructor(@ActivityContext private val context: Context) {
 
     private val builder: AlertDialog.Builder by lazy {
         AlertDialog.Builder(context).setView(binding.root)
@@ -40,6 +42,7 @@ class InputDialog@Inject constructor(@ActivityContext private val context: Conte
         }
         return this
     }
+
     fun setPositiveButton(@StringRes textId: Int, onClickListener: (view: View) -> (Unit)): InputDialog {
         binding.btnYes.apply {
             text = context.getText(textId)
@@ -77,12 +80,8 @@ class InputDialog@Inject constructor(@ActivityContext private val context: Conte
         return this
     }
 
-
-    fun create() {
-        dialog = builder.create()
-    }
-
     fun show() {
+        bindListener()
         dialog = builder.create()
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -93,5 +92,29 @@ class InputDialog@Inject constructor(@ActivityContext private val context: Conte
         val parentViewGroup = binding.root.parent as? ViewGroup
         parentViewGroup?.removeView(binding.root)
         dialog?.dismiss()
+    }
+
+    private fun bindListener() {
+        binding.apply {
+            editTextInput.doAfterTextChanged {
+                checkIsEmptyEditText()
+            }
+            imageBtnResetEditText.setOnClickListener {
+                editTextInput.setText("")
+                checkIsEmptyEditText()
+            }
+        }
+    }
+
+    private fun checkIsEmptyEditText() {
+        binding.apply {
+            if (editTextInput.text.isNotEmpty()) {
+                imageBtnResetEditText.visibility = View.VISIBLE
+                imageLineEditText.setBackgroundResource(R.drawable.img_line_purple_dark_600)
+            } else {
+                imageBtnResetEditText.visibility = View.GONE
+                imageLineEditText.setBackgroundResource(R.drawable.img_line_gray_600)
+            }
+        }
     }
 }

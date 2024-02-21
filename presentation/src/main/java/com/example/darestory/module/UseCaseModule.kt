@@ -1,6 +1,7 @@
 package com.example.darestory.module
 
 import com.example.domain.repository.SignRepository
+import com.example.domain.usecase.LoginUseCase
 import com.example.domain.usecase.SignUpUseCase
 import dagger.Module
 import dagger.Provides
@@ -18,5 +19,5 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideLoginUseCase(repository: SignRepository) = SignUpUseCase(repository)
+    fun provideLoginUseCase(repository: SignRepository) = LoginUseCase(repository)
 }
