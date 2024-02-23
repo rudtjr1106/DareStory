@@ -8,9 +8,7 @@ import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentSignupEmailPasswordBinding
 import com.example.darestory.ui.common.spinner.SpinnerDialog
-import com.example.darestory.util.DareLog
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
