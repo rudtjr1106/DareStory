@@ -55,6 +55,7 @@ class SpinnerDialog@Inject constructor(@ActivityContext private val context: Con
         dialog = builder.create()
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog?.setCanceledOnTouchOutside(false)
         spinnerAdapter.submitList(items)
         dialog?.show()
     }
