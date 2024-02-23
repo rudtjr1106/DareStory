@@ -11,6 +11,12 @@
     <string name="word_password">비밀번호</string>
     <string name="word_email">이메일</string>
     <string name="word_login">로그인</string>
+    <string name="word_next">다음</string>
+    <string name="word_male">남자</string>
+    <string name="word_female">여자</string>
+    <string name="word_nickname">닉네임</string>
+    <string name="word_writer">작가</string>
+    <string name="word_complete">완료</string>
 
     <!--회원가입 -->
     <string name="sign_up_first_page">1 / 3</string>
@@ -19,5 +25,13 @@
     <string name="sign_up_naver_address">naver.com</string>
     <string name="sign_up_password_hint">********</string>
     <string name="sign_up_about_service_personal_info">가입을 진행할 경우, 서비스 약관 및\n개인정보 처리방침에 동의한 것으로 간주합니다.</string>
-    <string name="word_next">다음</string>
+
+    <string name="sign_up_second_page">2 / 3</string>
+    <string name="sign_up_who_r_u">작가님은\n어떤 사람인가요?</string>
+    <string name="sign_up_hello">안녕하세요.</string>
+    <string name="sign_up_end_sentence">입니다.</string>
+    <string name="sign_up_age_is">나이는</string>
+    <string name="sign_up_choice_age">나이 선택</string>
+    <string name="sign_up_age_sentence_end">대 이고,</string>
+    <string name="sign_up_gender_is">성별은</string>
 </resources>

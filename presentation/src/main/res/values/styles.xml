@@ -116,4 +116,11 @@
         <item name="fontFamily">@font/pretendard_regular</item>
     </style>
 
+    <!-- Onboarding -->
+    <style name="on">
+        <item name="android:textSize">24sp</item>
+        <item name="lineHeight">50sp</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
 </resources>
