@@ -29,7 +29,7 @@ class SignUpEmailPasswordFragment : BaseFragment<FragmentSignupEmailPasswordBind
     override fun initView() {
         binding.apply {
             vm = viewModel
-
+            viewModel.getAllEmail()
         }
     }
 

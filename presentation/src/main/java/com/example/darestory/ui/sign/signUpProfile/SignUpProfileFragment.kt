@@ -32,13 +32,14 @@ class SignUpProfileFragment : BaseFragment<FragmentSignupProfileBinding, SignUpP
     override fun initView() {
         binding.apply {
             vm = viewModel
+            viewModel.getAllNickName()
         }
     }
 
     override fun initStates() {
         super.initStates()
 
-        viewModel.updateTestInfo(signUpProfileFragmentArgs.email, signUpProfileFragmentArgs.password)
+        viewModel.updateInfo(signUpProfileFragmentArgs.email, signUpProfileFragmentArgs.password)
 
         repeatOnStarted(viewLifecycleOwner) {
             launch {
@@ -59,6 +60,7 @@ class SignUpProfileFragment : BaseFragment<FragmentSignupProfileBinding, SignUpP
         when(event){
             is SignUpProfileEvent.GoBack -> findNavController().popBackStack()
             is SignUpProfileEvent.OnClickSpinner -> onClickSpinner()
+            is SignUpProfileEvent.GoCertifyEmail -> goToCertifyEmailFragment()
         }
     }
 
@@ -92,8 +94,12 @@ class SignUpProfileFragment : BaseFragment<FragmentSignupProfileBinding, SignUpP
                     imageNicknameTermsDuplicate.setBackgroundResource(R.drawable.ic_check_check)
                     textNicknameTermsDuplicate.setTextColor(ContextCompat.getColor(requireContext(), R.color.check))
                 }
-                NickNameError.Nothing -> {}
             }
         }
+    }
+
+    private fun goToCertifyEmailFragment(){
+        val action = SignUpProfileFragmentDirections.actionSignupProfileToCertifyEmail()
+        findNavController().navigate(action)
     }
 }

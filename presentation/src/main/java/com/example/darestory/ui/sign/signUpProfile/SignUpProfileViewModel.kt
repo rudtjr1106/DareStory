@@ -1,13 +1,12 @@
 package com.example.darestory.ui.sign.signUpProfile
 
 import androidx.lifecycle.viewModelScope
-import com.example.darestory.PageState
 import com.example.darestory.base.BaseViewModel
-import com.example.darestory.ui.sign.signUpEmailPassword.SignUpEmailPasswordPageState
 import com.example.darestory.util.DareLog
 import com.example.domain.model.SignUpVo
 import com.example.domain.model.enums.GenderType
 import com.example.domain.model.error.NickNameError
+import com.example.domain.usecase.GetAllNickNameUseCase
 import com.example.domain.usecase.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpProfileViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCase
+    private val signUpUseCase: SignUpUseCase,
+    private val checkNickNameUseCase: GetAllNickNameUseCase
 ) : BaseViewModel<SignUpProfilePageState>() {
 
     companion object{
@@ -26,11 +26,12 @@ class SignUpProfileViewModel @Inject constructor(
         const val MAX_NICKNAME = 10
     }
 
+    private lateinit var nickNameList : List<String>
 
     private val emailStateFlow: MutableStateFlow<String> = MutableStateFlow("")
     private val passwordStateFlow : MutableStateFlow<String> = MutableStateFlow("")
     private val nicknameStateFlow: MutableStateFlow<String> = MutableStateFlow("")
-    private val nicknameErrorStateFlow: MutableStateFlow<NickNameError> = MutableStateFlow(NickNameError.Nothing)
+    private val nicknameErrorStateFlow: MutableStateFlow<NickNameError> = MutableStateFlow(NickNameError.LengthError)
     private val ageStateFlow : MutableStateFlow<String> = MutableStateFlow("")
     private val genderStateFlow: MutableStateFlow<GenderType> = MutableStateFlow(GenderType.NOTHING)
     private val nicknameIsEmptyStateFlow : MutableStateFlow<Boolean> = MutableStateFlow(true)
@@ -49,6 +50,12 @@ class SignUpProfileViewModel @Inject constructor(
         isCompleteButtonEnableStateFlow.asStateFlow()
     )
 
+    fun getAllNickName(){
+        viewModelScope.launch {
+            nickNameList = checkNickNameUseCase(Unit)
+        }
+    }
+
     fun onClickBackButton(){
         emitEventFlow(SignUpProfileEvent.GoBack)
     }
@@ -64,8 +71,8 @@ class SignUpProfileViewModel @Inject constructor(
     private fun checkNickNameState(nickname : String){
         val lengthTerms = nickname.length < MIN_NICKNAME || nickname.length > MAX_NICKNAME
         if(lengthTerms) updateNickNameState(NickNameError.LengthError)
+        else if(nickNameList.contains(nickname)) updateNickNameState(NickNameError.DuplicateError)
         else updateNickNameState(NickNameError.NoError)
-        //닉네임 중복에러 해야됨
 
     }
 
@@ -101,19 +108,31 @@ class SignUpProfileViewModel @Inject constructor(
     }
 
     private fun updateButtonState(){
-        val canUse = !nicknameIsEmptyStateFlow.value && !ageIsEmptyStateFlow.value && (genderStateFlow.value != GenderType.NOTHING)
+        val canUse = (nicknameErrorStateFlow.value == NickNameError.NoError)  && !ageIsEmptyStateFlow.value && (genderStateFlow.value != GenderType.NOTHING)
         viewModelScope.launch {
             isCompleteButtonEnableStateFlow.update { canUse }
         }
     }
 
     fun onClickCompleteButton(){
+        val signUpVo = SignUpVo(emailStateFlow.value, passwordStateFlow.value, nicknameStateFlow.value,
+            ageStateFlow.value, genderStateFlow.value.type)
         viewModelScope.launch {
-            signUpUseCase(SignUpVo(emailStateFlow.value, passwordStateFlow.value))
+            if(signUpUseCase(signUpVo)) updateMyInfo(signUpVo) else DareLog.D("이메일 등록 실패")
         }
     }
 
-    fun updateTestInfo(email : String, password : String){
+    private fun updateMyInfo(request : SignUpVo){
+        viewModelScope.launch {
+            if(signUpUseCase.addMyInfo(request)) onSuccessUpdateInfo() else DareLog.D("정보 업데이트 실패")
+        }
+    }
+
+    private fun onSuccessUpdateInfo(){
+        emitEventFlow(SignUpProfileEvent.GoCertifyEmail)
+    }
+
+    fun updateInfo(email : String, password : String){
         viewModelScope.launch {
             emailStateFlow.update { email }
             passwordStateFlow.update { password }

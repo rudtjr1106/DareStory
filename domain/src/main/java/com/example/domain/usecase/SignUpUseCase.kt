@@ -11,4 +11,8 @@ class SignUpUseCase @Inject constructor(
     override suspend operator fun invoke(request: SignUpVo): Boolean{
         return signRepository.signUp(request)
     }
+
+    suspend fun addMyInfo(request: SignUpVo) : Boolean{
+        return signRepository.addMyInfo(request)
+    }
 }

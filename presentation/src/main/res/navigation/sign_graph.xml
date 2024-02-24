@@ -45,6 +45,17 @@
             android:defaultValue=""
             app:argType="string" />
 
+        <action
+            android:id="@+id/action_signup_profile_to_certify_email"
+            app:destination="@id/certifyEmailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/certifyEmailFragment"
+        android:name="com.example.darestory.ui.sign.certifyEmail.CertifyEmailFragment"
+        android:label="fragment_certify_email"
+        tools:layout="@layout/fragment_certify_email">
+
     </fragment>
 
 </navigation>
