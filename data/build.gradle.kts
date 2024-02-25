@@ -49,4 +49,5 @@ dependencies {
     implementation(platform(Google.FIREBASE_BOM))
     implementation(Google.FIREBASE_AUTH)
     implementation(Google.FIREBASE_FIRE_STORE)
+    implementation(Google.FIREBASE_REALTIME_DB)
 }

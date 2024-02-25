@@ -1,4 +1,4 @@
-package com.example.domain.model
+package com.example.domain.model.sign
 
 data class LoginVo(
     val email : String = "",

@@ -3,9 +3,9 @@ package com.example.darestory.ui.sign.signUpProfile
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.DareLog
-import com.example.domain.model.SignUpVo
 import com.example.domain.model.enums.GenderType
 import com.example.domain.model.error.NickNameError
+import com.example.domain.model.sign.UserVo
 import com.example.domain.usecase.GetAllNickNameUseCase
 import com.example.domain.usecase.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,6 +53,7 @@ class SignUpProfileViewModel @Inject constructor(
     fun getAllNickName(){
         viewModelScope.launch {
             nickNameList = checkNickNameUseCase(Unit)
+            DareLog.D(nickNameList.toString())
         }
     }
 
@@ -115,14 +116,18 @@ class SignUpProfileViewModel @Inject constructor(
     }
 
     fun onClickCompleteButton(){
-        val signUpVo = SignUpVo(emailStateFlow.value, passwordStateFlow.value, nicknameStateFlow.value,
-            ageStateFlow.value, genderStateFlow.value.type)
+        val signUpVo = UserVo(
+            email = emailStateFlow.value,
+            password = passwordStateFlow.value,
+            nickName = nicknameStateFlow.value,
+            age = ageStateFlow.value,
+            gender = genderStateFlow.value.type)
         viewModelScope.launch {
             if(signUpUseCase(signUpVo)) updateMyInfo(signUpVo) else DareLog.D("이메일 등록 실패")
         }
     }
 
-    private fun updateMyInfo(request : SignUpVo){
+    private fun updateMyInfo(request : UserVo){
         viewModelScope.launch {
             if(signUpUseCase.addMyInfo(request)) onSuccessUpdateInfo() else DareLog.D("정보 업데이트 실패")
         }

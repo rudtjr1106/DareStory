@@ -2,23 +2,30 @@ package com.example.data.repository
 
 import android.util.Log
 import com.example.data.EndPoints
-import com.example.domain.model.LoginVo
-import com.example.domain.model.SignUpVo
+import com.example.domain.model.sign.LoginVo
+import com.example.domain.model.sign.UserVo
 import com.example.domain.repository.SignRepository
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class SignRepositoryImpl @Inject constructor() : SignRepository {
 
     private val auth = FirebaseAuth.getInstance()
-    private val db = FirebaseFirestore.getInstance()
-    override suspend fun signUp(request: SignUpVo): Boolean {
+    private val db = FirebaseDatabase.getInstance()
+
+    override suspend fun signUp(requestEmail: String, requestPw: String): Boolean {
         return try {
-            auth.createUserWithEmailAndPassword(request.email, request.password).await()
+            auth.createUserWithEmailAndPassword(requestEmail, requestPw).await()
             true
         }
         catch (e: FirebaseAuthException){
@@ -32,31 +39,53 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
     }
 
     override suspend fun getAllNickName(): List<String> {
-        val snapshot = db.collection(EndPoints.AUTH).get().await()
-        val list = mutableListOf<String>()
-        snapshot.documents.forEach {
-            list.add(it.id)
-            Log.d("여기 데이터", "닉넴 가져오기 성공 ${it.id.toString()}")
+        return suspendCoroutine { continuation ->
+            val nickNameList: MutableList<String> = mutableListOf()
+            db.getReference(EndPoints.AUTH).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (dataSnapshot in snapshot.children) {
+                        nickNameList.add(dataSnapshot.key.toString())
+                    }
+                    continuation.resume(nickNameList)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    continuation.resumeWithException(error.toException())
+                }
+            })
         }
-        return list
     }
 
-    override suspend fun addMyInfo(request: SignUpVo) : Boolean{
+    override suspend fun addMyInfo(request: UserVo) : Boolean{
+        val userVo = request.copy(userUid = auth.uid)
+        val updatedData = mapOf(request.nickName to userVo)
         return try {
-            db.collection(EndPoints.AUTH).document(request.nickname).set(request).await()
+            db.getReference(EndPoints.AUTH).updateChildren(updatedData).await()
             true
         }
-        catch (e : FirebaseFirestoreException){
+        catch (e : FirebaseException){
             false
         }
     }
 
     override suspend fun getAllEmail(): List<String> {
-        val snapshot = db.collection(EndPoints.AUTH).get().await()
-        val list = mutableListOf<String>()
-        snapshot.documents.forEach {
-            list.add(it.getString(EndPoints.AUTH_EMAIL).toString())
+        return suspendCoroutine { continuation ->
+            val emailList: MutableList<String> = mutableListOf()
+            db.getReference(EndPoints.AUTH).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (dataSnapshot in snapshot.children) {
+                        val user = dataSnapshot.getValue(UserVo::class.java)
+                        user?.let {
+                            emailList.add(it.email)
+                        }
+                    }
+                    continuation.resume(emailList)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    continuation.resumeWithException(error.toException())
+                }
+            })
         }
-        return list
     }
 }

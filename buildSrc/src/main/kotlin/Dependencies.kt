@@ -13,6 +13,7 @@ object Google {
     const val FIREBASE_BOM = "com.google.firebase:firebase-bom:${Versions.BOM}"
     const val FIREBASE_AUTH = "com.google.firebase:firebase-auth-ktx"
     const val FIREBASE_FIRE_STORE = "com.google.firebase:firebase-firestore"
+    const val FIREBASE_REALTIME_DB = "com.google.firebase:firebase-database-ktx"
 }
 
 object AndroidX{
