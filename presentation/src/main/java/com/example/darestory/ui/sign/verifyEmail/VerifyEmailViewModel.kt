@@ -1,4 +1,4 @@
-package com.example.darestory.ui.sign.certifyEmail
+package com.example.darestory.ui.sign.verifyEmail
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.PageState
@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CertifyEmailViewModel @Inject constructor(
+class VerifyEmailViewModel @Inject constructor(
     private val sendEmailVerificationUseCase: SendEmailVerificationUseCase,
     private val checkEmailVerifiedUseCase: CheckEmailVerifiedUseCase
 ) : BaseViewModel<PageState.Default>() {
@@ -25,25 +25,25 @@ class CertifyEmailViewModel @Inject constructor(
         val emailDomain = email.split("@").last()
         val url = "https://www.$emailDomain"
 
-        emitEventFlow(CertifyEmailEvent.GoToUrl(url))
+        emitEventFlow(VerifyEmailEvent.GoToUrl(url))
     }
 
     fun onClickResendText(){
         sendEmailVerification()
     }
 
-    fun onClickCertifyComplete(){
+    fun onClickVerifyComplete(){
         viewModelScope.launch {
             if(checkEmailVerifiedUseCase(Unit)) goToMain() else showErrorToast()
         }
     }
 
     private fun goToMain(){
-        emitEventFlow(CertifyEmailEvent.GoToMain)
+        emitEventFlow(VerifyEmailEvent.GoToMain)
     }
 
     private fun showErrorToast(){
-        emitEventFlow(CertifyEmailEvent.ErrorCertify)
+        emitEventFlow(VerifyEmailEvent.ErrorVerify)
     }
 
 

@@ -28,7 +28,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
             auth.createUserWithEmailAndPassword(requestEmail, requestPw).await()
             true
         }
-        catch (e: FirebaseAuthException){
+        catch (e: Exception){
             false
         }
     }
@@ -38,9 +38,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
             auth?.signInWithEmailAndPassword(request.email, request.password)?.await()
             true
         }
-        catch (e: FirebaseAuthException) {
-            false
-        } catch (e: FirebaseException) {
+        catch (e: Exception) {
             false
         }
     }
@@ -64,13 +62,13 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
     }
 
     override suspend fun addMyInfo(request: UserVo) : Boolean{
-        val userVo = request.copy(userUid = auth.uid)
+        val userVo = auth.uid?.let { request.copy(userUid = it) }
         val updatedData = mapOf(request.nickName to userVo)
         return try {
             db.getReference(EndPoints.AUTH).updateChildren(updatedData).await()
             true
         }
-        catch (e : FirebaseException){
+        catch (e : Exception){
             false
         }
     }
@@ -102,7 +100,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
             user?.sendEmailVerification()?.await()
             true
         }
-        catch (e : FirebaseAuthException){
+        catch (e : Exception){
             false
         }
     }
@@ -119,7 +117,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
             auth.sendPasswordResetEmail(request).await()
             true
         }
-        catch (e : FirebaseAuthException){
+        catch (e : Exception){
             false
         }
 

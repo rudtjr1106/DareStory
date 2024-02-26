@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="com.example.darestory.ui.sign.certifyEmail.CertifyEmailViewModel" />
+            type="com.example.darestory.ui.sign.verifyEmail.VerifyEmailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,25 +58,25 @@
             android:layout_height="40dp"/>
 
         <TextView
-            android:id="@+id/text_certify_explain"
+            android:id="@+id/text_verify_explain"
             app:layout_constraintTop_toBottomOf="@id/img_send"
             android:layout_marginTop="29dp"
             android:layout_marginHorizontal="16dp"
             android:textAppearance="@style/body3"
             android:textColor="@color/white"
-            android:text="@string/sign_up_certify_email"
+            android:text="@string/sign_up_verify_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_certify_complete"
+            android:id="@+id/btn_verify_complete"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginHorizontal="16dp"
-            android:onClick="@{()->vm.onClickCertifyComplete()}"
+            android:onClick="@{()->vm.onClickVerifyComplete()}"
             android:layout_marginTop="44dp"
             android:background="@drawable/bg_rectangle_radius_4_filled_dark_purple_700"
-            android:text="@string/sign_up_certify_complete"
+            android:text="@string/sign_up_verify_complete"
             android:textAppearance="@style/btn2"
             android:textColor="@color/gray_300"
             android:layout_marginBottom="16dp"

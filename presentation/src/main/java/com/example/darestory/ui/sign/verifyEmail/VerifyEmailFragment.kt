@@ -1,4 +1,4 @@
-package com.example.darestory.ui.sign.certifyEmail
+package com.example.darestory.ui.sign.verifyEmail
 
 import android.content.Intent
 import android.net.Uri
@@ -7,7 +7,6 @@ import android.text.SpannableStringBuilder
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
-import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -15,17 +14,15 @@ import androidx.navigation.fragment.navArgs
 import com.example.darestory.PageState
 import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
-import com.example.darestory.databinding.FragmentCertifyEmailBinding
-import com.example.darestory.ui.sign.signUpProfile.SignUpProfileFragmentArgs
-import com.example.darestory.util.DareLog
+import com.example.darestory.databinding.FragmentVerifyEmailBinding
 import com.example.darestory.util.DareToast
 import com.example.domain.model.enums.ToastType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CertifyEmailFragment : BaseFragment<FragmentCertifyEmailBinding, PageState.Default, CertifyEmailViewModel>(
-    FragmentCertifyEmailBinding::inflate
+class VerifyEmailFragment : BaseFragment<FragmentVerifyEmailBinding, PageState.Default, VerifyEmailViewModel>(
+    FragmentVerifyEmailBinding::inflate
 ) {
 
     companion object{
@@ -33,8 +30,10 @@ class CertifyEmailFragment : BaseFragment<FragmentCertifyEmailBinding, PageState
     }
 
 
-    override val viewModel: CertifyEmailViewModel by viewModels()
-    private val certifyEmailFragmentArgs : CertifyEmailFragmentArgs by navArgs()
+    override val viewModel: VerifyEmailViewModel by viewModels()
+    private val verifyEmailFragmentArgs : VerifyEmailFragmentArgs by navArgs()
+    private lateinit var text : String
+    private lateinit var spannableString: Spannable
 
     override fun initView() {
         binding.apply {
@@ -50,20 +49,20 @@ class CertifyEmailFragment : BaseFragment<FragmentCertifyEmailBinding, PageState
         repeatOnStarted(viewLifecycleOwner) {
             launch {
                 viewModel.eventFlow.collect {
-                    sortEvent(it as CertifyEmailEvent)
+                    sortEvent(it as VerifyEmailEvent)
                 }
             }
         }
     }
 
     private fun clickAbleString(){
-        val text = getString(R.string.sign_up_certify_email, certifyEmailFragmentArgs.email)
-        val spannableString = SpannableStringBuilder(text)
-        val startIndex = text.indexOf(certifyEmailFragmentArgs.email)
-        val endIndex = text.indexOf(certifyEmailFragmentArgs.email) + certifyEmailFragmentArgs.email.length
+        text = getString(R.string.sign_up_verify_email, verifyEmailFragmentArgs.email)
+        spannableString = SpannableStringBuilder(text)
+        val startIndex = text.indexOf(verifyEmailFragmentArgs.email)
+        val endIndex = text.indexOf(verifyEmailFragmentArgs.email) + verifyEmailFragmentArgs.email.length
         spannableString.setSpan(object : ClickableSpan() {
             override fun onClick(widget: View) {
-                viewModel.onClickEmail(certifyEmailFragmentArgs.email)
+                viewModel.onClickEmail(verifyEmailFragmentArgs.email)
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -84,15 +83,15 @@ class CertifyEmailFragment : BaseFragment<FragmentCertifyEmailBinding, PageState
                 ds.color = ContextCompat.getColor(requireContext(), R.color.dark_purple_600)
             }
         }, startIndex2, endIndex2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        binding.textCertifyExplain.text = spannableString
-        binding.textCertifyExplain.movementMethod = LinkMovementMethod.getInstance()
+        binding.textVerifyExplain.text = spannableString
+        binding.textVerifyExplain.movementMethod = LinkMovementMethod.getInstance()
     }
 
-    private fun sortEvent(event : CertifyEmailEvent){
+    private fun sortEvent(event : VerifyEmailEvent){
         when(event){
-            is CertifyEmailEvent.GoToUrl -> goToDomainUrl(event.url)
-            is CertifyEmailEvent.ErrorCertify -> showErrorToast()
-            is CertifyEmailEvent.GoToMain -> TODO()
+            is VerifyEmailEvent.GoToUrl -> goToDomainUrl(event.url)
+            is VerifyEmailEvent.ErrorVerify -> showErrorToast()
+            is VerifyEmailEvent.GoToMain -> TODO()
         }
     }
 

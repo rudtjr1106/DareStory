@@ -1,7 +1,6 @@
 package com.example.domain.repository
 
 import com.example.domain.model.sign.LoginVo
-import com.example.domain.model.sign.SignUpVo
 import com.example.domain.model.sign.UserVo
 
 interface SignRepository {
