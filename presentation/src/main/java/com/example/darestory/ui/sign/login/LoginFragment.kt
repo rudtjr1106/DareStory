@@ -2,16 +2,23 @@ package com.example.darestory.ui.sign.login
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.darestory.PageState
+import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentLoginBinding
+import com.example.darestory.ui.common.InputDialog
+import com.example.darestory.util.DareToast
+import com.example.domain.model.enums.ToastType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<FragmentLoginBinding, PageState.Default, LoginViewModel>(
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPageState, LoginViewModel>(
     FragmentLoginBinding::inflate
 ) {
+
+    @Inject
+    lateinit var inputDialog: InputDialog
 
     override val viewModel: LoginViewModel by viewModels()
 
@@ -39,7 +46,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, PageState.Default, Logi
 
     private fun sortEvent(event: LoginEvent){
         when(event){
-            LoginEvent.GoSignUpEvent -> goToSignUp()
+            LoginEvent.SignUpTextClickEvent -> goToSignUp()
+            LoginEvent.FindPasswordTextClickEvent -> showFindPasswordDialog()
+            LoginEvent.GoToMainEvent -> {}
+            LoginEvent.ShowLoginErrorToastEvent -> showToastLoginError()
+            LoginEvent.ShowErrorSendPwToastEvent -> showErrorSendPwToast()
+            LoginEvent.ShowSuccessSendPwToastEvent -> showToastSuccessSendResetPw()
         }
     }
 
@@ -47,4 +59,30 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, PageState.Default, Logi
         val action = LoginFragmentDirections.actionLoginToSignupEmailPassword()
         findNavController().navigate(action)
     }
+
+    private fun showFindPasswordDialog(){
+        inputDialog
+            .setTitle(R.string.input_email)
+            .setPositiveButton(R.string.word_confirm) {
+                viewModel.sendResetPasswordEmail(inputDialog.getEditText())
+                inputDialog.dismiss()
+            }
+            .setNegativeButton(R.string.word_cancel) {
+                inputDialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showToastSuccessSendResetPw(){
+        context?.let { DareToast.createToast(ToastType.COMPLETE, it, R.string.login_success_send_password_toast).show() }
+    }
+
+    private fun showErrorSendPwToast(){
+        context?.let { DareToast.createToast(ToastType.ERROR, it, R.string.login_error_send_password_toast).show() }
+    }
+
+    private fun showToastLoginError(){
+        context?.let { DareToast.createToast(ToastType.ERROR, it, R.string.login_error_toast).show() }
+    }
+
 }

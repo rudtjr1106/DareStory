@@ -1,5 +1,5 @@
 object Versions {
-    const val GRADLE = "7.3.1"
+    const val GRADLE = "7.4.2"
 
     /* [ Kotlin } */
     const val KOTLIN_VERSION = "1.7.10"
@@ -9,7 +9,8 @@ object Versions {
 
     /* [ Google ] */
     const val MATERIAL = "1.11.0"
-    const val HILT = "2.42"
+    const val HILT = "2.44"
+    const val BOM = "32.3.1"
 
     /* [ Android ] */
     const val CORE = "1.12.0"

@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    kotlin("android")
+    id("com.google.gms.google-services")
+    kotlin("kapt")
 }
 
 android {
@@ -38,4 +40,14 @@ dependencies {
     implementation(AndroidX.APPCOMPAT)
     implementation(Google.MATERIAL)
     implementation(AndroidX.CONSTRAINT_LAYOUT)
+
+    //힐트
+    implementation(Google.HILT_ANDROID)
+    implementation(Google.HILT_CORE)
+    kapt(Google.HILT_COMPILER)
+
+    implementation(platform(Google.FIREBASE_BOM))
+    implementation(Google.FIREBASE_AUTH)
+    implementation(Google.FIREBASE_FIRE_STORE)
+    implementation(Google.FIREBASE_REALTIME_DB)
 }

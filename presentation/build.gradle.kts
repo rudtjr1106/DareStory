@@ -1,9 +1,10 @@
 plugins {
-    id("com.android.library")
+    id("com.android.application")
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -40,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
     implementation(project(":domain"))
 
     implementation(AndroidX.CORE)
@@ -49,7 +51,6 @@ dependencies {
     implementation(AndroidX.FRAGMENT_KTX)
     implementation(AndroidX.NAVIGATION_UI_KTX)
     implementation(AndroidX.NAVIGATION_FRAGMENT_KTX)
-    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
 
     //Timber
     implementation(AndroidX.TIMBER)
@@ -66,5 +67,6 @@ dependencies {
     implementation(Google.HILT_ANDROID)
     implementation(Google.HILT_CORE)
     kapt(Google.HILT_COMPILER)
+
 
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="com.example.domain.model.enums.GenderType"/>
         <variable
             name="vm"
             type="com.example.darestory.ui.sign.signUpProfile.SignUpProfileViewModel" />
@@ -11,168 +11,295 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+        <ImageView
+            android:id="@+id/image_btn_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="뒤" />
+            android:onClick="@{()->vm.onClickBackButton()}"
+            android:background="@drawable/ic_back_white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/word_sign_up"
+            android:textAppearance="@style/h4"
+            android:textColor="@color/gray_100"
+            app:layout_constraintBottom_toBottomOf="@id/image_btn_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="회원가입"
-            android:textSize="20sp" />
+            app:layout_constraintTop_toTopOf="@id/image_btn_back" />
 
         <TextView
-            android:id="@+id/text_now_page"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/text_page"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="2/2"
-            android:textSize="14sp" />
+            android:layout_marginEnd="18dp"
+            android:text="@string/sign_up_second_page"
+            android:textAppearance="@style/body2"
+            android:textColor="@color/gray_100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_who_r_u"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="98dp"
-            android:textSize="32sp"
-            android:text="작가님은\n어떤 사람인가요?"
-            android:textColor="@color/black"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="96dp"
+            android:text="@string/sign_up_who_r_u"
+            android:textAppearance="@style/h1"
+            android:textColor="@color/gray_200"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/text_hello"
-            app:layout_constraintTop_toBottomOf="@id/text_who_r_u"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="49dp"
-            android:text="안녕하세요."
-            android:textSize="24sp"
-            android:textColor="@color/black"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/sign_up_hello"
+            android:textAppearance="@style/on"
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_who_r_u" />
 
         <TextView
             android:id="@+id/text_nickname"
-            app:layout_constraintTop_toBottomOf="@id/text_hello"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:textSize="24sp"
-            android:text="작가"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="@string/word_writer"
+            android:textAppearance="@style/on"
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_hello" />
 
         <EditText
             android:id="@+id/edit_text_nickname"
-            android:layout_marginStart="14dp"
-            android:hint="닉네임"
-            android:textSize="24sp"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toTopOf="@id/text_nickname"
-            app:layout_constraintStart_toEndOf="@id/text_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:paddingHorizontal="8dp"
+            android:gravity="center"
+            android:maxLength="10"
+            android:background="@drawable/bg_line_edit_text"
+            android:hint="@string/word_nickname"
+            android:afterTextChanged="@{()->vm.onNickNameTextChangedAfter()}"
+            android:text="@={vm.uiState.nickname}"
+            android:textAppearance="@style/body2"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gray_600"
             app:layout_constraintBottom_toBottomOf="@id/text_nickname"
+            app:layout_constraintStart_toEndOf="@id/text_nickname"
+            app:layout_constraintTop_toTopOf="@id/text_nickname" />
+
+        <ImageView
+            android:id="@+id/image_line_edit_nickname"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@{vm.uiState.nicknameIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_purple_dark_600}"
+            app:layout_constraintEnd_toEndOf="@id/edit_text_nickname"
+            app:layout_constraintStart_toStartOf="@id/edit_text_nickname"
+            app:layout_constraintTop_toBottomOf="@id/edit_text_nickname" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/sign_up_end_sentence"
+            android:textAppearance="@style/on"
+            android:textColor="@color/gray_400"
+            app:layout_constraintBottom_toBottomOf="@id/edit_text_nickname"
+            app:layout_constraintStart_toEndOf="@id/edit_text_nickname"
+            app:layout_constraintTop_toTopOf="@id/edit_text_nickname" />
+        
+        <ImageView
+            android:id="@+id/image_nickname_terms_length"
+            android:background="@drawable/ic_check_check"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/image_line_edit_nickname"
+            app:layout_constraintStart_toStartOf="@id/image_line_edit_nickname"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+
+        <TextView
+            android:id="@+id/text_nickname_terms_length"
+            app:layout_constraintTop_toBottomOf="@id/image_line_edit_nickname"
+            app:layout_constraintStart_toEndOf="@id/image_nickname_terms_length"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/gray_400"
+            android:textAppearance="@style/c1"
+            android:paddingEnd="20dp"
+            android:layout_marginStart="3dp"
+            android:text="@string/sign_up_nickname_terms_length"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <ImageView
+            android:id="@+id/image_nickname_terms_duplicate"
+            android:background="@drawable/ic_check_check"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/image_line_edit_nickname"
+            app:layout_constraintStart_toEndOf="@id/text_nickname_terms_length"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+
         <TextView
-            app:layout_constraintTop_toTopOf="@id/edit_text_nickname"
-            app:layout_constraintBottom_toBottomOf="@id/edit_text_nickname"
-            app:layout_constraintStart_toEndOf="@id/edit_text_nickname"
-            android:layout_marginStart="13dp"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:text="입니다."
+            android:id="@+id/text_nickname_terms_duplicate"
+            app:layout_constraintTop_toBottomOf="@id/image_line_edit_nickname"
+            app:layout_constraintStart_toEndOf="@id/image_nickname_terms_duplicate"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/gray_400"
+            android:textAppearance="@style/c1"
+            android:layout_marginStart="3dp"
+            android:text="@string/sign_up_nickname_terms_duplicate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/text_age"
-            app:layout_constraintTop_toBottomOf="@id/text_nickname"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
-            android:textSize="24sp"
-            android:text="나이는"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/edit_text_age"
-            android:layout_marginStart="14dp"
-            android:hint="20"
-            android:textSize="24sp"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toTopOf="@id/text_age"
-            app:layout_constraintStart_toEndOf="@id/text_age"
-            app:layout_constraintBottom_toBottomOf="@id/text_age"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_marginTop="40dp"
+            android:text="@string/sign_up_age_is"
+            android:textAppearance="@style/on"
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_nickname" />
 
         <TextView
-            app:layout_constraintTop_toTopOf="@id/edit_text_age"
-            app:layout_constraintBottom_toBottomOf="@id/edit_text_age"
-            app:layout_constraintStart_toEndOf="@id/edit_text_age"
-            android:layout_marginStart="13dp"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:text="대 이고,"
+            android:id="@+id/text_spinner_age"
+            android:layout_width="100dp"
+            android:paddingEnd="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="@string/sign_up_choice_age"
+            android:onClick="@{()->vm.onClickAgeSpinner()}"
+            android:text="@={vm.uiState.age}"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_line_edit_text"
+            android:textColorHint="@color/gray_600"
+            android:gravity="center"
+            android:textAppearance="@style/body2"
+            app:layout_constraintBottom_toBottomOf="@id/text_age"
+            app:layout_constraintStart_toEndOf="@id/text_age"
+            app:layout_constraintTop_toTopOf="@id/text_age" />
+
+        <ImageView
+            android:id="@+id/image_down_arrow"
+            app:layout_constraintTop_toTopOf="@id/text_spinner_age"
+            app:layout_constraintBottom_toBottomOf="@id/text_spinner_age"
+            app:layout_constraintEnd_toEndOf="@id/text_spinner_age"
+            android:background="@{vm.uiState.ageIsEmpty ? @drawable/ic_down_arrow_gray_600 : @drawable/ic_down_arrow_white}"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+        
+        <ImageView
+            android:id="@+id/image_line_text_spinner_age"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@{vm.uiState.ageIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_purple_dark_600}"
+            app:layout_constraintEnd_toEndOf="@id/text_spinner_age"
+            app:layout_constraintStart_toStartOf="@id/text_spinner_age"
+            app:layout_constraintTop_toBottomOf="@id/text_spinner_age" />
+
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/sign_up_age_sentence_end"
+            android:textColor="@color/gray_400"
+            android:textAppearance="@style/on"
+            app:layout_constraintBottom_toBottomOf="@id/text_spinner_age"
+            app:layout_constraintStart_toEndOf="@id/text_spinner_age"
+            app:layout_constraintTop_toTopOf="@id/text_spinner_age" />
 
         <TextView
             android:id="@+id/text_gender"
-            app:layout_constraintTop_toBottomOf="@id/text_age"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:textSize="24sp"
-            android:text="성별은"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/edit_text_gender"
-            android:layout_marginStart="14dp"
-            android:hint="남자"
-            android:textSize="24sp"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toTopOf="@id/text_gender"
-            app:layout_constraintStart_toEndOf="@id/text_gender"
-            app:layout_constraintBottom_toBottomOf="@id/text_gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="@string/sign_up_gender_is"
+            android:textColor="@color/gray_400"
+            android:textAppearance="@style/on"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_age" />
 
         <TextView
-            app:layout_constraintTop_toTopOf="@id/edit_text_gender"
-            app:layout_constraintBottom_toBottomOf="@id/edit_text_gender"
-            app:layout_constraintStart_toEndOf="@id/edit_text_gender"
-            android:layout_marginStart="13dp"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:text="입니다."
+            android:id="@+id/text_btn_gender_male"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:text="@string/word_male"
+            android:onClick="@{()->vm.onClickGenderTextButton(GenderType.MALE)}"
+            android:textAppearance="@style/body2"
+            android:textColor="@{vm.uiState.gender == GenderType.MALE ? @color/white : @color/gray_600}"
+            app:layout_constraintBottom_toBottomOf="@id/text_gender"
+            app:layout_constraintStart_toEndOf="@id/text_gender"
+            app:layout_constraintTop_toTopOf="@id/text_gender" />
+
+        <ImageView
+            android:id="@+id/image_line_text_gender_male"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@{vm.uiState.gender == GenderType.MALE ? @drawable/img_line_purple_dark_600 : @drawable/img_line_gray_600}"
+            app:layout_constraintEnd_toEndOf="@id/text_btn_gender_male"
+            app:layout_constraintStart_toStartOf="@id/text_btn_gender_male"
+            app:layout_constraintTop_toBottomOf="@id/text_btn_gender_male" />
+
+        <TextView
+            android:id="@+id/text_btn_gender_female"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:text="@string/word_female"
+            android:onClick="@{()->vm.onClickGenderTextButton(GenderType.FEMALE)}"
+            android:textAppearance="@style/body2"
+            android:textColor="@{vm.uiState.gender == GenderType.FEMALE ? @color/white : @color/gray_600}"
+            app:layout_constraintBottom_toBottomOf="@id/text_btn_gender_male"
+            app:layout_constraintStart_toEndOf="@id/text_btn_gender_male"
+            app:layout_constraintTop_toTopOf="@id/text_btn_gender_male" />
+
+        <ImageView
+            android:id="@+id/image_line_text_gender_female"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@{vm.uiState.gender == GenderType.FEMALE ? @drawable/img_line_purple_dark_600 : @drawable/img_line_gray_600}"
+            app:layout_constraintEnd_toEndOf="@id/text_btn_gender_female"
+            app:layout_constraintStart_toStartOf="@id/text_btn_gender_female"
+            app:layout_constraintTop_toBottomOf="@id/text_btn_gender_female" />
+
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/sign_up_end_sentence"
+            android:textColor="@color/gray_400"
+            android:textAppearance="@style/on"
+            app:layout_constraintBottom_toBottomOf="@id/text_btn_gender_female"
+            app:layout_constraintStart_toEndOf="@id/text_btn_gender_female"
+            app:layout_constraintTop_toTopOf="@id/text_btn_gender_female" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_complete"
@@ -180,8 +307,12 @@
             android:layout_height="48dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="22dp"
+            android:background="@drawable/selector_bg_gray_400_to_dark_purple_600"
+            android:enabled="@{vm.uiState.isCompleteButtonEnable()}"
             android:onClick="@{()->vm.onClickCompleteButton()}"
-            android:text="완료"
+            android:textAppearance="@style/btn2"
+            android:textColor="@drawable/selector_color_bg_gray_200_to_gray_400"
+            android:text="@string/word_complete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
