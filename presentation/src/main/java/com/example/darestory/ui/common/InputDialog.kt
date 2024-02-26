@@ -117,4 +117,8 @@ class InputDialog @Inject constructor(@ActivityContext private val context: Cont
             }
         }
     }
+
+    fun getEditText() : String {
+        return binding.editTextInput.text.toString()
+    }
 }

@@ -3,8 +3,10 @@ package com.example.darestory.ui.sign.login
 import com.example.darestory.Event
 
 sealed class LoginEvent : Event {
-
-    object LoginButtonClickEvent : LoginEvent()
+    object GoToMainEvent : LoginEvent()
+    object ShowLoginErrorToastEvent : LoginEvent()
     object SignUpTextClickEvent : LoginEvent()
     object FindPasswordTextClickEvent : LoginEvent()
+    object ShowSuccessSendPwToastEvent : LoginEvent()
+    object ShowErrorSendPwToastEvent : LoginEvent()
 }

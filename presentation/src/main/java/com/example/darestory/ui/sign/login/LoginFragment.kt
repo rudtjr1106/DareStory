@@ -6,6 +6,8 @@ import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentLoginBinding
 import com.example.darestory.ui.common.InputDialog
+import com.example.darestory.util.DareToast
+import com.example.domain.model.enums.ToastType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,7 +48,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPageState, LoginVi
         when(event){
             LoginEvent.SignUpTextClickEvent -> goToSignUp()
             LoginEvent.FindPasswordTextClickEvent -> showFindPasswordDialog()
-            LoginEvent.LoginButtonClickEvent -> TODO()
+            LoginEvent.GoToMainEvent -> {}
+            LoginEvent.ShowLoginErrorToastEvent -> showToastLoginError()
+            LoginEvent.ShowErrorSendPwToastEvent -> showErrorSendPwToast()
+            LoginEvent.ShowSuccessSendPwToastEvent -> showToastSuccessSendResetPw()
         }
     }
 
@@ -59,13 +64,25 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPageState, LoginVi
         inputDialog
             .setTitle(R.string.input_email)
             .setPositiveButton(R.string.word_confirm) {
-                //TODO 이메일 전송
+                viewModel.sendResetPasswordEmail(inputDialog.getEditText())
                 inputDialog.dismiss()
             }
             .setNegativeButton(R.string.word_cancel) {
                 inputDialog.dismiss()
             }
             .show()
+    }
+
+    private fun showToastSuccessSendResetPw(){
+        context?.let { DareToast.createToast(ToastType.COMPLETE, it, R.string.login_success_send_password_toast).show() }
+    }
+
+    private fun showErrorSendPwToast(){
+        context?.let { DareToast.createToast(ToastType.ERROR, it, R.string.login_error_send_password_toast).show() }
+    }
+
+    private fun showToastLoginError(){
+        context?.let { DareToast.createToast(ToastType.ERROR, it, R.string.login_error_toast).show() }
     }
 
 }

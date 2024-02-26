@@ -34,8 +34,15 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
     }
 
     override suspend fun login(request: LoginVo): Boolean {
-        Log.d("여기 데이터", "실행 잘됨 email : ${request.email}\n 비번 : ${request.password}")
-        return true
+        return try {
+            auth?.signInWithEmailAndPassword(request.email, request.password)?.await()
+            true
+        }
+        catch (e: FirebaseAuthException) {
+            false
+        } catch (e: FirebaseException) {
+            false
+        }
     }
 
     override suspend fun getAllNickName(): List<String> {
@@ -105,5 +112,16 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         currentUser?.reload()
         var isEmailVerified = currentUser?.isEmailVerified
         return isEmailVerified == true
+    }
+
+    override suspend fun sendPasswordResetEmail(request: String): Boolean {
+        return try {
+            auth.sendPasswordResetEmail(request).await()
+            true
+        }
+        catch (e : FirebaseAuthException){
+            false
+        }
+
     }
 }
