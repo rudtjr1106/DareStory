@@ -53,7 +53,6 @@ class SignUpProfileViewModel @Inject constructor(
     fun getAllNickName(){
         viewModelScope.launch {
             nickNameList = checkNickNameUseCase(Unit)
-            DareLog.D(nickNameList.toString())
         }
     }
 
@@ -134,7 +133,7 @@ class SignUpProfileViewModel @Inject constructor(
     }
 
     private fun onSuccessUpdateInfo(){
-        emitEventFlow(SignUpProfileEvent.GoCertifyEmail)
+        emitEventFlow(SignUpProfileEvent.GoCertifyEmail(emailStateFlow.value))
     }
 
     fun updateInfo(email : String, password : String){

@@ -48,6 +48,7 @@
             app:layout_constraintTop_toTopOf="parent" />
         
         <ImageView
+            android:id="@+id/img_send"
             android:background="@drawable/ic_send_dark_purple_600"
             android:layout_marginTop="96dp"
             android:layout_marginStart="16dp"
@@ -56,11 +57,23 @@
             android:layout_width="40dp"
             android:layout_height="40dp"/>
 
+        <TextView
+            android:id="@+id/text_certify_explain"
+            app:layout_constraintTop_toBottomOf="@id/img_send"
+            android:layout_marginTop="29dp"
+            android:layout_marginHorizontal="16dp"
+            android:textAppearance="@style/body3"
+            android:textColor="@color/white"
+            android:text="@string/sign_up_certify_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_certify_complete"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginHorizontal="16dp"
+            android:onClick="@{()->vm.onClickCertifyComplete()}"
             android:layout_marginTop="44dp"
             android:background="@drawable/bg_rectangle_radius_4_filled_dark_purple_700"
             android:text="@string/sign_up_certify_complete"

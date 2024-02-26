@@ -88,4 +88,22 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
             })
         }
     }
+
+    override suspend fun sendEmailVerification(): Boolean {
+        val user = auth.currentUser
+        return try {
+            user?.sendEmailVerification()?.await()
+            true
+        }
+        catch (e : FirebaseAuthException){
+            false
+        }
+    }
+
+    override suspend fun checkEmailVerified(): Boolean {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        currentUser?.reload()
+        var isEmailVerified = currentUser?.isEmailVerified
+        return isEmailVerified == true
+    }
 }

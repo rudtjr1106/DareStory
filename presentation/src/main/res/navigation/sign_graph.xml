@@ -56,6 +56,11 @@
         android:label="fragment_certify_email"
         tools:layout="@layout/fragment_certify_email">
 
+        <argument
+            android:name="email"
+            android:defaultValue=""
+            app:argType="string" />
+
     </fragment>
 
 </navigation>

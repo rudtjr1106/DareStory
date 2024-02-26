@@ -12,4 +12,6 @@ interface SignRepository {
 
     suspend fun addMyInfo(request: UserVo) : Boolean
     suspend fun getAllEmail() : List<String>
+    suspend fun sendEmailVerification() : Boolean
+    suspend fun checkEmailVerified() : Boolean
 }

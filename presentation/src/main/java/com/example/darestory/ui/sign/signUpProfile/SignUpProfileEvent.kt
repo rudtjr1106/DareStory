@@ -4,5 +4,5 @@ import com.example.darestory.Event
 sealed class SignUpProfileEvent : Event {
     object GoBack : SignUpProfileEvent()
     object OnClickSpinner : SignUpProfileEvent()
-    object GoCertifyEmail : SignUpProfileEvent()
+    data class GoCertifyEmail(val email : String) : SignUpProfileEvent()
 }

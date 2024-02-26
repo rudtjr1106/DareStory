@@ -60,7 +60,7 @@ class SignUpProfileFragment : BaseFragment<FragmentSignupProfileBinding, SignUpP
         when(event){
             is SignUpProfileEvent.GoBack -> findNavController().popBackStack()
             is SignUpProfileEvent.OnClickSpinner -> onClickSpinner()
-            is SignUpProfileEvent.GoCertifyEmail -> goToCertifyEmailFragment()
+            is SignUpProfileEvent.GoCertifyEmail -> goToCertifyEmailFragment(event.email)
         }
     }
 
@@ -98,8 +98,8 @@ class SignUpProfileFragment : BaseFragment<FragmentSignupProfileBinding, SignUpP
         }
     }
 
-    private fun goToCertifyEmailFragment(){
-        val action = SignUpProfileFragmentDirections.actionSignupProfileToCertifyEmail()
+    private fun goToCertifyEmailFragment(email : String){
+        val action = SignUpProfileFragmentDirections.actionSignupProfileToCertifyEmail(email = email)
         findNavController().navigate(action)
     }
 }
