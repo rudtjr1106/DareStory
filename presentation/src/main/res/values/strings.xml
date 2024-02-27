@@ -17,6 +17,9 @@
     <string name="word_nickname">닉네임</string>
     <string name="word_writer">작가</string>
     <string name="word_complete">완료</string>
+    <string name="word_home">홈</string>
+    <string name="word_discussion">토론장</string>
+    <string name="word_my">My</string>
 
     <!-- 로그인 -->
     <string name="login_error_toast">이메일 또는 비밀번호를 확인해주세요.</string>

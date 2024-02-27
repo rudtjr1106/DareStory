@@ -15,6 +15,7 @@ import com.example.darestory.PageState
 import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentVerifyEmailBinding
+import com.example.darestory.ui.main.MainActivity
 import com.example.darestory.util.DareToast
 import com.example.domain.model.enums.ToastType
 import dagger.hilt.android.AndroidEntryPoint
@@ -91,7 +92,7 @@ class VerifyEmailFragment : BaseFragment<FragmentVerifyEmailBinding, PageState.D
         when(event){
             is VerifyEmailEvent.GoToUrl -> goToDomainUrl(event.url)
             is VerifyEmailEvent.ErrorVerify -> showErrorToast()
-            is VerifyEmailEvent.GoToMain -> TODO()
+            is VerifyEmailEvent.GoToMain -> goToMain()
         }
     }
 
@@ -106,6 +107,12 @@ class VerifyEmailFragment : BaseFragment<FragmentVerifyEmailBinding, PageState.D
             DareToast.createToast(ToastType.ERROR,
                 it, R.string.sign_up_email_verify_error_toast).show()
         }
+    }
+
+    private fun goToMain(){
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     override fun onStart() {

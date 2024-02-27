@@ -1,11 +1,13 @@
 package com.example.darestory.ui.sign.login
 
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentLoginBinding
 import com.example.darestory.ui.common.InputDialog
+import com.example.darestory.ui.main.MainActivity
 import com.example.darestory.util.DareToast
 import com.example.domain.model.enums.ToastType
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +27,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPageState, LoginVi
     override fun initView() {
         binding.apply {
             vm = viewModel
+            //TODO REMOVE
+            goToMain()
         }
     }
 
@@ -48,7 +52,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPageState, LoginVi
         when(event){
             LoginEvent.SignUpTextClickEvent -> goToSignUp()
             LoginEvent.FindPasswordTextClickEvent -> showFindPasswordDialog()
-            LoginEvent.GoToMainEvent -> {}
+            LoginEvent.GoToMainEvent -> goToMain()
             LoginEvent.ShowLoginErrorToastEvent -> showToastLoginError()
             LoginEvent.ShowErrorSendPwToastEvent -> showErrorSendPwToast()
             LoginEvent.ShowSuccessSendPwToastEvent -> showToastSuccessSendResetPw()
@@ -71,6 +75,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPageState, LoginVi
                 inputDialog.dismiss()
             }
             .show()
+    }
+
+    private fun goToMain(){
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun showToastSuccessSendResetPw(){
