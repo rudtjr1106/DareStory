@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_all_prose"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingHorizontal="20dp"
+            android:text="@string/home_all_prose"
+            android:textColor="@color/gray_200"
+            android:textAppearance="@style/h3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/image_all_prose_double_line"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/img_double_line_gray_200"
+            app:layout_constraintTop_toBottomOf="@id/text_all_prose"
+            app:layout_constraintStart_toStartOf="@id/text_all_prose"
+            app:layout_constraintEnd_toEndOf="@id/text_all_prose"/>
+        
+        <ImageView
+            android:id="@+id/image_sort_popular_double_line"
+            app:layout_constraintBottom_toTopOf="@id/recycler_all_prose"
+            app:layout_constraintStart_toStartOf="@id/text_btn_sort_popular"
+            app:layout_constraintEnd_toEndOf="@id/text_btn_sort_popular"
+            android:background="@drawable/img_double_line_purple_600"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_btn_sort_popular"
+            android:layout_marginStart="18dp"
+            android:text="@string/word_sort_popular"
+            android:textColor="@color/gray_600"
+            android:textAppearance="@style/body2"
+            android:paddingHorizontal="3dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/image_sort_popular_double_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/image_sort_recent_double_line"
+            app:layout_constraintBottom_toTopOf="@id/recycler_all_prose"
+            app:layout_constraintStart_toStartOf="@id/text_btn_sort_recent"
+            app:layout_constraintEnd_toEndOf="@id/text_btn_sort_recent"
+            android:background="@drawable/img_double_line_purple_600"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_btn_sort_recent"
+            android:layout_marginStart="6dp"
+            android:text="@string/word_sort_recent"
+            android:textColor="@color/gray_600"
+            android:textAppearance="@style/body2"
+            android:paddingHorizontal="3dp"
+            app:layout_constraintStart_toEndOf="@id/text_btn_sort_popular"
+            app:layout_constraintBottom_toTopOf="@id/image_sort_recent_double_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/image_sort_age_double_line"
+            app:layout_constraintBottom_toTopOf="@id/recycler_all_prose"
+            app:layout_constraintStart_toStartOf="@id/text_btn_sort_age"
+            app:layout_constraintEnd_toEndOf="@id/text_btn_sort_age"
+            android:visibility="gone"
+            android:background="@drawable/img_double_line_purple_600"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_btn_sort_age"
+            android:layout_marginStart="6dp"
+            android:text="@string/word_sort_age"
+            android:textColor="@color/gray_600"
+            android:textAppearance="@style/body2"
+            android:paddingHorizontal="3dp"
+            app:layout_constraintStart_toEndOf="@id/text_btn_sort_recent"
+            app:layout_constraintBottom_toTopOf="@id/image_sort_age_double_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/image_all_prose_double_line"
+            android:layout_marginTop="65dp"
+            android:paddingTop="9dp"
+            android:id="@+id/recycler_all_prose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -20,6 +20,9 @@
     <string name="word_home">홈</string>
     <string name="word_discussion">토론장</string>
     <string name="word_my">My</string>
+    <string name="word_sort_popular">인기순</string>
+    <string name="word_sort_recent">최신순</string>
+    <string name="word_sort_age">나이대</string>
 
     <!-- 로그인 -->
     <string name="login_error_toast">이메일 또는 비밀번호를 확인해주세요.</string>
@@ -51,4 +54,8 @@
     <string name="sign_up_verify_complete">인증 완료</string>
     <string name="sign_up_verify_email">입력하신 메일 주소 (%s)로 인증 메일이 발송되었습니다.\n\n메일을 확인 하신 뒤 인증 링크를 클릭해주세요.\n\n혹시 메일을 받지 못하셨나요? 스팸함을 확인하거나,\n재발송이 필요한 경우 이곳 을 클릭해주세요</string>
     <string name="sign_up_email_verify_error_toast">이메일 인증이 완료되지 않았어요.</string>
+
+    <!-- 홈 -->
+    <string name="home_today_prose">오늘의 산문</string>
+    <string name="home_all_prose">전체 산문</string>
 </resources>
