@@ -5,9 +5,9 @@ import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.DareLog
 import com.example.domain.model.enums.GenderType
 import com.example.domain.model.error.NickNameError
-import com.example.domain.model.sign.UserVo
-import com.example.domain.usecase.GetAllNickNameUseCase
-import com.example.domain.usecase.SignUpUseCase
+import com.example.domain.model.vo.UserVo
+import com.example.domain.usecase.sign.GetAllNickNameUseCase
+import com.example.domain.usecase.sign.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

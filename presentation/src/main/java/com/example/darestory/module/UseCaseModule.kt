@@ -1,13 +1,13 @@
 package com.example.darestory.module
 
 import com.example.domain.repository.SignRepository
-import com.example.domain.usecase.CheckEmailVerifiedUseCase
-import com.example.domain.usecase.GetAllEmailUseCase
-import com.example.domain.usecase.GetAllNickNameUseCase
-import com.example.domain.usecase.LoginUseCase
-import com.example.domain.usecase.SendEmailVerificationUseCase
-import com.example.domain.usecase.SendPasswordResetUseCase
-import com.example.domain.usecase.SignUpUseCase
+import com.example.domain.usecase.sign.CheckEmailVerifiedUseCase
+import com.example.domain.usecase.sign.GetAllEmailUseCase
+import com.example.domain.usecase.sign.GetAllNickNameUseCase
+import com.example.domain.usecase.sign.LoginUseCase
+import com.example.domain.usecase.sign.SendEmailVerificationUseCase
+import com.example.domain.usecase.sign.SendPasswordResetUseCase
+import com.example.domain.usecase.sign.SignUpUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

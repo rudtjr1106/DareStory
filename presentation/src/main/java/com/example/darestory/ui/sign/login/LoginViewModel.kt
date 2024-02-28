@@ -2,9 +2,9 @@ package com.example.darestory.ui.sign.login
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
-import com.example.domain.model.sign.LoginVo
-import com.example.domain.usecase.LoginUseCase
-import com.example.domain.usecase.SendPasswordResetUseCase
+import com.example.domain.model.vo.LoginVo
+import com.example.domain.usecase.sign.LoginUseCase
+import com.example.domain.usecase.sign.SendPasswordResetUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

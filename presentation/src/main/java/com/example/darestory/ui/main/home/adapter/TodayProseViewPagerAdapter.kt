@@ -5,16 +5,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.PagerAdapter
 import com.example.darestory.databinding.ItemTodayProseBinding
 import com.example.darestory.ui.main.home.viewHolder.TodayProseViewPagerViewHolder
+import com.example.domain.model.enums.HomeViewType
+import com.example.domain.model.vo.ProseVo
 
-class TodayProseViewPagerAdapter() : ListAdapter<String, RecyclerView.ViewHolder>(
-    OnboardingDiffCallback()
+class TodayProseViewPagerAdapter() : ListAdapter<ProseVo, RecyclerView.ViewHolder>(
+    TodayProseDiffCallBack()
 ) {
+
+
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is TodayProseViewPagerViewHolder -> holder.bind()
+            is TodayProseViewPagerViewHolder -> holder.bind(currentList[position])
         }
     }
 
@@ -25,7 +30,9 @@ class TodayProseViewPagerAdapter() : ListAdapter<String, RecyclerView.ViewHolder
 
 }
 
-class OnboardingDiffCallback : DiffUtil.ItemCallback<String>() {
-    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean = oldItem == newItem
-    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean = oldItem == newItem
+class TodayProseDiffCallBack : DiffUtil.ItemCallback<ProseVo>() {
+    override fun areItemsTheSame(oldItem: ProseVo, newItem: ProseVo): Boolean =
+        oldItem.proseId == newItem.proseId && oldItem.content == newItem.content
+    override fun areContentsTheSame(oldItem: ProseVo, newItem: ProseVo): Boolean =
+        oldItem == newItem
 }

@@ -1,4 +1,4 @@
-package com.example.domain.model.sign
+package com.example.domain.model.vo
 
 data class MyBookVo(
     val explain : String = "",
