@@ -3,29 +3,32 @@ package com.example.darestory.ui.main.home.viewHolder
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
-import androidx.core.view.marginLeft
-import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.example.darestory.R
 import com.example.darestory.databinding.ItemLayoutHomeTodayProseBinding
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.home.adapter.TodayProseViewPagerAdapter
-import com.example.darestory.util.DareLog
 import com.example.darestory.util.px
 import com.example.domain.model.vo.ProseVo
+import com.zhpan.indicator.enums.IndicatorSlideMode
+import com.zhpan.indicator.enums.IndicatorStyle
 
 class HomeTodayProseViewHolder (
     private val binding : ItemLayoutHomeTodayProseBinding,
     private val listener: HomeAdapter.HomeDelegate
 ) : RecyclerView.ViewHolder(binding.root){
 
-    private val todayProseViewPagerAdapter = TodayProseViewPagerAdapter()
+    companion object{
+        const val MARGIN_HORIZONTAL = 70
+        const val MAX_ITEM = 3
+    }
 
+    private val todayProseViewPagerAdapter = TodayProseViewPagerAdapter()
 
     init {
         binding.apply {
             bindSortTextButton()
+            setIndicator()
         }
     }
 
@@ -38,7 +41,7 @@ class HomeTodayProseViewHolder (
                 children.forEach { child ->
                     if (child is RecyclerView) {
                         child.apply {
-                            setPadding(53.px, 0, 53.px, 0)
+                            setPadding(MARGIN_HORIZONTAL.px, 0, MARGIN_HORIZONTAL.px, 0)
                             clipToPadding = false
                         }
                         return@forEach
@@ -51,10 +54,7 @@ class HomeTodayProseViewHolder (
                     page.scaleY = scale
                     page.alpha = (1.5 - absPosition).toFloat()
                 }
-                offscreenPageLimit = 3
-            }
-            if(item.size >= 3){
-                viewPagerTodayProse.currentItem = 1
+                offscreenPageLimit = MAX_ITEM.toInt()
             }
         }
     }
@@ -62,33 +62,83 @@ class HomeTodayProseViewHolder (
     private fun bindSortTextButton(){
         binding.apply {
             textBtnSortPopular.setOnClickListener {
-                textBtnSortPopular.setTextColor(ContextCompat.getColor(root.context, R.color.purple_600))
-                imageSortPopularDoubleLine.visibility = View.VISIBLE
-                textBtnSortRecent.setTextColor(ContextCompat.getColor(root.context, R.color.gray_600))
-                imageSortRecentDoubleLine.visibility = View.INVISIBLE
-                textBtnSortAge.setTextColor(ContextCompat.getColor(root.context, R.color.gray_600))
-                imageSortAgeDoubleLine.visibility = View.INVISIBLE
+                onClickTextBtnSortPopular()
+                returnTextBtnSortRecent()
+                returnTextBtnSortAge()
                 listener.onClickSortPopular()
             }
             textBtnSortRecent.setOnClickListener {
-                textBtnSortRecent.setTextColor(ContextCompat.getColor(root.context, R.color.purple_600))
-                imageSortRecentDoubleLine.visibility = View.VISIBLE
-                textBtnSortPopular.setTextColor(ContextCompat.getColor(root.context, R.color.gray_600))
-                imageSortPopularDoubleLine.visibility = View.INVISIBLE
-                textBtnSortAge.setTextColor(ContextCompat.getColor(root.context, R.color.gray_600))
-                imageSortAgeDoubleLine.visibility = View.INVISIBLE
+                onClickTextBtnSortRecent()
+                returnTextBtnSortPopular()
+                returnTextBtnSortAge()
                 listener.onClickSortRecent()
             }
             textBtnSortAge.setOnClickListener {
-                textBtnSortAge.setTextColor(ContextCompat.getColor(root.context, R.color.purple_600))
-                imageSortAgeDoubleLine.visibility = View.VISIBLE
-                textBtnSortRecent.setTextColor(ContextCompat.getColor(root.context, R.color.gray_600))
-                imageSortRecentDoubleLine.visibility = View.INVISIBLE
-                textBtnSortPopular.setTextColor(ContextCompat.getColor(root.context, R.color.gray_600))
-                imageSortPopularDoubleLine.visibility = View.INVISIBLE
+                onClickTextBtnSortAge()
+                returnTextBtnSortPopular()
+                returnTextBtnSortRecent()
                 listener.onClickSortAge()
             }
         }
     }
 
+    private fun setIndicator(){
+        binding.apply {
+            indicatorView
+                .setSliderColor((ContextCompat.getColor(root.context, R.color.white)), (ContextCompat.getColor(root.context, R.color.gray_600)))
+                .setSliderWidth(24F)
+                .setSliderHeight(2F)
+                .setSlideMode(IndicatorSlideMode.SMOOTH)
+                .setIndicatorStyle(IndicatorStyle.CIRCLE)
+                .setupWithViewPager(viewPagerTodayProse)
+        }
+    }
+
+    private fun onClickTextBtnSortPopular(){
+        binding.apply {
+            textBtnSortPopular.setTextColor(ContextCompat.getColor(root.context, R.color.purple_600))
+            textBtnSortPopular.setTextAppearance(R.style.title2)
+            imageSortPopularDoubleLine.visibility = View.VISIBLE
+        }
+    }
+
+    private fun onClickTextBtnSortRecent(){
+        binding.apply {
+            textBtnSortRecent.setTextColor(ContextCompat.getColor(root.context, R.color.purple_600))
+            textBtnSortRecent.setTextAppearance(R.style.title2)
+            imageSortRecentDoubleLine.visibility = View.VISIBLE
+        }
+    }
+
+    private fun onClickTextBtnSortAge(){
+        binding.apply {
+            textBtnSortAge.setTextColor(ContextCompat.getColor(root.context, R.color.purple_600))
+            textBtnSortAge.setTextAppearance(R.style.title2)
+            imageSortAgeDoubleLine.visibility = View.VISIBLE
+        }
+    }
+
+    private fun returnTextBtnSortPopular(){
+        binding.apply {
+            textBtnSortPopular.setTextColor(ContextCompat.getColor(root.context, R.color.gray_600))
+            textBtnSortPopular.setTextAppearance(R.style.body2)
+            imageSortPopularDoubleLine.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun returnTextBtnSortRecent(){
+        binding.apply {
+            textBtnSortRecent.setTextColor(ContextCompat.getColor(root.context, R.color.gray_600))
+            textBtnSortRecent.setTextAppearance(R.style.body2)
+            imageSortRecentDoubleLine.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun returnTextBtnSortAge(){
+        binding.apply {
+            textBtnSortAge.setTextColor(ContextCompat.getColor(root.context, R.color.gray_600))
+            textBtnSortAge.setTextAppearance(R.style.body2)
+            imageSortAgeDoubleLine.visibility = View.INVISIBLE
+        }
+    }
 }

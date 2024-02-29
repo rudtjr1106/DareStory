@@ -78,6 +78,19 @@
             android:layout_height="269dp" />
 
 
+        <com.zhpan.indicator.IndicatorView
+            android:id="@+id/indicator_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/viewPager_today_prose"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+
+
         <TextView
             android:id="@+id/text_all_prose"
             app:layout_constraintTop_toBottomOf="@id/viewPager_today_prose"
@@ -104,8 +117,8 @@
             android:id="@+id/text_btn_sort_popular"
             android:layout_marginStart="18dp"
             android:text="@string/word_sort_popular"
-            android:textColor="@color/gray_600"
-            android:textAppearance="@style/body2"
+            android:textColor="@color/purple_600"
+            android:textAppearance="@style/title2"
             android:paddingHorizontal="3dp"
             android:layout_marginTop="21dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +133,6 @@
             app:layout_constraintEnd_toEndOf="@id/text_btn_sort_popular"
             android:background="@drawable/img_double_line_purple_600"
             android:layout_width="0dp"
-            android:visibility="invisible"
             android:layout_height="wrap_content"/>
 
         <TextView

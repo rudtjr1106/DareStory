@@ -50,7 +50,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
             override fun onClickAllProse() {
                 DareLog.D("일반 산문")
             }
-
         })
     }
 

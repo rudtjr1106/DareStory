@@ -1,5 +1,6 @@
 package com.example.darestory.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.darestory.PageState
+import com.example.darestory.ui.common.LoadingDialog
+import com.example.darestory.util.DareLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -25,7 +28,13 @@ abstract class BaseFragment<B : ViewDataBinding, STATE: PageState, VM: BaseViewM
     protected val binding
         get() = _binding!!
 
-    private var progressView:ProgressBar? = null
+    private var loadingView:LoadingDialog? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        loadingView = LoadingDialog(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,15 +56,15 @@ abstract class BaseFragment<B : ViewDataBinding, STATE: PageState, VM: BaseViewM
 
     protected abstract fun initView()
 
-    protected fun bindProgressBar(progressBar: ProgressBar) {
-        progressView = progressBar
-    }
-
     protected open fun initStates() {
         repeatOnStarted(viewLifecycleOwner) {
             launch {
-                viewModel.showProgress.collect {
-                    progressView?.visibility = if(it) View.VISIBLE else View.GONE
+                viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+                    if (isLoading) {
+                        loadingView?.show()
+                    } else {
+                        loadingView?.dismiss()
+                    }
                 }
             }
         }

@@ -23,6 +23,7 @@
     <string name="word_sort_popular">인기순</string>
     <string name="word_sort_recent">최신순</string>
     <string name="word_sort_age">나이대</string>
+    <string name="word_loading">로딩중...</string>
 
     <!-- 로그인 -->
     <string name="login_error_toast">이메일 또는 비밀번호를 확인해주세요.</string>

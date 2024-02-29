@@ -28,7 +28,7 @@ class HomeAdapter(private val listener: HomeDelegate) : ListAdapter<HomeProseVo,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HomeTodayProseViewHolder -> holder.bind(currentList[position].proseListVo)
-            is HomeAllProseViewHolder -> holder.bind(currentList[position].proseListVo)
+            is HomeAllProseViewHolder -> holder.bind(currentList[position].allProseVo)
         }
     }
 

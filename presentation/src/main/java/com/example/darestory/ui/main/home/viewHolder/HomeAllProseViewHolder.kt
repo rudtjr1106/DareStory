@@ -8,8 +8,12 @@ class HomeAllProseViewHolder(
     private val binding: ItemAllProseBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item : List<ProseVo>) {
+    fun bind(item : ProseVo) {
         binding.apply {
+            textTitle.text = item.title
+            textAuthor.text = item.author
+            textLikeNum.text = item.likeCount.toString()
+            textCommentNum.text = item.commentCount.toString()
 
         }
     }

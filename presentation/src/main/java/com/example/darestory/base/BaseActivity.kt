@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.darestory.PageState
+import com.example.darestory.ui.common.LoadingDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -21,7 +22,7 @@ abstract class BaseActivity<B : ViewDataBinding,STATE: PageState, VM: BaseViewMo
     protected lateinit var binding: B
     protected abstract val viewModel: VM
 
-    private var progressView:ProgressBar? = null
+    private var loadingView:LoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,15 +41,9 @@ abstract class BaseActivity<B : ViewDataBinding,STATE: PageState, VM: BaseViewMo
     protected open fun initState() {
         repeatOnStarted {
             launch {
-                viewModel.showProgress.collect {
-                    progressView?.visibility = if(it) View.VISIBLE else View.GONE
-                }
+
             }
         }
-    }
-
-    protected fun bindProgressBar(progressBar: ProgressBar) {
-        progressView = progressBar
     }
 
     protected fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
