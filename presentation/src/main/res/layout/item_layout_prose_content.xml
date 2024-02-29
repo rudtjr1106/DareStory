@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:background="@color/background">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_top"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/image_logo"
+                android:layout_width="56dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:background="@color/gray_600"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image_btn_menu"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="18dp"
+                android:background="@drawable/ic_menu_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:textAppearance="@style/h4"
+            android:textColor="@color/gray_200"
+            app:layout_constraintTop_toBottomOf="@id/constraint_layout_top"
+            tools:text="빼앗긴 들에도 봄은 오는가" />
+
+        <TextView
+            android:id="@+id/text_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="6dp"
+            android:text="@string/home_prose_main_author"
+            android:textAppearance="@style/btn3"
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_title"
+            tools:text="조경석 지음" />
+        
+        <TextView
+            android:id="@+id/text_created_date"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="16dp"
+            tools:text="2024.2.29"
+            android:textAppearance="@style/c3"
+            android:textColor="@color/gray_600"
+            app:layout_constraintTop_toBottomOf="@id/text_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_content"
+            app:layout_constraintTop_toBottomOf="@id/text_author"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="16dp"
+            android:textAppearance="@style/body2"
+            android:textColor="@color/gray_400"
+            tools:text="지금은 남의 땅― 빼앗긴 들에도 봄은 오는가? 나는 온몸에 햇살을 받고푸른 하늘 푸른 들이 맞붙은 곳으로 가르마 같은 논길을 따라 꿈 속을 가듯 걸어만 간다. 입술을 다문 하늘아, 들아,내 맘에는 내 혼자 온 것 같지를 않구나! 네가 끌었느냐, 누가 부르더냐. 답답워라, 말을 해 다오.바람은 내 귀에 속삭이며한 자욱도 섰지 마라, 옷자락을 흔들고.종다리는 울타리 너머 아씨같이 구름 뒤에서 반갑다 웃네."
+            android:layout_width="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"/>
+        
+        <ImageView
+            android:id="@+id/image_btn_like"
+            app:layout_constraintTop_toBottomOf="@id/text_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="27dp"
+            android:layout_marginStart="21dp"
+            android:background="@drawable/ic_like_empty_gray_400"
+            android:layout_width="19dp"
+            android:layout_height="19dp"/>
+
+        <TextView
+            android:id="@+id/text_like_num"
+            app:layout_constraintTop_toTopOf="@id/image_btn_like"
+            android:textAppearance="@style/c3"
+            android:layout_marginStart="4dp"
+            tools:text="999"
+            android:textColor="@color/gray_600"
+            app:layout_constraintStart_toEndOf="@id/image_btn_like"
+            app:layout_constraintBottom_toBottomOf="@id/image_btn_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/image_btn_comment"
+            app:layout_constraintTop_toBottomOf="@id/text_content"
+            app:layout_constraintStart_toEndOf="@id/text_like_num"
+            android:layout_marginTop="27dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_comment_empty_gray_400"
+            android:layout_width="19dp"
+            android:layout_height="19dp"/>
+
+        <TextView
+            android:id="@+id/text_comment_num"
+            app:layout_constraintTop_toTopOf="@id/image_btn_comment"
+            android:textAppearance="@style/c3"
+            android:layout_marginStart="4dp"
+            tools:text="999"
+            android:textColor="@color/gray_600"
+            app:layout_constraintStart_toEndOf="@id/image_btn_comment"
+            app:layout_constraintBottom_toBottomOf="@id/image_btn_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        
+        <ImageView
+            android:id="@+id/image_divide_line_content_comment"
+            android:layout_marginTop="27dp"
+            app:layout_constraintTop_toBottomOf="@id/image_btn_like"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/img_line_gray_600"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="16dp"
+            android:layout_width="0dp"
+            android:layout_height="1dp"/>
+
+        <TextView
+            app:layout_constraintTop_toBottomOf="@id/image_divide_line_content_comment"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/gray_200"
+            android:textAppearance="@style/h5"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            android:text="@string/word_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -10,8 +10,6 @@ import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.home.adapter.TodayProseViewPagerAdapter
 import com.example.darestory.util.px
 import com.example.domain.model.vo.ProseVo
-import com.zhpan.indicator.enums.IndicatorSlideMode
-import com.zhpan.indicator.enums.IndicatorStyle
 
 class HomeTodayProseViewHolder (
     private val binding : ItemLayoutHomeTodayProseBinding,
@@ -84,13 +82,7 @@ class HomeTodayProseViewHolder (
 
     private fun setIndicator(){
         binding.apply {
-            indicatorView
-                .setSliderColor((ContextCompat.getColor(root.context, R.color.white)), (ContextCompat.getColor(root.context, R.color.gray_600)))
-                .setSliderWidth(24F)
-                .setSliderHeight(2F)
-                .setSlideMode(IndicatorSlideMode.SMOOTH)
-                .setIndicatorStyle(IndicatorStyle.CIRCLE)
-                .setupWithViewPager(viewPagerTodayProse)
+            //TODO 여기 인디케이터 안댐
         }
     }
 
