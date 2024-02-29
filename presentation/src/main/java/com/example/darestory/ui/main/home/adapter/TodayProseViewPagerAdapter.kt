@@ -11,7 +11,7 @@ import com.example.darestory.ui.main.home.viewHolder.TodayProseViewPagerViewHold
 import com.example.domain.model.enums.HomeViewType
 import com.example.domain.model.vo.ProseVo
 
-class TodayProseViewPagerAdapter() : ListAdapter<ProseVo, RecyclerView.ViewHolder>(
+class TodayProseViewPagerAdapter(private val listener: HomeAdapter.HomeDelegate) : ListAdapter<ProseVo, RecyclerView.ViewHolder>(
     TodayProseDiffCallBack()
 ) {
 
@@ -25,7 +25,7 @@ class TodayProseViewPagerAdapter() : ListAdapter<ProseVo, RecyclerView.ViewHolde
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = ItemTodayProseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TodayProseViewPagerViewHolder(binding)
+        return TodayProseViewPagerViewHolder(binding, listener)
     }
 
 }

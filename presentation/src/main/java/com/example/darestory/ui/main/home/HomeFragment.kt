@@ -3,24 +3,13 @@ package com.example.darestory.ui.main.home
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.darestory.PageState
-import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentHomeBinding
-import com.example.darestory.databinding.FragmentLoginBinding
-import com.example.darestory.ui.common.InputDialog
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
-import com.example.darestory.ui.sign.login.LoginEvent
-import com.example.darestory.ui.sign.login.LoginFragmentDirections
-import com.example.darestory.ui.sign.login.LoginPageState
-import com.example.darestory.ui.sign.login.LoginViewModel
 import com.example.darestory.util.DareLog
-import com.example.darestory.util.DareToast
-import com.example.domain.model.enums.HomeViewType
-import com.example.domain.model.enums.ToastType
+import com.example.domain.model.enums.DetailType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewModel>(
@@ -31,8 +20,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
 
     private val homeAdapter : HomeAdapter by lazy {
         HomeAdapter(object : HomeAdapter.HomeDelegate {
-            override fun onClickTodayProse() {
-                DareLog.D("오늘의 산문")
+            override fun onClickProse(proseId: Int) {
+                viewModel.goToDetailPage(proseId)
             }
 
             override fun onClickSortPopular() {
@@ -45,10 +34,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
 
             override fun onClickSortAge() {
                 DareLog.D("정렬 나이순")
-            }
-
-            override fun onClickAllProse() {
-                DareLog.D("일반 산문")
             }
         })
     }
@@ -76,10 +61,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
             }
             launch {
                 viewModel.eventFlow.collect {
-
+                    sortEvent(it as HomeEvent)
                 }
             }
         }
+    }
+
+    private fun sortEvent(event : HomeEvent){
+        when(event){
+            is HomeEvent.GoToDetailPageEvent -> goToDetailPage(event.proseId, event.proseType)
+        }
+    }
+
+    private fun goToDetailPage(proseId : Int, proseType : DetailType){
+        val action = HomeFragmentDirections.actionHomeToDetail(proseId, proseType)
+        findNavController().navigate(action)
     }
 
     override fun onStart() {

@@ -1,12 +1,14 @@
 package com.example.domain.model.vo
 
-data class ProseVo(
+import com.example.domain.model.enums.DetailType
+
+data class DetailContentVo(
+    val pageId : Int = 0,
+    val pageType : DetailType = DetailType.PROSE,
     val author : String = "",
-    val comment : HashMap<String,CommentVo> = hashMapOf(),
     val commentCount : Int = 0,
     val content : String = "",
     val createdAt : String = "",
     val likeCount : Int = 0,
-    val proseId : Int = 0,
     val title : String = "",
 )

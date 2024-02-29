@@ -18,11 +18,10 @@ class HomeAdapter(private val listener: HomeDelegate) : ListAdapter<HomeProseVo,
 ){
 
     interface HomeDelegate {
-        fun onClickTodayProse()
+        fun onClickProse(proseId : Int)
         fun onClickSortPopular()
         fun onClickSortRecent()
         fun onClickSortAge()
-        fun onClickAllProse()
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -40,7 +39,7 @@ class HomeAdapter(private val listener: HomeDelegate) : ListAdapter<HomeProseVo,
             }
             HomeViewType.ALL_PROSE -> {
                 val binding = ItemAllProseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                HomeAllProseViewHolder(binding)
+                HomeAllProseViewHolder(binding, listener)
             }
         }
     }

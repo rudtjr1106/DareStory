@@ -2,7 +2,7 @@ package com.example.darestory.ui.main.home
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
-import com.example.darestory.util.DareLog
+import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.HomeViewType
 import com.example.domain.model.vo.HomeProseVo
 import com.example.domain.model.vo.ProseVo
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getAllProseUseCase: GetAllProseUseCase
+    private val getAllProseUseCase: GetAllProseUseCase,
 ) : BaseViewModel<HomePageState>() {
 
     companion object{
@@ -30,6 +30,9 @@ class HomeViewModel @Inject constructor(
     )
 
     fun getAllProse(){
+        viewModelScope.launch {
+
+        }
         viewModelScope.launch {
             showLoading()
             val result = getAllProseUseCase(Unit)
@@ -79,5 +82,9 @@ class HomeViewModel @Inject constructor(
         }
 
         return homeAllProseList
+    }
+
+    fun goToDetailPage(proseId : Int){
+        emitEventFlow(HomeEvent.GoToDetailPageEvent(proseId, DetailType.PROSE))
     }
 }

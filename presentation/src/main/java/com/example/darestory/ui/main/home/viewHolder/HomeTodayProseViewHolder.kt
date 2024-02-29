@@ -21,7 +21,7 @@ class HomeTodayProseViewHolder (
         const val MAX_ITEM = 3
     }
 
-    private val todayProseViewPagerAdapter = TodayProseViewPagerAdapter()
+    private val todayProseViewPagerAdapter = TodayProseViewPagerAdapter(listener)
 
     init {
         binding.apply {

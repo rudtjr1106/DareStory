@@ -1,8 +1,8 @@
 package com.example.data.repository
 
+import android.util.Log
 import com.example.data.EndPoints
 import com.example.domain.model.vo.ProseVo
-import com.example.domain.model.vo.UserVo
 import com.example.domain.repository.ProseRepository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -10,7 +10,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class ProseRepositoryImpl @Inject constructor() : ProseRepository {
@@ -32,6 +31,23 @@ class ProseRepositoryImpl @Inject constructor() : ProseRepository {
 
                 override fun onCancelled(error: DatabaseError) {
                     continuation.resume(proseList)
+                }
+            })
+        }
+    }
+
+    override suspend fun getProse(request: Int): ProseVo {
+        val proseId = request.toString()
+        return suspendCoroutine { continuation ->
+            db.getReference(EndPoints.PROSE).child(proseId).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val prose = snapshot.getValue(ProseVo::class.java)
+                    Log.d("달의 이야기", prose.toString())
+                    prose?.let { continuation.resume(it)}
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    continuation.resume(ProseVo()) // 반환 타입이 nullable이므로 null을 resume
                 }
             })
         }

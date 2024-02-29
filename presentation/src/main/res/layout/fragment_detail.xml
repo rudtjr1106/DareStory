@@ -2,13 +2,19 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <variable
+            name="vm"
+            type="com.example.darestory.ui.main.home.detail.DetailViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:background="@color/background"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_prose_main"
+            android:id="@+id/recycler_detail"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/constraint_layout_input_comment"
             android:layout_width="match_parent"
