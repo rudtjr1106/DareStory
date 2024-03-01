@@ -9,4 +9,5 @@ data class ProseVo(
     val likeCount : Int = 0,
     val proseId : Int = 0,
     val title : String = "",
+    val whoLiked : HashMap<String, String> = hashMapOf()
 )

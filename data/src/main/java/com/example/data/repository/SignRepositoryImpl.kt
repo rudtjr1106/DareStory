@@ -1,5 +1,6 @@
 package com.example.data.repository
 
+import android.util.Log
 import com.example.data.EndPoints
 import com.example.domain.model.vo.LoginVo
 import com.example.domain.model.vo.UserVo
@@ -118,5 +119,35 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
             false
         }
 
+    }
+
+    override suspend fun checkAutoLogin(): UserVo {
+        val currentUser = auth.currentUser
+        return suspendCoroutine { continuation ->
+            db.getReference(EndPoints.AUTH).orderByChild(EndPoints.AUTH_UID).equalTo(currentUser?.uid).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (childSnapshot in snapshot.children) {
+                            val userInfoMap = childSnapshot.value as? Map<String, Any>
+                            userInfoMap?.let {
+                                val age = it["age"] as? String ?: ""
+                                val email = it["email"] as? String ?: ""
+                                val gender = it["gender"] as? String ?: ""
+                                val nickName = it["nickName"] as? String ?: ""
+                                val userUid = it["userUid"] as? String ?: ""
+                                val userVo = UserVo(age, email, gender, nickName, userUid)
+                                continuation.resume(userVo)
+                                return
+                            }
+                        }
+                    }
+                    // 맵에서 사용자 정보를 가져오지 못한 경우 빈 UserVo를 반환
+                    continuation.resume(UserVo())
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    continuation.resume(UserVo())
+                }
+            })
+        }
     }
 }

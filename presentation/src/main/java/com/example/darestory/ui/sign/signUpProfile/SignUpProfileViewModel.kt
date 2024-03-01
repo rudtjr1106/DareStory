@@ -5,6 +5,7 @@ import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.DareLog
 import com.example.domain.model.enums.GenderType
 import com.example.domain.model.error.NickNameError
+import com.example.domain.model.vo.LoginVo
 import com.example.domain.model.vo.UserVo
 import com.example.domain.usecase.sign.GetAllNickNameUseCase
 import com.example.domain.usecase.sign.SignUpUseCase
@@ -117,12 +118,11 @@ class SignUpProfileViewModel @Inject constructor(
     fun onClickCompleteButton(){
         val signUpVo = UserVo(
             email = emailStateFlow.value,
-            password = passwordStateFlow.value,
             nickName = nicknameStateFlow.value,
             age = ageStateFlow.value,
             gender = genderStateFlow.value.type)
         viewModelScope.launch {
-            if(signUpUseCase(signUpVo)) updateMyInfo(signUpVo) else DareLog.D("이메일 등록 실패")
+            if(signUpUseCase(LoginVo(signUpVo.email, passwordStateFlow.value))) updateMyInfo(signUpVo) else DareLog.D("이메일 등록 실패")
         }
     }
 

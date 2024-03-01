@@ -14,8 +14,9 @@
         android:theme="@style/Theme.DareStory"
         tools:targetApi="31">
         <activity
-            android:name=".ui.sign.SignActivity"
+            android:name=".ui.splash.SplashActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.App.RemoveSplash"
             android:windowSoftInputMode="adjustPan"
             android:exported="true" >
 
@@ -23,6 +24,13 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".ui.sign.SignActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true" >
 
         </activity>
 

@@ -14,4 +14,5 @@ interface SignRepository {
     suspend fun sendEmailVerification() : Boolean
     suspend fun checkEmailVerified() : Boolean
     suspend fun sendPasswordResetEmail(request : String) : Boolean
+    suspend fun checkAutoLogin() : UserVo
 }

@@ -42,7 +42,6 @@ class ProseRepositoryImpl @Inject constructor() : ProseRepository {
             db.getReference(EndPoints.PROSE).child(proseId).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val prose = snapshot.getValue(ProseVo::class.java)
-                    Log.d("달의 이야기", prose.toString())
                     prose?.let { continuation.resume(it)}
                 }
 

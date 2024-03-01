@@ -27,8 +27,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPageState, LoginVi
     override fun initView() {
         binding.apply {
             vm = viewModel
-            //TODO REMOVE
-            goToMain()
         }
     }
 

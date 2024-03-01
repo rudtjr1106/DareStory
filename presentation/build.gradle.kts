@@ -51,6 +51,9 @@ dependencies {
     implementation(AndroidX.FRAGMENT_KTX)
     implementation(AndroidX.NAVIGATION_UI_KTX)
     implementation(AndroidX.NAVIGATION_FRAGMENT_KTX)
+    implementation(AndroidX.LIFECYCLE_VIEW_MODEL_KTX)
+    implementation(AndroidX.LIFECYCLE_RUNTIME_KTX)
+    implementation(AndroidX.SPLASH)
 
     //Timber
     implementation(AndroidX.TIMBER)
@@ -60,8 +63,6 @@ dependencies {
     implementation(Kotlin.COROUTINES)
 
     //
-    implementation(AndroidX.LIFECYCLE_VIEW_MODEL_KTX)
-    implementation(AndroidX.LIFECYCLE_RUNTIME_KTX)
 
     //힐트
     implementation(Google.HILT_ANDROID)

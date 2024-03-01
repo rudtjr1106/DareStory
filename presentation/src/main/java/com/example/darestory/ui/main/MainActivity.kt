@@ -1,5 +1,6 @@
 package com.example.darestory.ui.main
 
+import android.view.View
 import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -18,11 +19,28 @@ class MainActivity :
     override val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
 
+    private val destinationChangedListener = NavController.OnDestinationChangedListener { _, destination, _ ->
+        viewModel.onDestinationChanged(destination.id)
+    }
+
+
     override fun initView() {
         binding.apply {
             vm = viewModel
             initNavigation()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        navController.addOnDestinationChangedListener(destinationChangedListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        navController.removeOnDestinationChangedListener(destinationChangedListener)
     }
 
     override fun initState() {
@@ -58,6 +76,7 @@ class MainActivity :
             MainEvent.NavigateDiscussion -> navController.navigate(R.id.discussionFragment)
             MainEvent.NavigateHome -> navController.navigate(R.id.homeFragment)
             MainEvent.NavigateMy -> navController.navigate(R.id.myFragment)
+            is MainEvent.BottomNavigationVisibility -> { bottomNavigationVisibility(event.isVisible) }
         }
     }
 
@@ -70,5 +89,9 @@ class MainActivity :
             return
         }
         super.onBackPressed()
+    }
+
+    private fun bottomNavigationVisibility(isVisible:Boolean) {
+        binding.bottomNavigationView.visibility = if(isVisible) View.VISIBLE else View.GONE
     }
 }
