@@ -19,79 +19,22 @@ class MainActivity :
     override val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
 
-    private val destinationChangedListener = NavController.OnDestinationChangedListener { _, destination, _ ->
-        viewModel.onDestinationChanged(destination.id)
-    }
-
-
     override fun initView() {
+
         binding.apply {
             vm = viewModel
             initNavigation()
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        navController.addOnDestinationChangedListener(destinationChangedListener)
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        navController.removeOnDestinationChangedListener(destinationChangedListener)
-    }
-
     override fun initState() {
         super.initState()
 
-        repeatOnStarted {
-            launch {
-                viewModel.eventFlow.collect {
-                    sortEvent(it as MainEvent)
-                }
-            }
-        }
+
     }
 
     private fun initNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view_main_host) as NavHostFragment
         navController = navHostFragment.navController
-        bindBottomNavigation()
-    }
-
-    private fun bindBottomNavigation(){
-        binding.apply {
-            bottomNavigationView.setupWithNavController(navController)
-            bottomNavigationView.setOnItemSelectedListener {
-                viewModel.onBottomNavigationItemSelected(it.itemId)
-                true
-            }
-        }
-    }
-
-    private fun sortEvent(event: MainEvent){
-        when(event){
-            MainEvent.NavigateDiscussion -> navController.navigate(R.id.discussionFragment)
-            MainEvent.NavigateHome -> navController.navigate(R.id.homeFragment)
-            MainEvent.NavigateMy -> navController.navigate(R.id.myFragment)
-            is MainEvent.BottomNavigationVisibility -> { bottomNavigationVisibility(event.isVisible) }
-        }
-    }
-
-    override fun onBackPressed() {
-        // 현재 Fragment가 homeFragment인 경우에만 뒤로가기 버튼을 막음
-        if (navController.currentDestination?.id == R.id.homeFragment ||
-            navController.currentDestination?.id == R.id.discussionFragment ||
-            navController.currentDestination?.id == R.id.myFragment) {
-            finish()
-            return
-        }
-        super.onBackPressed()
-    }
-
-    private fun bottomNavigationVisibility(isVisible:Boolean) {
-        binding.bottomNavigationView.visibility = if(isVisible) View.VISIBLE else View.GONE
     }
 }

@@ -7,6 +7,7 @@ import com.example.domain.repository.ProseRepository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ValueEventListener
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -46,7 +47,7 @@ class ProseRepositoryImpl @Inject constructor() : ProseRepository {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    continuation.resume(ProseVo()) // 반환 타입이 nullable이므로 null을 resume
+                    continuation.resume(ProseVo())
                 }
             })
         }

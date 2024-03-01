@@ -1,6 +1,7 @@
 package com.example.domain.model.vo
 
 data class ProseVo(
+    val age : String = "",
     val author : String = "",
     val comment : HashMap<String,CommentVo> = hashMapOf(),
     val commentCount : Int = 0,

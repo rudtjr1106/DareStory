@@ -8,6 +8,7 @@ import com.example.darestory.R
 import com.example.darestory.databinding.ItemLayoutHomeTodayProseBinding
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.home.adapter.TodayProseViewPagerAdapter
+import com.example.darestory.util.UserInfo
 import com.example.darestory.util.px
 import com.example.domain.model.vo.ProseVo
 
@@ -59,6 +60,7 @@ class HomeTodayProseViewHolder (
 
     private fun bindSortTextButton(){
         binding.apply {
+            textBtnSortAge.text = UserInfo.info.age
             textBtnSortPopular.setOnClickListener {
                 onClickTextBtnSortPopular()
                 returnTextBtnSortRecent()

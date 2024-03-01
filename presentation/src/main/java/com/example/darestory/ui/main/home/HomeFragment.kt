@@ -8,6 +8,7 @@ import com.example.darestory.databinding.FragmentHomeBinding
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.util.DareLog
 import com.example.domain.model.enums.DetailType
+import com.example.domain.model.enums.SortType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -25,15 +26,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
             }
 
             override fun onClickSortPopular() {
-                DareLog.D("정렬 인기순")
+                viewModel.updateSortType(SortType.POPULAR)
             }
 
             override fun onClickSortRecent() {
-                DareLog.D("정렬 최신순")
+                viewModel.updateSortType(SortType.RECENT)
             }
 
             override fun onClickSortAge() {
-                DareLog.D("정렬 나이순")
+                viewModel.updateSortType(SortType.AGE)
             }
         })
     }
