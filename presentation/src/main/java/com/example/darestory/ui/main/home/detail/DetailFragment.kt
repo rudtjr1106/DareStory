@@ -1,6 +1,7 @@
 package com.example.darestory.ui.main.home.detail
 
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.darestory.base.BaseFragment
@@ -9,6 +10,7 @@ import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.home.detail.adapter.DetailPageAdapter
 import com.example.darestory.ui.sign.signUpProfile.SignUpProfileFragmentArgs
 import com.example.darestory.util.DareLog
+import com.example.domain.model.enums.DetailType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -22,7 +24,13 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
 
     private val detailPagerAdapter : DetailPageAdapter by lazy {
         DetailPageAdapter(object : DetailPageAdapter.DetailPageDelegate {
+            override fun onClickLike(id: Int, type: DetailType, isLiked : Boolean) {
+                viewModel.onClickLikeBtn(id, type, isLiked)
+            }
 
+            override fun onClickBack() {
+                viewModel.onClickBackButton()
+            }
         })
     }
 
@@ -51,9 +59,15 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
             }
             launch {
                 viewModel.eventFlow.collect {
-
+                    sortEvent(it as DetailEvent)
                 }
             }
+        }
+    }
+
+    private fun sortEvent(event: DetailEvent){
+        when(event){
+            DetailEvent.GoToBack -> findNavController().popBackStack()
         }
     }
 

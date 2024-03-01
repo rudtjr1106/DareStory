@@ -44,6 +44,7 @@
                 android:paddingVertical="7dp"
                 android:textAppearance="@style/c3"
                 android:textColorHint="@color/gray_400"
+                android:textColor="@color/gray_200"
                 android:hint="@string/home_prose_comment_hint"
                 android:layout_marginEnd="6dp"
                 app:layout_constraintEnd_toStartOf="@id/image_btn_regist_comment"

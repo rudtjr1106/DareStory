@@ -2,20 +2,24 @@ package com.example.darestory.ui.main.home.detail.viewHolder
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.darestory.R
 import com.example.darestory.databinding.ItemDetailProseCommentBinding
 import com.example.darestory.util.TimeFormatter
 import com.example.domain.model.vo.CommentVo
 
-class ProseCommentViewHolder(
+class ProseAuthorCommentViewHolder(
     private val binding: ItemDetailProseCommentBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
+    init {
+        binding.textWriter.setTextColor(ContextCompat.getColor(binding.root.context, R.color.dark_purple_600))
+    }
     @RequiresApi(Build.VERSION_CODES.O)
     fun bind(item : CommentVo) {
         binding.apply {
             textWriter.text = item.writer
-            textCreatedAt.text = if(item.date.isNotEmpty()) TimeFormatter.getAgoTime(item.date) else item.date
             textCommentContent.text = item.content.replace("\\n", "\n")
         }
     }

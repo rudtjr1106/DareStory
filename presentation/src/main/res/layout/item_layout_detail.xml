@@ -16,11 +16,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/image_logo"
-                android:layout_width="56dp"
+                android:id="@+id/image_btn_back"
+                android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
-                android:background="@color/gray_600"
+                android:background="@drawable/ic_back_white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -1,5 +1,7 @@
 package com.example.darestory.ui.main.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,20 +27,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
                 viewModel.goToDetailPage(proseId)
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onClickSortPopular() {
                 viewModel.updateSortType(SortType.POPULAR)
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onClickSortRecent() {
                 viewModel.updateSortType(SortType.RECENT)
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onClickSortAge() {
                 viewModel.updateSortType(SortType.AGE)
             }
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun initView() {
         binding.apply {
             vm = viewModel

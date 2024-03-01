@@ -54,6 +54,7 @@ dependencies {
     implementation(AndroidX.LIFECYCLE_VIEW_MODEL_KTX)
     implementation(AndroidX.LIFECYCLE_RUNTIME_KTX)
     implementation(AndroidX.SPLASH)
+    implementation(AndroidX.THREE_TEN)
 
     //Timber
     implementation(AndroidX.TIMBER)

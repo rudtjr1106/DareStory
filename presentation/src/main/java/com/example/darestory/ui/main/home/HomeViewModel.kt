@@ -1,5 +1,7 @@
 package com.example.darestory.ui.main.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.DareLog
@@ -35,8 +37,8 @@ class HomeViewModel @Inject constructor(
         sortTypeStateFlow.asStateFlow()
     )
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getAllProse(){
-        DareLog.D(TimeFormatter.getNowDateAndTime())
         viewModelScope.launch {
             showLoading()
             val result = getAllProseUseCase(Unit)
@@ -44,6 +46,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun updateSortType(type: SortType){
         viewModelScope.launch {
             sortTypeStateFlow.update { type }
@@ -53,6 +56,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun successGetAllProse(list : List<ProseVo>){
         val sortedByTypeList = getSortedByType(list)
         val todayProseList = getTodayProseList(getSortedByPopularList(list))
@@ -84,22 +88,17 @@ class HomeViewModel @Inject constructor(
         return list.filter { it.age == UserInfo.info.age }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun getTodayProseList(list : List<ProseVo>) : List<HomeProseVo>{
-        //TODO 어제 날짜 기준 가져오기
-//        val now = LocalDate.now() // 현재 날짜를 가져옵니다.
-//        val yesterday = now.minusDays(1) // 어제 날짜를 계산합니다.
-//
-//        val sortedProseList: List<ProseVo> = // 정렬된 리스트를 가정합니다.
-//
-//        val yesterdayProseList = sortedProseList.filter { prose ->
-//            val createdAtDate = LocalDate.parse(prose.createdAt, DateTimeFormatter.ISO_DATE)
-//            createdAtDate == yesterday
-//        }
-        val todayProseList = if(list.size > MAX_TODAY_PROSE) list.take(MAX_TODAY_PROSE) else list
+        val yesterday = TimeFormatter.getYesterDay()
+        val yesterdayList = list.filter {
+            it.createdAt.split("/")[0] == yesterday
+        }
+        val todayProseList = if(yesterdayList.size > MAX_TODAY_PROSE) yesterdayList.take(MAX_TODAY_PROSE) else yesterdayList
 
-        return listOf(HomeProseVo(
-                    proseListVo = todayProseList,
-                    homeViewType = HomeViewType.TODAY_PROSE))
+        return listOf(
+            HomeProseVo(proseListVo = todayProseList, homeViewType = HomeViewType.TODAY_PROSE)
+        )
 
     }
 

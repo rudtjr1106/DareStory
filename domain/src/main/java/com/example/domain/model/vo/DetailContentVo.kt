@@ -11,4 +11,5 @@ data class DetailContentVo(
     val createdAt : String = "",
     val likeCount : Int = 0,
     val title : String = "",
+    var isLiked : Boolean = false
 )
