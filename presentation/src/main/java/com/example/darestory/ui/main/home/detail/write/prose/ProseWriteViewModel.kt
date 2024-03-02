@@ -6,7 +6,6 @@ import com.example.darestory.util.TimeFormatter
 import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.ProseWriteType
 import com.example.domain.model.enums.UploadProseVo
-import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.ProseVo
 import com.example.domain.usecase.home.GetProseUseCase
 import com.example.domain.usecase.home.UploadProseUseCase
@@ -59,19 +58,31 @@ class ProseWriteViewModel @Inject constructor(
     }
 
     fun onClickBackBtn(){
-        emitEventFlow(ProseWriteEvent.OnClickBack)
+        emitEventFlow(ProseWriteEvent.OnClickBackEvent)
     }
 
     fun onClickUploadBtn(){
-        val request = when(type){
-            ProseWriteType.EDIT -> getEditRequest()
-            ProseWriteType.NEW -> getNewRequest()
-        }
+        if(titleStateFlow.value.isNotEmpty() && contentStateFlow.value.isNotEmpty()){
+            val request = when(type){
+                ProseWriteType.EDIT -> getEditRequest()
+                ProseWriteType.NEW -> getNewRequest()
+            }
 
-        viewModelScope.launch {
-            showLoading()
-            val result = uploadProseUseCase(request)
-            if(result) successUploadProse()
+            viewModelScope.launch {
+                showLoading()
+                val result = uploadProseUseCase(request)
+                if(result) successUploadProse()
+            }
+        }
+        checkEmpty()
+    }
+
+    private fun checkEmpty(){
+        if(titleStateFlow.value.isEmpty()){
+            emitEventFlow(ProseWriteEvent.ToastEmptyTitleEvent)
+        }
+        else{
+            emitEventFlow(ProseWriteEvent.ToastEmptyContentEvent)
         }
     }
 
@@ -105,7 +116,7 @@ class ProseWriteViewModel @Inject constructor(
 
     private fun successUploadProse(){
         endLoading()
-        emitEventFlow(ProseWriteEvent.SuccessUpload)
+        emitEventFlow(ProseWriteEvent.SuccessUploadEvent)
     }
 
 }

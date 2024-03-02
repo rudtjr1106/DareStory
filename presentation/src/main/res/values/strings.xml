@@ -78,4 +78,8 @@
     <!-- 다이얼로그 -->
     <string name="dialog_delete_title">삭제 하시겠습니까?</string>
     <string name="dialog_delete_content">삭제된 글은 복구되지 않습니다.</string>
+
+    <!-- Toast 에러 -->
+    <string name="toast_error_check_prose_title">제목을 입력해주세요.</string>
+    <string name="toast_error_check_prose_content">내용을 입력해주세요.</string>
 </resources>

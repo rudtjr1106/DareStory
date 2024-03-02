@@ -8,6 +8,8 @@ import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentProseWriteBinding
 import com.example.darestory.ui.common.CommonDialog
+import com.example.darestory.util.DareToast
+import com.example.domain.model.enums.ToastType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -47,8 +49,10 @@ class ProseWriteFragment : BaseFragment<FragmentProseWriteBinding, ProseWritePag
 
     private fun sortEvent(event: ProseWriteEvent){
         when(event){
-            ProseWriteEvent.OnClickBack -> findNavController().popBackStack()
-            ProseWriteEvent.SuccessUpload -> showSuccessDialog()
+            ProseWriteEvent.OnClickBackEvent -> findNavController().popBackStack()
+            ProseWriteEvent.SuccessUploadEvent -> showSuccessDialog()
+            ProseWriteEvent.ToastEmptyContentEvent -> showContentErrorToast()
+            ProseWriteEvent.ToastEmptyTitleEvent -> showTitleErrorToast()
         }
     }
 
@@ -61,6 +65,14 @@ class ProseWriteFragment : BaseFragment<FragmentProseWriteBinding, ProseWritePag
                 findNavController().popBackStack()
             }
             .show()
+    }
+
+    private fun showContentErrorToast(){
+        DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_check_prose_content).show()
+    }
+
+    private fun showTitleErrorToast(){
+        DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_check_prose_title).show()
     }
 
     private fun bindEditText() {

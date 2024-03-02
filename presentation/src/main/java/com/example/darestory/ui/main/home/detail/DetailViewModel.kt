@@ -66,7 +66,7 @@ class DetailViewModel @Inject constructor(
 
     private fun successGetProseDetail(result : ProseVo){
         val contentList = getProseContentList(result)
-        val authorCommentList = getProseAuthorCommentList(result)
+        val authorCommentList = if(result.authorSay.isNotEmpty()) getProseAuthorCommentList(result) else emptyList()
         val commentList = getProseCommentList(result.comment)
         updateDetailPageList(contentList + authorCommentList + commentList)
     }
