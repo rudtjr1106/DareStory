@@ -38,12 +38,12 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
                 viewModel.onClickBackButton()
             }
 
-            override fun onClickMenu() {
-                viewModel.onClickContentMenu(detailFragmentArgs.detailType)
+            override fun onClickMenu(author : String) {
+                viewModel.onClickContentMenu(detailFragmentArgs.detailType, author)
             }
 
-            override fun onClickCommentMenu(commentId : Int) {
-                viewModel.onClickCommentMenu(commentId, detailFragmentArgs.detailType)
+            override fun onClickCommentMenu(commentId : Int, writer : String) {
+                viewModel.onClickCommentMenu(commentId, detailFragmentArgs.detailType, writer)
             }
         })
     }
@@ -87,6 +87,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
             is DetailEvent.GoEditEvent -> goEditPage()
             is DetailEvent.ShowProseDeleteDialogEvent -> showProseDeleteDialog()
             is DetailEvent.ShowCommentDeleteDialogEvent -> showCommentDeleteDialog()
+            is DetailEvent.GoReportEvent -> goReportPage(event.who)
         }
     }
 
@@ -99,6 +100,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
     private fun goEditPage(){
         val action = when(detailFragmentArgs.detailType){
             DetailType.PROSE -> DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = ProseWriteType.EDIT)
+            //TODO 토론장 페이지 edit은 따로 해야댐
             DetailType.DISCUSSION -> DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = ProseWriteType.EDIT)
         }
         findNavController().navigate(action)
@@ -130,6 +132,11 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
                 commonDialog.dismiss()
             }
             .show()
+    }
+
+    private fun goReportPage(who : String){
+        val action = DetailFragmentDirections.actionDetailToReport(who)
+        findNavController().navigate(action)
     }
 
     override fun onStart() {

@@ -90,4 +90,5 @@
     <string name="report_choice_type">신고 유형을 선택해주세요.</string>
     <string name="report_content">신고 내용</string>
     <string name="report_input_content">신고 내용</string>
+    <string name="report_success">신고가 완료되었습니다.</string>
 </resources>

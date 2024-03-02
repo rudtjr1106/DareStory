@@ -5,16 +5,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.darestory.PageState
 import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentSignupProfileBinding
 import com.example.darestory.ui.common.spinner.SpinnerDialog
-import com.example.darestory.ui.sign.signUpEmailPassword.SignUpEmailPasswordEvent
-import com.example.darestory.util.DareLog
 import com.example.domain.model.error.NickNameError
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

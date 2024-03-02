@@ -78,7 +78,7 @@ class ProseWriteFragment : BaseFragment<FragmentProseWriteBinding, ProseWritePag
     private fun bindEditText() {
         binding.apply {
             editTextTitleInput.setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) imageLineEditTitle.setBackgroundResource(R.drawable.img_line_purple_dark_600)
+                if (hasFocus) imageLineEditTitle.setBackgroundResource(R.drawable.img_line_dark_purple_600)
                 else imageLineEditTitle.setBackgroundResource(R.drawable.img_line_gray_600)
             }
 

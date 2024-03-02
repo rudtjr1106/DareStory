@@ -47,6 +47,7 @@ class DetailViewModel @Inject constructor(
     private var detailId by Delegates.notNull<Int>()
     private var detailType by Delegates.notNull<DetailType>()
     private var commentId by Delegates.notNull<Int>()
+    private var reportWho by Delegates.notNull<String>()
 
     fun getDetail(id : Int, type : DetailType){
         detailId = id
@@ -175,7 +176,8 @@ class DetailViewModel @Inject constructor(
         getDetail(detailId, detailType)
     }
 
-    fun onClickContentMenu(type : DetailType){
+    fun onClickContentMenu(type : DetailType, author : String){
+        reportWho = author
         val contentData = detailPageListStateFlow.value.find { it.detailViewType == DetailPageViewType.CONTENT }
         when(type){
             DetailType.PROSE -> contentData?.let { showProseBottomSheet(it) }
@@ -183,7 +185,8 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun onClickCommentMenu(commentId : Int, type: DetailType){
+    fun onClickCommentMenu(commentId : Int, type: DetailType, writer : String){
+        reportWho = writer
         val contentData = detailPageListStateFlow.value.find { it.proseComment.commentId == commentId }
         this.commentId = commentId
         when(type){
@@ -208,7 +211,7 @@ class DetailViewModel @Inject constructor(
        when(item){
            BottomSheetMenuItemType.PROSE_EDIT -> emitEventFlow(DetailEvent.GoEditEvent)
            BottomSheetMenuItemType.PROSE_DELETE -> emitEventFlow(DetailEvent.ShowProseDeleteDialogEvent)
-           BottomSheetMenuItemType.REPORT -> {}
+           BottomSheetMenuItemType.REPORT -> emitEventFlow(DetailEvent.GoReportEvent(reportWho))
            BottomSheetMenuItemType.PROSE_BOOKMARK -> {}
            BottomSheetMenuItemType.COMMENT_DELETE -> emitEventFlow(DetailEvent.ShowCommentDeleteDialogEvent)
        }

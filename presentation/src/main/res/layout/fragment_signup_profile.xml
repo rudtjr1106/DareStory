@@ -109,7 +109,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="2dp"
-            android:background="@{vm.uiState.nicknameIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_purple_dark_600}"
+            android:background="@{vm.uiState.nicknameIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_dark_purple_600}"
             app:layout_constraintEnd_toEndOf="@id/edit_text_nickname"
             app:layout_constraintStart_toStartOf="@id/edit_text_nickname"
             app:layout_constraintTop_toBottomOf="@id/edit_text_nickname" />
@@ -214,7 +214,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="2dp"
-            android:background="@{vm.uiState.ageIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_purple_dark_600}"
+            android:background="@{vm.uiState.ageIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_dark_purple_600}"
             app:layout_constraintEnd_toEndOf="@id/text_spinner_age"
             app:layout_constraintStart_toStartOf="@id/text_spinner_age"
             app:layout_constraintTop_toBottomOf="@id/text_spinner_age" />
@@ -261,7 +261,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="2dp"
-            android:background="@{vm.uiState.gender == GenderType.MALE ? @drawable/img_line_purple_dark_600 : @drawable/img_line_gray_600}"
+            android:background="@{vm.uiState.gender == GenderType.MALE ? @drawable/img_line_dark_purple_600 : @drawable/img_line_gray_600}"
             app:layout_constraintEnd_toEndOf="@id/text_btn_gender_male"
             app:layout_constraintStart_toStartOf="@id/text_btn_gender_male"
             app:layout_constraintTop_toBottomOf="@id/text_btn_gender_male" />
@@ -285,7 +285,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="2dp"
-            android:background="@{vm.uiState.gender == GenderType.FEMALE ? @drawable/img_line_purple_dark_600 : @drawable/img_line_gray_600}"
+            android:background="@{vm.uiState.gender == GenderType.FEMALE ? @drawable/img_line_dark_purple_600 : @drawable/img_line_gray_600}"
             app:layout_constraintEnd_toEndOf="@id/text_btn_gender_female"
             app:layout_constraintStart_toStartOf="@id/text_btn_gender_female"
             app:layout_constraintTop_toBottomOf="@id/text_btn_gender_female" />

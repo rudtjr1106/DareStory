@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="vm"
+            type="com.example.darestory.ui.main.report.ReportViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,6 +23,7 @@
                 android:id="@+id/image_btn_back"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:onClick="@{()->vm.onClickBackBtn()}"
                 android:layout_marginStart="16dp"
                 android:background="@drawable/ic_back_white"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -78,7 +85,10 @@
             app:layout_constraintTop_toBottomOf="@id/text_report_type"
             android:textAppearance="@style/body2"
             android:hint="@string/report_choice_type"
+            android:onClick="@{()->vm.onClickSpinner()}"
             android:textColor="@color/white"
+            android:afterTextChanged="@{()->vm.onChangedReportTypeTextAfter()}"
+            android:text="@={vm.uiState.reportType}"
             android:textColorHint="@color/gray_600"
             android:paddingStart="4dp"
             android:layout_marginHorizontal="16dp"
@@ -89,14 +99,14 @@
             app:layout_constraintEnd_toEndOf="@id/text_spinner_report_type"
             app:layout_constraintTop_toTopOf="@id/text_spinner_report_type"
             app:layout_constraintBottom_toBottomOf="@id/text_spinner_report_type"
-            android:background="@drawable/ic_down_arrow_gray_600"
+            android:background="@{vm.uiState.reportTypeIsEmpty ? @drawable/ic_down_arrow_gray_600 : @drawable/ic_down_arrow_white}"
             android:layout_width="20dp"
             android:layout_height="20dp"/>
 
         <ImageView
             android:id="@+id/image_line_text_spinner_report_type"
             android:layout_marginTop="4dp"
-            android:background="@drawable/img_line_gray_600"
+            android:background="@{vm.uiState.reportTypeIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_dark_purple_600}"
             app:layout_constraintTop_toBottomOf="@id/text_spinner_report_type"
             app:layout_constraintStart_toStartOf="@id/text_spinner_report_type"
             app:layout_constraintEnd_toEndOf="@id/text_spinner_report_type"
@@ -121,7 +131,9 @@
             android:layout_marginHorizontal="16dp"
             android:background="@drawable/bg_line_edit_text"
             android:textAppearance="@style/body2"
+            android:afterTextChanged="@{()->vm.onChangedReportContentTextAfter()}"
             android:layout_marginTop="16dp"
+            android:text="@={vm.uiState.reportContent}"
             android:textColorHint="@color/gray_600"
             android:textColor="@color/white"
             android:hint="@string/report_input_content"
@@ -132,12 +144,26 @@
         <ImageView
             android:id="@+id/image_line_edit_report"
             android:layout_marginTop="2dp"
-            android:background="@drawable/img_line_gray_600"
+            android:background="@{vm.uiState.reportContentIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_dark_purple_600}"
             app:layout_constraintTop_toBottomOf="@id/edit_text_report_content_input"
             app:layout_constraintStart_toStartOf="@id/edit_text_report_content_input"
             app:layout_constraintEnd_toEndOf="@id/edit_text_report_content_input"
             android:layout_width="0dp"
             android:layout_height="1dp"/>
+        
+        <androidx.appcompat.widget.AppCompatButton
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/bottom_sheet_report"
+            android:textColor="@drawable/selector_color_bg_gray_200_to_gray_400"
+            android:enabled="@{vm.uiState.reportBtnEnable}"
+            android:onClick="@{()->vm.onClickReportBtn()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/selector_bg_gray_400_to_dark_purple_600"
+            android:layout_width="0dp"
+            android:layout_height="48dp"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

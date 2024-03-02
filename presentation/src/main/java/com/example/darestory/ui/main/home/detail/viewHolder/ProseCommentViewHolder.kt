@@ -16,7 +16,7 @@ class ProseCommentViewHolder(
     private lateinit var commentVo : CommentVo
     init {
         binding.imageBtnCommentMenu.setOnClickListener {
-            listener.onClickCommentMenu(commentVo.commentId)
+            listener.onClickCommentMenu(commentVo.commentId, commentVo.writer)
         }
     }
 

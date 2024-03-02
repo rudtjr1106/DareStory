@@ -26,7 +26,7 @@ class DetailPageViewHolder(
             }
 
             imageBtnMenu.setOnClickListener {
-                listener.onClickMenu()
+                listener.onClickMenu(content.author)
             }
         }
     }

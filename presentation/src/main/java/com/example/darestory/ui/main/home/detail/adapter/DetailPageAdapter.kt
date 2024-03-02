@@ -28,8 +28,8 @@ class DetailPageAdapter(private val listener: DetailPageDelegate) : ListAdapter<
     interface DetailPageDelegate {
         fun onClickLike(id : Int, isLiked : Boolean)
         fun onClickBack()
-        fun onClickMenu()
-        fun onClickCommentMenu(commentId : Int)
+        fun onClickMenu(author: String)
+        fun onClickCommentMenu(commentId : Int, writer : String)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
