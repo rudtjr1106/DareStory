@@ -8,13 +8,14 @@ import com.example.domain.model.enums.BottomSheetMenuItemType
 import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.DetailPageViewType
 import com.example.domain.model.enums.DetailType
-import com.example.domain.model.vo.AddCommentVo
+import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.DetailContentVo
 import com.example.domain.model.vo.DetailPageVo
 import com.example.domain.model.vo.LikeVo
 import com.example.domain.model.vo.ProseVo
 import com.example.domain.usecase.home.AddProseCommentUseCase
+import com.example.domain.usecase.home.DeleteProseCommentUseCase
 import com.example.domain.usecase.home.DeleteProseUseCase
 import com.example.domain.usecase.home.GetProseUseCase
 import com.example.domain.usecase.home.LikeProseUseCase
@@ -31,7 +32,8 @@ class DetailViewModel @Inject constructor(
     private val getProseUseCase: GetProseUseCase,
     private val proseLikeProseUseCase: LikeProseUseCase,
     private val addProseCommentUseCase: AddProseCommentUseCase,
-    private val deleteProseUseCase: DeleteProseUseCase
+    private val deleteProseUseCase: DeleteProseUseCase,
+    private val deleteProseCommentUseCase: DeleteProseCommentUseCase
 ) : BaseViewModel<DetailPageState>() {
 
     private val detailPageListStateFlow: MutableStateFlow<List<DetailPageVo>> = MutableStateFlow(emptyList())
@@ -42,11 +44,12 @@ class DetailViewModel @Inject constructor(
         commentEditStateFlow
     )
 
-    private var detailid by Delegates.notNull<Int>()
+    private var detailId by Delegates.notNull<Int>()
     private var detailType by Delegates.notNull<DetailType>()
+    private var commentId by Delegates.notNull<Int>()
 
     fun getDetail(id : Int, type : DetailType){
-        detailid = id
+        detailId = id
         detailType = type
         when(type){
             DetailType.PROSE -> getProseDetail(id)
@@ -143,7 +146,7 @@ class DetailViewModel @Inject constructor(
     fun onClickCommentAddButton(){
         if(commentEditStateFlow.value.isNotEmpty()){
             val contentData = detailPageListStateFlow.value.find { it.detailViewType == DetailPageViewType.CONTENT }
-            val request = AddCommentVo(
+            val request = UpdateCommentVo(
                 id = contentData?.detailContent?.pageId ?: -1,
                 comment = CommentVo(
                     content = commentEditStateFlow.value,
@@ -169,7 +172,7 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun reloadPage(){
-        getDetail(detailid, detailType)
+        getDetail(detailId, detailType)
     }
 
     fun onClickContentMenu(type : DetailType){
@@ -180,18 +183,34 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+    fun onClickCommentMenu(commentId : Int, type: DetailType){
+        val contentData = detailPageListStateFlow.value.find { it.proseComment.commentId == commentId }
+        this.commentId = commentId
+        when(type){
+            DetailType.PROSE -> { contentData?.let { showCommentBottomSheet(it) } }
+            DetailType.DISCUSSION -> {}
+        }
+    }
+
     private fun showProseBottomSheet(content : DetailPageVo){
         val event = if(content.detailContent.author == UserInfo.info.nickName) DetailEvent.ShowBottomSheetEvent(BottomSheetType.PROSE_AUTHOR)
         else DetailEvent.ShowBottomSheetEvent(BottomSheetType.PROSE_NORMAL)
         emitEventFlow(event)
     }
 
+    private fun showCommentBottomSheet(content : DetailPageVo){
+        val event = if(content.proseComment.writer == UserInfo.info.nickName) DetailEvent.ShowBottomSheetEvent(BottomSheetType.COMMENT_WRITER)
+        else DetailEvent.ShowBottomSheetEvent(BottomSheetType.COMMENT_NORMAL)
+        emitEventFlow(event)
+    }
+
     fun onClickImageMenuItemType(item : BottomSheetMenuItemType){
        when(item){
-           BottomSheetMenuItemType.EDIT -> emitEventFlow(DetailEvent.GoEditEvent)
-           BottomSheetMenuItemType.REMOVE -> emitEventFlow(DetailEvent.ShowDeleteDialogEvent)
+           BottomSheetMenuItemType.PROSE_EDIT -> emitEventFlow(DetailEvent.GoEditEvent)
+           BottomSheetMenuItemType.PROSE_DELETE -> emitEventFlow(DetailEvent.ShowProseDeleteDialogEvent)
            BottomSheetMenuItemType.REPORT -> {}
-           BottomSheetMenuItemType.BOOKMARK -> {}
+           BottomSheetMenuItemType.PROSE_BOOKMARK -> {}
+           BottomSheetMenuItemType.COMMENT_DELETE -> emitEventFlow(DetailEvent.ShowCommentDeleteDialogEvent)
        }
     }
 
@@ -201,6 +220,24 @@ class DetailViewModel @Inject constructor(
             val result = deleteProseUseCase(id)
             endLoading()
             if(result) onClickBackButton()
+        }
+    }
+
+    fun deleteComment(contentId : Int){
+        val request = UpdateCommentVo(
+            id = contentId,
+            comment = CommentVo(commentId = commentId)
+        )
+        when(detailType){
+            DetailType.PROSE -> deleteProseComment(request)
+            DetailType.DISCUSSION -> {}
+        }
+    }
+
+    private fun deleteProseComment(request : UpdateCommentVo){
+        viewModelScope.launch {
+            val result = deleteProseCommentUseCase(request)
+            if(result) reloadPage()
         }
     }
 }

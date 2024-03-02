@@ -26,9 +26,10 @@ class DetailPageAdapter(private val listener: DetailPageDelegate) : ListAdapter<
 ){
 
     interface DetailPageDelegate {
-        fun onClickLike(id : Int, type : DetailType, isLiked : Boolean)
+        fun onClickLike(id : Int, isLiked : Boolean)
         fun onClickBack()
-        fun onClickMenu(type : DetailType)
+        fun onClickMenu()
+        fun onClickCommentMenu(commentId : Int)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -48,7 +49,7 @@ class DetailPageAdapter(private val listener: DetailPageDelegate) : ListAdapter<
             }
             DetailPageViewType.PROSE_COMMENT -> {
                 val binding = ItemDetailProseCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                ProseCommentViewHolder(binding)
+                ProseCommentViewHolder(binding, listener)
             }
 
             DetailPageViewType.PROSE_AUTHOR_COMMENT -> {

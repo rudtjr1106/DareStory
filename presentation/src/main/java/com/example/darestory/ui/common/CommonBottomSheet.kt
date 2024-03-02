@@ -85,17 +85,17 @@ class CommonBottomSheet : BottomSheetDialogFragment() {
     private fun getMenuList(): List<BottomSheetMenuItemType> {
         return when (menuType) {
             BottomSheetType.PROSE_AUTHOR -> listOf(
-                BottomSheetMenuItemType.EDIT,
-                BottomSheetMenuItemType.REMOVE
+                BottomSheetMenuItemType.PROSE_EDIT,
+                BottomSheetMenuItemType.PROSE_DELETE
             )
 
             BottomSheetType.PROSE_NORMAL -> listOf(
-                BottomSheetMenuItemType.BOOKMARK,
+                BottomSheetMenuItemType.PROSE_BOOKMARK,
                 BottomSheetMenuItemType.REPORT
             )
 
             BottomSheetType.COMMENT_WRITER -> listOf(
-                BottomSheetMenuItemType.REMOVE,
+                BottomSheetMenuItemType.COMMENT_DELETE,
             )
 
             BottomSheetType.COMMENT_NORMAL -> listOf(

@@ -1,7 +1,7 @@
 package com.example.data.repository
 
 import com.example.data.EndPoints
-import com.example.domain.model.vo.AddCommentVo
+import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.LikeVo
 import com.example.domain.model.vo.ProseVo
@@ -126,12 +126,46 @@ class ProseRepositoryImpl @Inject constructor() : ProseRepository {
         }
     }
 
-    override suspend fun addComment(request: AddCommentVo): Boolean = coroutineScope {
+    override suspend fun addComment(request: UpdateCommentVo): Boolean = coroutineScope {
         val success = async {
             addProseComment(request)
         }.await()
 
         if(success) updateCommentCount(request.id) else false
+    }
+
+    override suspend fun deleteComment(request: UpdateCommentVo): Boolean = coroutineScope {
+        val success = async {
+            deleteProseComment(request)
+        }.await()
+
+        if(success) updateCommentCount(request.id) else false
+    }
+
+    private suspend fun deleteProseComment(request: UpdateCommentVo) : Boolean = suspendCoroutine {
+        db.getReference(EndPoints.PROSE).child(request.id.toString()).child(EndPoints.COMMENT)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (commentSnapshot in dataSnapshot.children) {
+                    val commentId = commentSnapshot.child(EndPoints.COMMENT_ID).getValue(Int::class.java)
+                    if (commentId == request.comment.commentId) {
+                        commentSnapshot.ref.removeValue()
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    it.resume(true)
+                                } else {
+                                    it.resume(false)
+                                }
+                            }
+                        break
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                it.resume(false)
+            }
+        })
     }
 
     override suspend fun upload(request: ProseVo): Boolean {
@@ -192,7 +226,7 @@ class ProseRepositoryImpl @Inject constructor() : ProseRepository {
         }
     }
 
-    private suspend fun addProseComment(request: AddCommentVo) : Boolean{
+    private suspend fun addProseComment(request: UpdateCommentVo) : Boolean{
         var newRequest = CommentVo()
         var lastId = 0
         val dbRef = db.getReference(EndPoints.PROSE).child(request.id.toString()).child(EndPoints.COMMENT)

@@ -1,5 +1,6 @@
 package com.example.domain.model.enums
 
 enum class BottomSheetMenuItemType {
-    EDIT, REMOVE, REPORT, BOOKMARK
+    PROSE_EDIT, PROSE_DELETE, REPORT, PROSE_BOOKMARK,
+    COMMENT_DELETE
 }

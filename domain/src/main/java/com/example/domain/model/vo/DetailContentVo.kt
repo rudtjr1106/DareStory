@@ -3,7 +3,7 @@ package com.example.domain.model.vo
 import com.example.domain.model.enums.DetailType
 
 data class DetailContentVo(
-    val pageId : Int = 0,
+    val pageId : Int = -1,
     val pageType : DetailType = DetailType.PROSE,
     val author : String = "",
     val commentCount : Int = 0,

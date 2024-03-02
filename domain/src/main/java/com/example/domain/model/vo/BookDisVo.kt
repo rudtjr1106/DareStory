@@ -2,7 +2,7 @@ package com.example.domain.model.vo
 
 data class BookDisVo(
     val author : String = "",
-    val bookDisId : Int = 0,
+    val bookDisId : Int = -1,
     val bookImage : String = "",
     val bookName : String = "",
     val commentCount : Int = 0,

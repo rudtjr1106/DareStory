@@ -30,16 +30,20 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
 
     private val detailPagerAdapter : DetailPageAdapter by lazy {
         DetailPageAdapter(object : DetailPageAdapter.DetailPageDelegate {
-            override fun onClickLike(id: Int, type: DetailType, isLiked : Boolean) {
-                viewModel.onClickLikeBtn(id, type, isLiked)
+            override fun onClickLike(id: Int, isLiked : Boolean) {
+                viewModel.onClickLikeBtn(id, detailFragmentArgs.detailType, isLiked)
             }
 
             override fun onClickBack() {
                 viewModel.onClickBackButton()
             }
 
-            override fun onClickMenu(type : DetailType) {
-                viewModel.onClickContentMenu(type)
+            override fun onClickMenu() {
+                viewModel.onClickContentMenu(detailFragmentArgs.detailType)
+            }
+
+            override fun onClickCommentMenu(commentId : Int) {
+                viewModel.onClickCommentMenu(commentId, detailFragmentArgs.detailType)
             }
         })
     }
@@ -81,7 +85,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
             is DetailEvent.GoToBack -> findNavController().popBackStack()
             is DetailEvent.ShowBottomSheetEvent -> showBottomSheet(event.type)
             is DetailEvent.GoEditEvent -> goEditPage()
-            is DetailEvent.ShowDeleteDialogEvent -> showDeleteDialog()
+            is DetailEvent.ShowProseDeleteDialogEvent -> showProseDeleteDialog()
+            is DetailEvent.ShowCommentDeleteDialogEvent -> showCommentDeleteDialog()
         }
     }
 
@@ -99,12 +104,26 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
         findNavController().navigate(action)
     }
 
-    private fun showDeleteDialog(){
+    private fun showProseDeleteDialog(){
         commonDialog
             .setTitle(R.string.dialog_delete_title)
             .setDescription(R.string.dialog_delete_content)
             .setPositiveButton(R.string.word_delete){
                 viewModel.deleteThis(detailFragmentArgs.detailId)
+                commonDialog.dismiss()
+            }
+            .setNegativeButton(R.string.word_cancel){
+                commonDialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showCommentDeleteDialog(){
+        commonDialog
+            .setTitle(R.string.dialog_delete_title)
+            .setDescription(R.string.dialog_delete_content)
+            .setPositiveButton(R.string.word_delete){
+                viewModel.deleteComment(detailFragmentArgs.detailId)
                 commonDialog.dismiss()
             }
             .setNegativeButton(R.string.word_cancel){

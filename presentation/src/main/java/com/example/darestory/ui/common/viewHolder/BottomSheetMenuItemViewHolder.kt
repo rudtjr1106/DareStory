@@ -31,19 +31,27 @@ class BottomSheetMenuItemViewHolder(
 
     private fun getMenuIconRes(menuType: BottomSheetMenuItemType):Int {
         return when(menuType) {
-            BottomSheetMenuItemType.EDIT -> R.drawable.ic_edit_white
-            BottomSheetMenuItemType.REMOVE -> R.drawable.ic_delete_empty_white
+            BottomSheetMenuItemType.PROSE_EDIT -> R.drawable.ic_edit_white
+
+            BottomSheetMenuItemType.COMMENT_DELETE,
+            BottomSheetMenuItemType.PROSE_DELETE -> R.drawable.ic_delete_empty_white
+
             BottomSheetMenuItemType.REPORT -> R.drawable.ic_report_empty_white
-            BottomSheetMenuItemType.BOOKMARK -> R.drawable.ic_bookmark_empty_white
+
+            BottomSheetMenuItemType.PROSE_BOOKMARK -> R.drawable.ic_bookmark_empty_white
         }
     }
 
     private fun getMenuContentStringRes(menuType: BottomSheetMenuItemType):Int {
         return when(menuType) {
-            BottomSheetMenuItemType.EDIT -> R.string.bottom_sheet_edit
-            BottomSheetMenuItemType.REMOVE -> R.string.bottom_sheet_delete
+            BottomSheetMenuItemType.PROSE_EDIT -> R.string.bottom_sheet_edit
+
+            BottomSheetMenuItemType.COMMENT_DELETE,
+            BottomSheetMenuItemType.PROSE_DELETE -> R.string.bottom_sheet_delete
+
             BottomSheetMenuItemType.REPORT -> R.string.bottom_sheet_report
-            BottomSheetMenuItemType.BOOKMARK ->R.string.bottom_sheet_bookmark
+
+            BottomSheetMenuItemType.PROSE_BOOKMARK ->R.string.bottom_sheet_bookmark
         }
     }
 }
