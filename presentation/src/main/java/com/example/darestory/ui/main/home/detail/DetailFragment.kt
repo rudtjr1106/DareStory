@@ -6,10 +6,12 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentDetailBinding
+import com.example.darestory.ui.common.CommonBottomSheet
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.home.detail.adapter.DetailPageAdapter
 import com.example.darestory.ui.sign.signUpProfile.SignUpProfileFragmentArgs
 import com.example.darestory.util.DareLog
+import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.DetailType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,6 +32,10 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
 
             override fun onClickBack() {
                 viewModel.onClickBackButton()
+            }
+
+            override fun onClickMenu(type : DetailType) {
+                viewModel.onClickContentMenu(type)
             }
         })
     }
@@ -68,8 +74,15 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
 
     private fun sortEvent(event: DetailEvent){
         when(event){
-            DetailEvent.GoToBack -> findNavController().popBackStack()
+            is DetailEvent.GoToBack -> findNavController().popBackStack()
+            is DetailEvent.ShowBottomSheetEvent -> showBottomSheet(event.type)
         }
+    }
+
+    private fun showBottomSheet(type : BottomSheetType){
+        CommonBottomSheet.newInstance(type) {
+            viewModel.onClickImageMenuItemType(it)
+        }.show(parentFragmentManager, "")
     }
 
     override fun onStart() {

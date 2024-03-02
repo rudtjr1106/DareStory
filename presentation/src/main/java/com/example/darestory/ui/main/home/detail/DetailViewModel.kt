@@ -5,6 +5,8 @@ import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.DareLog
 import com.example.darestory.util.TimeFormatter
 import com.example.darestory.util.UserInfo
+import com.example.domain.model.enums.BottomSheetMenuItemType
+import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.DetailPageViewType
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.vo.AddCommentVo
@@ -138,9 +140,9 @@ class DetailViewModel @Inject constructor(
     }
 
     fun onClickCommentAddButton(){
-        val proseData = detailPageListStateFlow.value.find { it.detailViewType == DetailPageViewType.CONTENT }
+        val contentData = detailPageListStateFlow.value.find { it.detailViewType == DetailPageViewType.CONTENT }
         val request = AddCommentVo(
-            id = proseData?.detailContent?.pageId ?: -1,
+            id = contentData?.detailContent?.pageId ?: -1,
             comment = CommentVo(
                 content = commentEditStateFlow.value,
                 date = TimeFormatter.getNowDateAndTime(),
@@ -163,5 +165,16 @@ class DetailViewModel @Inject constructor(
 
     private fun reloadPage(){
         getDetail(detailid, detailType)
+    }
+
+    fun onClickContentMenu(type : DetailType){
+        val contentData = detailPageListStateFlow.value.find { it.detailViewType == DetailPageViewType.CONTENT }
+        val event = if(contentData?.detailContent?.author.equals(UserInfo.info.nickName)) DetailEvent.ShowBottomSheetEvent(BottomSheetType.PROSE_AUTHOR)
+                    else DetailEvent.ShowBottomSheetEvent(BottomSheetType.PROSE_NORMAL)
+        emitEventFlow(event)
+    }
+
+    fun onClickImageMenuItemType(item : BottomSheetMenuItemType){
+        DareLog.D(item.name)
     }
 }

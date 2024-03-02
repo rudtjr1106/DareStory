@@ -18,11 +18,15 @@ class DetailPageViewHolder(
     init {
         binding.apply {
             imageBtnLike.setOnClickListener {
-                listener.onClickLike(content.pageId, DetailType.PROSE, content.isLiked)
+                listener.onClickLike(content.pageId, content.pageType, content.isLiked)
             }
 
             imageBtnBack.setOnClickListener {
                 listener.onClickBack()
+            }
+
+            imageBtnMenu.setOnClickListener {
+                listener.onClickMenu(content.pageType)
             }
         }
     }

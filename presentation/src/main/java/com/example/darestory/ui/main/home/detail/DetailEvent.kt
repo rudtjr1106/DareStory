@@ -1,10 +1,11 @@
 package com.example.darestory.ui.main.home.detail
 
 import com.example.darestory.Event
-import com.example.domain.model.enums.DetailType
+import com.example.domain.model.enums.BottomSheetType
 
 sealed class DetailEvent : Event {
 
     object GoToBack: DetailEvent()
+    data class ShowBottomSheetEvent(val type : BottomSheetType) : DetailEvent()
 
 }

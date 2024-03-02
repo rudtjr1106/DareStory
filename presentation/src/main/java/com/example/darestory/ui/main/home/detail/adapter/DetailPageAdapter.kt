@@ -28,6 +28,7 @@ class DetailPageAdapter(private val listener: DetailPageDelegate) : ListAdapter<
     interface DetailPageDelegate {
         fun onClickLike(id : Int, type : DetailType, isLiked : Boolean)
         fun onClickBack()
+        fun onClickMenu(type : DetailType)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

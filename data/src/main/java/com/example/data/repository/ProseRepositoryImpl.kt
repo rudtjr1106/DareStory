@@ -168,6 +168,7 @@ class ProseRepositoryImpl @Inject constructor() : ProseRepository {
 
     private suspend fun addProseComment(request: AddCommentVo) : Boolean{
         var newRequest = CommentVo()
+        var lastId = 0
         val dbRef = db.getReference(EndPoints.PROSE).child(request.id.toString()).child(EndPoints.COMMENT)
         return suspendCoroutine {
             dbRef.limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -175,10 +176,10 @@ class ProseRepositoryImpl @Inject constructor() : ProseRepository {
                     for (snapshot in dataSnapshot.children) {
                         val comment = snapshot.getValue(CommentVo::class.java)
                         if (comment != null) {
-                            newRequest = request.comment.copy(commentId = comment.commentId + 1)
+                            lastId = comment.commentId + 1
                         }
                     }
-
+                    newRequest = request.comment.copy(commentId = lastId)
                     dbRef.child(newRequest.commentId.toString()).setValue(newRequest).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             it.resume(true)

@@ -67,4 +67,11 @@
     <string name="home_detail_input_content">내용을 입력해주세요.</string>
     <string name="home_prose_author_say">작가의 말(선택)</string>
     <string name="home_upload_complete">업로드가 완료되었습니다!</string>
+
+    <!-- 바텀시트 -->
+    <string name="bottom_sheet_edit">수정하기</string>
+    <string name="bottom_sheet_delete">삭제하기</string>
+    <string name="bottom_sheet_report">신고하기</string>
+    <string name="bottom_sheet_bookmark">나만의 책에 담기</string>
+
 </resources>
