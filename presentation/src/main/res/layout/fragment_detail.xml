@@ -40,6 +40,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginVertical="12dp"
                 android:layout_marginStart="15dp"
+                android:text="@={vm.uiState.commentEdit}"
                 android:paddingStart="8dp"
                 android:paddingVertical="7dp"
                 android:textAppearance="@style/c3"
@@ -58,6 +59,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="21dp"
+                android:onClick="@{()->vm.onClickCommentAddButton()}"
                 android:background="@drawable/ic_send_gray_200"
                 android:layout_width="24dp"
                 android:layout_height="24dp"/>

@@ -40,6 +40,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
             vm = viewModel
 
             recyclerDetail.apply {
+                itemAnimator = null
                 layoutManager = LinearLayoutManager(context)
                 adapter = detailPagerAdapter
             }

@@ -1,7 +1,8 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.EndPoints
+import com.example.domain.model.vo.AddCommentVo
+import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.LikeVo
 import com.example.domain.model.vo.ProseVo
 import com.example.domain.repository.ProseRepository
@@ -9,8 +10,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -58,11 +60,62 @@ class ProseRepositoryImpl @Inject constructor() : ProseRepository {
         }
     }
 
-    override suspend fun likeCancel(request: LikeVo): Boolean {
+    override suspend fun likeCancel(request: LikeVo): Boolean = coroutineScope {
+        val success = async {
+            removeLikedUser(request.id)
+        }.await()
+
+        if(success) updateLikeCount(request.id) else false
+    }
+
+    override suspend fun likeAdd(request: LikeVo): Boolean = coroutineScope {
+        val success = async {
+            addLikedUser(request)
+        }.await()
+
+        if(success) updateLikeCount(request.id) else false
+    }
+
+    private suspend fun removeLikedUser(proseId: Int): Boolean = suspendCoroutine { continuation ->
+        val proseRef = db.getReference(EndPoints.PROSE).child(proseId.toString())
+        val likedUsersRef = proseRef.child(EndPoints.LIKED_MEMBER).child(auth.uid.toString())
+
+        likedUsersRef.removeValue().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                continuation.resume(true)
+            } else {
+                continuation.resume(false)
+            }
+        }
+    }
+
+    private suspend fun updateLikeCount(proseId: Int): Boolean = suspendCoroutine { continuation ->
+        val proseRef = db.getReference(EndPoints.PROSE).child(proseId.toString())
+        val likedUsersRef = proseRef.child(EndPoints.LIKED_MEMBER)
+
+        likedUsersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val likedUserCount = snapshot.childrenCount.toInt()
+                proseRef.child(EndPoints.LIKE_COUNT).setValue(likedUserCount)
+                    .addOnSuccessListener {
+                        continuation.resume(true)
+                    }
+                    .addOnFailureListener { e ->
+                        continuation.resume(false)
+                    }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                continuation.resume(false)
+            }
+        })
+    }
+
+
+    private suspend fun addLikedUser(request: LikeVo): Boolean {
         return suspendCoroutine { continuation ->
-            db.getReference(EndPoints.PROSE).child(request.id.toString()).child(EndPoints.PROSE_LIKED)
-                .child(auth.uid.toString())
-                .removeValue()
+            db.getReference(EndPoints.PROSE).child(request.id.toString()).child(EndPoints.LIKED_MEMBER)
+                .child(auth.uid.toString()).setValue(request.nickName)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         continuation.resume(true)
@@ -73,17 +126,69 @@ class ProseRepositoryImpl @Inject constructor() : ProseRepository {
         }
     }
 
-    override suspend fun likeAdd(request: LikeVo): Boolean {
-        return suspendCoroutine { continuation ->
-            db.getReference(EndPoints.PROSE).child(request.id.toString()).child(EndPoints.PROSE_LIKED)
-                .child(auth.uid.toString()).setValue(request.nickName)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        continuation.resume(true)
-                    } else {
-                        continuation.resume(false)
+    override suspend fun addComment(request: AddCommentVo): Boolean = coroutineScope {
+        val success = async {
+            addProseComment(request)
+        }.await()
+
+        if(success) updateCommentCount(request.id) else false
+    }
+
+    private suspend fun addProseComment(request: AddCommentVo) : Boolean{
+        var newRequest = CommentVo()
+        val dbRef = db.getReference(EndPoints.PROSE).child(request.id.toString()).child(EndPoints.COMMENT)
+        return suspendCoroutine {
+            dbRef.limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (snapshot in dataSnapshot.children) {
+                        val comment = snapshot.getValue(CommentVo::class.java)
+                        if (comment != null) {
+                            newRequest = request.comment.copy(commentId = comment.commentId + 1)
+                        }
+                    }
+
+                    dbRef.child(newRequest.commentId.toString()).setValue(newRequest).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            it.resume(true)
+                        } else {
+                            it.resume(false)
+                        }
                     }
                 }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // 에러 처리
+                    return it.resume(false)
+                }
+            })
+
         }
+    }
+
+    private suspend fun updateCommentCount(id : Int) : Boolean = suspendCoroutine { continuation ->
+        val proseRef = db.getReference(EndPoints.PROSE).child(id.toString())
+        val commentRef = proseRef.child(EndPoints.COMMENT)
+        commentRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var commentCount = 0
+                snapshot.children.forEach { child ->
+                    if (child.value != null) {
+                        commentCount++
+                    }
+                }
+
+                proseRef.child(EndPoints.COMMENT_COUNT).setValue(commentCount)
+                    .addOnSuccessListener {
+                        continuation.resume(true)
+                    }
+                    .addOnFailureListener { e ->
+                        continuation.resume(false)
+                    }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                continuation.resume(false)
+            }
+        })
     }
 }

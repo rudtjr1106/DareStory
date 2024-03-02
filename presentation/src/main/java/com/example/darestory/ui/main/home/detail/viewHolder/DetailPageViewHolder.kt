@@ -19,9 +19,6 @@ class DetailPageViewHolder(
         binding.apply {
             imageBtnLike.setOnClickListener {
                 listener.onClickLike(content.pageId, DetailType.PROSE, content.isLiked)
-                val likeImage = if(content.isLiked) R.drawable.ic_like_empty_gray_400 else R.drawable.ic_like_filled_purple_600
-                content.isLiked = !content.isLiked
-                imageBtnLike.setBackgroundResource(likeImage)
             }
 
             imageBtnBack.setOnClickListener {
