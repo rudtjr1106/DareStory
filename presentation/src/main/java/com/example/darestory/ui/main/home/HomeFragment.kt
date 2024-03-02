@@ -10,6 +10,7 @@ import com.example.darestory.databinding.FragmentHomeBinding
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.util.DareLog
 import com.example.domain.model.enums.DetailType
+import com.example.domain.model.enums.ProseWriteType
 import com.example.domain.model.enums.SortType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -91,11 +92,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
     }
 
     private fun goToWriteProsePage(){
-        val action = HomeFragmentDirections.actionHomeToProseWrite()
+        val action = HomeFragmentDirections.actionHomeToProseWrite(proseId = -1, proseWriteType = ProseWriteType.NEW)
         findNavController().navigate(action)
     }
 
     override fun onStart() {
         super.onStart()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateSortType(SortType.POPULAR)
     }
 }

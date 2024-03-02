@@ -1,5 +1,6 @@
 package com.example.darestory.ui.sign
 
+import android.annotation.SuppressLint
 import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -34,4 +35,8 @@ class SignActivity : BaseActivity<ActivitySignBinding, PageState.Default, SignVi
         navController = navHostFragment.navController
     }
 
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        navController.popBackStack()
+    }
 }

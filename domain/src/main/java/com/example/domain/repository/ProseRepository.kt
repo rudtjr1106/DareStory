@@ -11,4 +11,6 @@ interface ProseRepository {
     suspend fun likeAdd(request: LikeVo) : Boolean
     suspend fun addComment(request: AddCommentVo) : Boolean
     suspend fun upload(request: ProseVo) : Boolean
+    suspend fun update(request: ProseVo) : Boolean
+    suspend fun deleteProse(request: Int) : Boolean
 }

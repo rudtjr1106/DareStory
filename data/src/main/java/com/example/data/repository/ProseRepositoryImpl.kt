@@ -166,6 +166,32 @@ class ProseRepositoryImpl @Inject constructor() : ProseRepository {
         }
     }
 
+    override suspend fun update(request: ProseVo): Boolean {
+        return suspendCoroutine {
+            db.getReference(EndPoints.PROSE).child(request.proseId.toString())
+                .setValue(request).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        it.resume(true)
+                    } else {
+                        it.resume(false)
+                    }
+                }
+        }
+    }
+
+    override suspend fun deleteProse(request: Int): Boolean {
+        return suspendCoroutine {
+            db.getReference(EndPoints.PROSE).child(request.toString()).removeValue()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        it.resume(true)
+                    } else {
+                        it.resume(false)
+                    }
+                }
+        }
+    }
+
     private suspend fun addProseComment(request: AddCommentVo) : Boolean{
         var newRequest = CommentVo()
         var lastId = 0

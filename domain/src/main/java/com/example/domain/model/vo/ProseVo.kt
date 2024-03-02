@@ -9,7 +9,7 @@ data class ProseVo(
     val content : String = "",
     val createdAt : String = "",
     val likeCount : Int = 0,
-    val proseId : Int = 0,
+    val proseId : Int = -1,
     val title : String = "",
     val whoLiked : HashMap<String, String> = hashMapOf()
 )

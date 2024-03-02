@@ -1,5 +1,6 @@
 package com.example.darestory.ui.main
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.activity.viewModels
 import androidx.navigation.NavController
@@ -36,5 +37,10 @@ class MainActivity :
     private fun initNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view_main_host) as NavHostFragment
         navController = navHostFragment.navController
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        navController.popBackStack()
     }
 }

@@ -3,6 +3,7 @@ package com.example.darestory.ui.main.home.detail.write.prose
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentProseWriteBinding
@@ -20,12 +21,14 @@ class ProseWriteFragment : BaseFragment<FragmentProseWriteBinding, ProseWritePag
     lateinit var commonDialog : CommonDialog
 
     override val viewModel: ProseWriteViewModel by viewModels()
+    private val proseWriteFragmentArgs : ProseWriteFragmentArgs by navArgs()
 
 
     override fun initView() {
         binding.apply {
             vm = viewModel
             bindEditText()
+            viewModel.loadPage(proseWriteFragmentArgs.proseId, proseWriteFragmentArgs.proseWriteType)
         }
     }
 

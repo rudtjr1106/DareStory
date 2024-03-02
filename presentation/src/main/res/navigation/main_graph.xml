@@ -52,6 +52,10 @@
             android:name="detailType"
             app:argType="com.example.domain.model.enums.DetailType"/>
 
+        <action
+            android:id="@+id/action_detail_to_prose_write"
+            app:destination="@id/proseWriteFragment"/>
+
     </fragment>
 
     <fragment
@@ -59,6 +63,14 @@
         android:name="com.example.darestory.ui.main.home.detail.write.prose.ProseWriteFragment"
         android:label="fragment_prose_write"
         tools:layout="@layout/fragment_prose_write">
+
+        <argument
+            android:name="proseId"
+            app:argType="integer" />
+
+        <argument
+            android:name="proseWriteType"
+            app:argType="com.example.domain.model.enums.ProseWriteType"/>
 
     </fragment>
 

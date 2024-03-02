@@ -4,22 +4,26 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentDetailBinding
 import com.example.darestory.ui.common.CommonBottomSheet
-import com.example.darestory.ui.main.home.adapter.HomeAdapter
+import com.example.darestory.ui.common.CommonDialog
 import com.example.darestory.ui.main.home.detail.adapter.DetailPageAdapter
-import com.example.darestory.ui.sign.signUpProfile.SignUpProfileFragmentArgs
-import com.example.darestory.util.DareLog
 import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.DetailType
+import com.example.domain.model.enums.ProseWriteType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, DetailViewModel>(
     FragmentDetailBinding::inflate
 ) {
+
+    @Inject
+    lateinit var commonDialog: CommonDialog
 
     override val viewModel: DetailViewModel by viewModels()
     private val detailFragmentArgs : DetailFragmentArgs by navArgs()
@@ -76,6 +80,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
         when(event){
             is DetailEvent.GoToBack -> findNavController().popBackStack()
             is DetailEvent.ShowBottomSheetEvent -> showBottomSheet(event.type)
+            is DetailEvent.GoEditEvent -> goEditPage()
+            is DetailEvent.ShowDeleteDialogEvent -> showDeleteDialog()
         }
     }
 
@@ -83,6 +89,28 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
         CommonBottomSheet.newInstance(type) {
             viewModel.onClickImageMenuItemType(it)
         }.show(parentFragmentManager, "")
+    }
+
+    private fun goEditPage(){
+        val action = when(detailFragmentArgs.detailType){
+            DetailType.PROSE -> DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = ProseWriteType.EDIT)
+            DetailType.DISCUSSION -> DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = ProseWriteType.EDIT)
+        }
+        findNavController().navigate(action)
+    }
+
+    private fun showDeleteDialog(){
+        commonDialog
+            .setTitle(R.string.dialog_delete_title)
+            .setDescription(R.string.dialog_delete_content)
+            .setPositiveButton(R.string.word_delete){
+                viewModel.deleteThis(detailFragmentArgs.detailId)
+                commonDialog.dismiss()
+            }
+            .setNegativeButton(R.string.word_cancel){
+                commonDialog.dismiss()
+            }
+            .show()
     }
 
     override fun onStart() {

@@ -25,6 +25,7 @@
     <string name="word_sort_age">나이대</string>
     <string name="word_loading">로딩중...</string>
     <string name="word_comment">댓글</string>
+    <string name="word_delete">삭제</string>
 
     <!-- 로그인 -->
     <string name="login_error_toast">이메일 또는 비밀번호를 확인해주세요.</string>
@@ -74,4 +75,7 @@
     <string name="bottom_sheet_report">신고하기</string>
     <string name="bottom_sheet_bookmark">나만의 책에 담기</string>
 
+    <!-- 다이얼로그 -->
+    <string name="dialog_delete_title">삭제 하시겠습니까?</string>
+    <string name="dialog_delete_content">삭제된 글은 복구되지 않습니다.</string>
 </resources>
