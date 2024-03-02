@@ -134,6 +134,38 @@ class ProseRepositoryImpl @Inject constructor() : ProseRepository {
         if(success) updateCommentCount(request.id) else false
     }
 
+    override suspend fun upload(request: ProseVo): Boolean {
+        return suspendCoroutine {
+            db.getReference(EndPoints.PROSE).orderByChild(EndPoints.PROSE_ID).limitToLast(1)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        var lastProseId = 0
+
+                        for (snapshot in dataSnapshot.children) {
+                            val prose = snapshot.getValue(ProseVo::class.java)
+                            prose?.let {
+                                lastProseId = it.proseId + 1
+                            }
+                        }
+                        val newRequest = request.copy(proseId = lastProseId)
+
+                        db.getReference(EndPoints.PROSE).child(lastProseId.toString())
+                            .setValue(newRequest).addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                it.resume(true)
+                            } else {
+                                it.resume(false)
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        it.resume(false)
+                    }
+                })
+        }
+    }
+
     private suspend fun addProseComment(request: AddCommentVo) : Boolean{
         var newRequest = CommentVo()
         val dbRef = db.getReference(EndPoints.PROSE).child(request.id.toString()).child(EndPoints.COMMENT)

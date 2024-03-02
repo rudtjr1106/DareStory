@@ -15,8 +15,6 @@ class TodayProseViewPagerAdapter(private val listener: HomeAdapter.HomeDelegate)
     TodayProseDiffCallBack()
 ) {
 
-
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is TodayProseViewPagerViewHolder -> holder.bind(currentList[position])

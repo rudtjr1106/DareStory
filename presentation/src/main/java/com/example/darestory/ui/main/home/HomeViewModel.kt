@@ -116,4 +116,8 @@ class HomeViewModel @Inject constructor(
     fun goToDetailPage(proseId : Int){
         emitEventFlow(HomeEvent.GoToDetailPageEvent(proseId, DetailType.PROSE))
     }
+
+    fun onClickWriteProseBtn(){
+        emitEventFlow(HomeEvent.GoToWriteProseEvent)
+    }
 }

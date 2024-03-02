@@ -22,6 +22,7 @@ class HomeAdapter(private val listener: HomeDelegate) : ListAdapter<HomeProseVo,
         fun onClickSortPopular()
         fun onClickSortRecent()
         fun onClickSortAge()
+        fun onClickWriteProse()
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

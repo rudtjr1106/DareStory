@@ -16,6 +16,10 @@
             android:id="@+id/action_home_to_detail"
             app:destination="@id/detailFragment"/>
 
+        <action
+            android:id="@+id/action_home_to_prose_write"
+            app:destination="@id/proseWriteFragment"/>
+
     </fragment>
 
     <fragment
@@ -47,6 +51,14 @@
         <argument
             android:name="detailType"
             app:argType="com.example.domain.model.enums.DetailType"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/proseWriteFragment"
+        android:name="com.example.darestory.ui.main.home.detail.write.prose.ProseWriteFragment"
+        android:label="fragment_prose_write"
+        tools:layout="@layout/fragment_prose_write">
 
     </fragment>
 

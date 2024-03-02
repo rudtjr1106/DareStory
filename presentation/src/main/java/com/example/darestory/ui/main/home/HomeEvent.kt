@@ -6,5 +6,6 @@ import com.example.domain.model.enums.DetailType
 sealed class HomeEvent : Event {
 
     data class GoToDetailPageEvent(val proseId : Int, val proseType : DetailType): HomeEvent()
+    object GoToWriteProseEvent : HomeEvent()
 
 }

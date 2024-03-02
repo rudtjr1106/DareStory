@@ -26,6 +26,9 @@ class HomeTodayProseViewHolder (
 
     init {
         binding.apply {
+            imageBtnNewWrite.setOnClickListener {
+                listener.onClickWriteProse()
+            }
             bindSortTextButton()
             setIndicator()
         }

@@ -41,6 +41,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
             override fun onClickSortAge() {
                 viewModel.updateSortType(SortType.AGE)
             }
+
+            override fun onClickWriteProse() {
+                viewModel.onClickWriteProseBtn()
+            }
         })
     }
 
@@ -77,11 +81,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
     private fun sortEvent(event : HomeEvent){
         when(event){
             is HomeEvent.GoToDetailPageEvent -> goToDetailPage(event.proseId, event.proseType)
+            is HomeEvent.GoToWriteProseEvent -> goToWriteProsePage()
         }
     }
 
     private fun goToDetailPage(proseId : Int, proseType : DetailType){
         val action = HomeFragmentDirections.actionHomeToDetail(proseId, proseType)
+        findNavController().navigate(action)
+    }
+
+    private fun goToWriteProsePage(){
+        val action = HomeFragmentDirections.actionHomeToProseWrite()
         findNavController().navigate(action)
     }
 
