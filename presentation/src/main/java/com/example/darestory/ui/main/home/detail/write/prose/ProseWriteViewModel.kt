@@ -81,7 +81,7 @@ class ProseWriteViewModel @Inject constructor(
         if(titleStateFlow.value.isEmpty()){
             emitEventFlow(ProseWriteEvent.ToastEmptyTitleEvent)
         }
-        else{
+        else if(contentStateFlow.value.isEmpty()){
             emitEventFlow(ProseWriteEvent.ToastEmptyContentEvent)
         }
     }

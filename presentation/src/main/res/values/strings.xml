@@ -81,5 +81,13 @@
 
     <!-- Toast 에러 -->
     <string name="toast_error_check_prose_title">제목을 입력해주세요.</string>
-    <string name="toast_error_check_prose_content">내용을 입력해주세요.</string>
+    <string name="toast_error_check_prose_content">내을 입력해주세요.</string>
+
+    <!-- 신고 -->
+    <string name="report_type">신고유형</string>
+    <string name="report_whos_name">\"%s\"</string>
+    <string name="report_who">님 신고하기</string>
+    <string name="report_choice_type">신고 유형을 선택해주세요.</string>
+    <string name="report_content">신고 내용</string>
+    <string name="report_input_content">신고 내용</string>
 </resources>
