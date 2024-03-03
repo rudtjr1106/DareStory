@@ -21,6 +21,7 @@ class HomeAdapter(private val listener: HomeDelegate) : ListAdapter<HomeProseVo,
     var sortType : SortType = SortType.POPULAR
 
     interface HomeDelegate {
+        fun onClickSearch()
         fun onClickProse(proseId : Int)
         fun onClickSort(type : SortType)
         fun onClickWriteProse()

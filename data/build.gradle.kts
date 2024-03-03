@@ -50,4 +50,10 @@ dependencies {
     implementation(Google.FIREBASE_AUTH)
     implementation(Google.FIREBASE_FIRE_STORE)
     implementation(Google.FIREBASE_REALTIME_DB)
+
+    // ROOM Database 사용
+    implementation(AndroidX.ROOM_RUNTIME)
+    annotationProcessor(AndroidX.ROOM_COMPILER)
+    kapt(AndroidX.ROOM_COMPILER)
+    implementation(AndroidX.ROOM)
 }

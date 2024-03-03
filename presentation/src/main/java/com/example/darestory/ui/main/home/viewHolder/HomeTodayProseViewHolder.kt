@@ -29,6 +29,9 @@ class HomeTodayProseViewHolder (
 
     init {
         binding.apply {
+            imageBtnSearch.setOnClickListener {
+                listener.onClickSearch()
+            }
             imageBtnNewWrite.setOnClickListener {
                 listener.onClickWriteProse()
             }

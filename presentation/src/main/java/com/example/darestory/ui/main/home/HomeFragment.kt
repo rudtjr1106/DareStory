@@ -24,6 +24,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
 
     private val homeAdapter : HomeAdapter by lazy {
         HomeAdapter(object : HomeAdapter.HomeDelegate {
+            override fun onClickSearch() {
+                viewModel.goToRecentSearchPage()
+            }
+
             override fun onClickProse(proseId: Int) {
                 viewModel.goToDetailPage(proseId)
             }
@@ -74,6 +78,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
         when(event){
             is HomeEvent.GoToDetailPageEvent -> goToDetailPage(event.proseId, event.proseType)
             is HomeEvent.GoToWriteProseEvent -> goToWriteProsePage()
+            is HomeEvent.GoToRecentSearchPageEvent -> goToRecentSearchPage()
         }
     }
 
@@ -84,6 +89,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
 
     private fun goToWriteProsePage(){
         val action = HomeFragmentDirections.actionHomeToProseWrite(proseId = -1, proseWriteType = ProseWriteType.NEW)
+        findNavController().navigate(action)
+    }
+
+    private fun goToRecentSearchPage(){
+        val action = HomeFragmentDirections.actionHomeToProseRecentSearch()
         findNavController().navigate(action)
     }
 

@@ -91,4 +91,8 @@
     <string name="report_content">신고 내용</string>
     <string name="report_input_content">신고 내용</string>
     <string name="report_success">신고가 완료되었습니다.</string>
+
+    <!-- 검색 -->
+    <string name="search_hint">검색어를 입력해주세요.</string>
+    <string name="search_recent">최근 검색어</string>
 </resources>

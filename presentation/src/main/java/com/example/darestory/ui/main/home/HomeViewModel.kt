@@ -149,4 +149,8 @@ class HomeViewModel @Inject constructor(
         )
         return listOf(defaultProseVo)
     }
+
+    fun goToRecentSearchPage(){
+        emitEventFlow(HomeEvent.GoToRecentSearchPageEvent)
+    }
 }

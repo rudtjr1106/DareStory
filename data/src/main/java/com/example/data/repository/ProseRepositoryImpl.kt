@@ -1,10 +1,15 @@
 package com.example.data.repository
 
+import android.util.Log
 import com.example.data.EndPoints
+import com.example.data.dao.RecentSearchProseDao
+import com.example.data.entitiy.RecentSearchProseEntity
+import com.example.domain.model.enums.DetailType
 import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.LikeVo
 import com.example.domain.model.vo.ProseVo
+import com.example.domain.model.vo.RecentSearchVo
 import com.example.domain.repository.ProseRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -13,11 +18,15 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class ProseRepositoryImpl @Inject constructor() : ProseRepository {
+class ProseRepositoryImpl @Inject constructor(
+    private val recentSearchDao: RecentSearchProseDao,
+) : ProseRepository {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseDatabase.getInstance()
@@ -224,6 +233,19 @@ class ProseRepositoryImpl @Inject constructor() : ProseRepository {
                     }
                 }
         }
+    }
+
+    override suspend fun getRecentSearch(): List<RecentSearchVo> {
+        Log.d("여기 데이터", recentSearchDao.getRecentSearches(10).toString())
+        return emptyList()
+    }
+
+    override suspend fun insertRecentSearch(recentSearchVo: RecentSearchVo): Boolean {
+        recentSearchDao.insertProse(RecentSearchProseEntity(
+            search = "이거 테스트임",
+            saveTime = System.currentTimeMillis(),
+        ))
+        return true
     }
 
     private suspend fun addProseComment(request: UpdateCommentVo) : Boolean{

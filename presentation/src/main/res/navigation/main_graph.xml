@@ -20,6 +20,11 @@
             android:id="@+id/action_home_to_prose_write"
             app:destination="@id/proseWriteFragment"/>
 
+
+        <action
+            android:id="@+id/action_home_to_prose_recent_search"
+            app:destination="@id/recentSearchFragment"/>
+
     </fragment>
 
     <fragment
@@ -35,6 +40,14 @@
         android:name="com.example.darestory.ui.main.my.MyFragment"
         android:label="fragment_my"
         tools:layout="@layout/fragment_my">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/recentSearchFragment"
+        android:name="com.example.darestory.ui.main.search.recent.RecentSearchFragment"
+        android:label="fragment_recent_search"
+        tools:layout="@layout/fragment_recent_search">
 
     </fragment>
 
