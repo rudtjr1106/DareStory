@@ -4,10 +4,12 @@ import android.util.Log
 import com.example.data.EndPoints
 import com.example.data.dao.RecentSearchProseDao
 import com.example.data.entitiy.RecentSearchProseEntity
+import com.example.domain.model.enums.SearchType
 import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.LikeVo
 import com.example.domain.model.vo.ProseVo
+import com.example.domain.model.vo.SearchVo
 import com.example.domain.repository.ProseRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -249,6 +251,41 @@ class ProseRepositoryImpl @Inject constructor(
             saveTime = System.currentTimeMillis(),
         ))
         return true
+    }
+
+    override suspend fun getSearchedResult(request: SearchVo): List<ProseVo> = suspendCoroutine {
+        val searchedProseList = mutableListOf<ProseVo>()
+        db.getReference(EndPoints.PROSE).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (proseSnapshot in snapshot.children) {
+                    val prose = proseSnapshot.getValue(ProseVo::class.java)
+                    when(request.type){
+                        SearchType.TITLE -> {
+                            if (prose != null && prose.title.contains(request.text)) {
+                                searchedProseList.add(prose)
+                            }
+                        }
+                        SearchType.CONTENT -> {
+                            if (prose != null && prose.content.contains(request.text)) {
+                                searchedProseList.add(prose)
+                            }
+                        }
+                        SearchType.TITLE_CONTENT -> {
+                            if (prose != null && (prose.title.contains(request.text) || prose.content.contains(request.text))) {
+                                searchedProseList.add(prose)
+                            }
+                        }
+                    }
+                }
+
+                it.resume(searchedProseList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                it.resume(emptyList())
+            }
+
+        })
     }
 
     private suspend fun addProseComment(request: UpdateCommentVo) : Boolean{

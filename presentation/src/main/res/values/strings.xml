@@ -26,6 +26,7 @@
     <string name="word_loading">로딩중...</string>
     <string name="word_comment">댓글</string>
     <string name="word_delete">삭제</string>
+    <string name="word_dash">-</string>
 
     <!-- 로그인 -->
     <string name="login_error_toast">이메일 또는 비밀번호를 확인해주세요.</string>
@@ -95,4 +96,11 @@
     <!-- 검색 -->
     <string name="search_hint">검색어를 입력해주세요.</string>
     <string name="search_recent">최근 검색어</string>
+    <string name="search_result">\"%s\"</string>
+    <string name="search_result_explain">의 검색 결과입니다.</string>
+    <string name="search_type_title">제목</string>
+    <string name="search_empty_result">검색하신 결과가 없어요 :(</string>
+    <string name="search_research">다시 검색하기</string>
+    <string name="search_recommend_title">-정확한 제목을 입력해보세요!</string>
+    <string name="search_recommend_filter">-필터를 바꾸어보세요!</string>
 </resources>

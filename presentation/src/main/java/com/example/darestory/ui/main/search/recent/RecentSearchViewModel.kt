@@ -38,6 +38,7 @@ class RecentSearchViewModel @Inject constructor(
         viewModelScope.launch {
             searchContentStateFlow.update { text }
             onSearchContentTextChangedAfter()
+            insertRecentSearch(text)
         }
     }
 
@@ -49,7 +50,7 @@ class RecentSearchViewModel @Inject constructor(
     }
 
     private fun successInsertRecentSearch(text : String){
-        DareLog.D("성공")
+        emitEventFlow(RecentSearchEvent.GoResultEvent(text))
     }
 
     fun onClickBackBtn(){

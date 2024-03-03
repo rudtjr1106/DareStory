@@ -49,6 +49,30 @@
         android:label="fragment_recent_search"
         tools:layout="@layout/fragment_recent_search">
 
+        <action
+            android:id="@+id/action_recent_to_result_search"
+            app:destination="@id/resultSearchFragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/resultSearchFragment"
+        android:name="com.example.darestory.ui.main.search.result.ResultSearchFragment"
+        android:label="fragment_result_search"
+        tools:layout="@layout/fragment_result_search">
+
+        <argument
+            android:name="searchText"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="detailType"
+            app:argType="com.example.domain.model.enums.DetailType"/>
+        <action
+            android:id="@+id/action_result_to_detail"
+            app:destination="@id/detailFragment"/>
+
     </fragment>
 
     <fragment

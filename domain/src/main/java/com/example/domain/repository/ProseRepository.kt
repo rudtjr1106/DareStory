@@ -3,6 +3,7 @@ package com.example.domain.repository
 import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.LikeVo
 import com.example.domain.model.vo.ProseVo
+import com.example.domain.model.vo.SearchVo
 
 interface ProseRepository {
     suspend fun getAllProse() : List<ProseVo>
@@ -16,4 +17,5 @@ interface ProseRepository {
     suspend fun deleteProse(request: Int) : Boolean
     suspend fun getRecentSearch() : List<String>
     suspend fun insertRecentSearch(request : String) : Boolean
+    suspend fun getSearchedResult(request: SearchVo) : List<ProseVo>
 }

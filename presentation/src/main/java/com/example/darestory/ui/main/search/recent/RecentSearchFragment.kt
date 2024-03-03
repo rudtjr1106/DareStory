@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentRecentSearchBinding
 import com.example.darestory.ui.main.search.recent.adapter.RecentSearchAdapter
+import com.example.domain.model.enums.DetailType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -57,6 +58,7 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
     private fun sortEvent(event : RecentSearchEvent){
         when(event){
             RecentSearchEvent.GoBackEvent -> findNavController().popBackStack()
+            is RecentSearchEvent.GoResultEvent -> goToResultPage(event.searchText)
         }
     }
 
@@ -72,6 +74,16 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
             }
         }
 
+    }
+
+    private fun goToResultPage(searchedText : String){
+        val action = RecentSearchFragmentDirections.actionRecentToResultSearch(DetailType.PROSE, searchedText)
+        findNavController().navigate(action)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getRecentSearchList()
     }
 
     override fun onStart() {

@@ -18,7 +18,7 @@ class RecentSearchAdapter(private val listener: RecentSearchDelegate) : ListAdap
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is RecentSearchViewHolder -> holder.bind(currentList[position], position + 1)
+            is RecentSearchViewHolder -> holder.bind(currentList[position])
         }
     }
 
