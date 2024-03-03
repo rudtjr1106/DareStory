@@ -8,13 +8,16 @@ import com.example.darestory.R
 import com.example.darestory.databinding.ItemLayoutHomeTodayProseBinding
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.home.adapter.TodayProseViewPagerAdapter
+import com.example.darestory.util.DareLog
 import com.example.darestory.util.UserInfo
 import com.example.darestory.util.px
+import com.example.domain.model.enums.SortType
 import com.example.domain.model.vo.ProseVo
 
 class HomeTodayProseViewHolder (
     private val binding : ItemLayoutHomeTodayProseBinding,
-    private val listener: HomeAdapter.HomeDelegate
+    private val listener: HomeAdapter.HomeDelegate,
+    private val sortType: SortType
 ) : RecyclerView.ViewHolder(binding.root){
 
     companion object{
@@ -29,6 +32,7 @@ class HomeTodayProseViewHolder (
             imageBtnNewWrite.setOnClickListener {
                 listener.onClickWriteProse()
             }
+            initTextButton()
             bindSortTextButton()
             setIndicator()
         }
@@ -61,6 +65,26 @@ class HomeTodayProseViewHolder (
         }
     }
 
+    private fun initTextButton(){
+        when(sortType){
+            SortType.POPULAR -> {
+                onClickTextBtnSortPopular()
+                returnTextBtnSortRecent()
+                returnTextBtnSortAge()
+            }
+            SortType.RECENT -> {
+                onClickTextBtnSortRecent()
+                returnTextBtnSortPopular()
+                returnTextBtnSortAge()
+            }
+            SortType.AGE -> {
+                onClickTextBtnSortAge()
+                returnTextBtnSortPopular()
+                returnTextBtnSortRecent()
+            }
+        }
+    }
+
     private fun bindSortTextButton(){
         binding.apply {
             textBtnSortAge.text = UserInfo.info.age
@@ -68,19 +92,19 @@ class HomeTodayProseViewHolder (
                 onClickTextBtnSortPopular()
                 returnTextBtnSortRecent()
                 returnTextBtnSortAge()
-                listener.onClickSortPopular()
+                listener.onClickSort(SortType.POPULAR)
             }
             textBtnSortRecent.setOnClickListener {
                 onClickTextBtnSortRecent()
                 returnTextBtnSortPopular()
                 returnTextBtnSortAge()
-                listener.onClickSortRecent()
+                listener.onClickSort(SortType.RECENT)
             }
             textBtnSortAge.setOnClickListener {
                 onClickTextBtnSortAge()
                 returnTextBtnSortPopular()
                 returnTextBtnSortRecent()
-                listener.onClickSortAge()
+                listener.onClickSort(SortType.AGE)
             }
         }
     }

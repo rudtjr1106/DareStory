@@ -29,18 +29,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
             }
 
             @RequiresApi(Build.VERSION_CODES.O)
-            override fun onClickSortPopular() {
-                viewModel.updateSortType(SortType.POPULAR)
-            }
-
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onClickSortRecent() {
-                viewModel.updateSortType(SortType.RECENT)
-            }
-
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onClickSortAge() {
-                viewModel.updateSortType(SortType.AGE)
+            override fun onClickSort(type: SortType) {
+                viewModel.updateSortType(type)
+                homeAdapter.sortType = type
             }
 
             override fun onClickWriteProse() {
@@ -100,9 +91,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
         super.onStart()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateSortType(SortType.POPULAR)
-    }
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    override fun onResume() {
+//        super.onResume()
+//        viewModel.updateSortType(SortType.POPULAR)
+//    }
 }

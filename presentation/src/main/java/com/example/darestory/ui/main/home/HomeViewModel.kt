@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
-import com.example.darestory.util.DareLog
 import com.example.darestory.util.TimeFormatter
 import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.DetailType
@@ -80,7 +79,6 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getSortedByRecentList(list : List<ProseVo>) : List<ProseVo>{
-        DareLog.D(list.sortedByDescending { it.createdAt }.toString())
         return list.sortedByDescending { it.createdAt }
     }
 
@@ -119,5 +117,9 @@ class HomeViewModel @Inject constructor(
 
     fun onClickWriteProseBtn(){
         emitEventFlow(HomeEvent.GoToWriteProseEvent)
+    }
+
+    fun getSortType() : SortType{
+        return sortTypeStateFlow.value
     }
 }
