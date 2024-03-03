@@ -1,9 +1,8 @@
 package com.example.darestory.ui.main.search.recent
 
 import androidx.lifecycle.viewModelScope
-import com.example.darestory.PageState
 import com.example.darestory.base.BaseViewModel
-import com.example.domain.model.vo.RecentSearchVo
+import com.example.darestory.util.DareLog
 import com.example.domain.usecase.home.GetRecentProseSearchUseCase
 import com.example.domain.usecase.home.InsertRecentProseSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,16 +28,32 @@ class RecentSearchViewModel @Inject constructor(
         searchContentIsEmptyStateFlow.asStateFlow(),
     )
 
-    fun test1(){
+    fun getRecentSearchList(){
         viewModelScope.launch {
-            getRecentProseSearchUseCase(Unit)
+            recentSearchedListStateFlow.update { getRecentProseSearchUseCase(Unit) }
         }
     }
 
-    fun test2(){
+    fun setSearchContent(text : String){
         viewModelScope.launch {
-            insertRecentProseSearchUseCase(RecentSearchVo())
+            searchContentStateFlow.update { text }
+            onSearchContentTextChangedAfter()
         }
+    }
+
+    fun insertRecentSearch(text : String){
+        viewModelScope.launch {
+            val result = insertRecentProseSearchUseCase(text)
+            if(result) successInsertRecentSearch(text)
+        }
+    }
+
+    private fun successInsertRecentSearch(text : String){
+        DareLog.D("성공")
+    }
+
+    fun onClickBackBtn(){
+        emitEventFlow(RecentSearchEvent.GoBackEvent)
     }
 
     fun onSearchContentTextChangedAfter(){

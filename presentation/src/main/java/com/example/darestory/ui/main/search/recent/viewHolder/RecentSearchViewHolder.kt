@@ -19,11 +19,11 @@ class RecentSearchViewHolder(
         }
     }
 
-    fun bind(item : String) {
+    fun bind(item : String, position : Int) {
         content = item
         binding.apply {
+            textNumber.text = position.toString()
             textRecentSearchItem.text = item
-
         }
     }
 }

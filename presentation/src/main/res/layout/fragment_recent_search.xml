@@ -21,6 +21,7 @@
 
             <ImageView
                 android:id="@+id/image_btn_back"
+                android:onClick="@{()->vm.onClickBackBtn()}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,11 +46,17 @@
                 app:layout_constraintBottom_toBottomOf="@id/image_serach"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="16dp"
+                android:text="@={vm.uiState.searchContent}"
                 android:afterTextChanged="@{()->vm.onSearchContentTextChangedAfter()}"
                 app:layout_constraintStart_toEndOf="@id/image_serach"
                 android:layout_marginStart="8dp"
                 android:textColorHint="@color/gray_600"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:imeOptions="actionSearch"
                 android:textColor="@color/white"
+                android:inputType="text"
+                android:lines="1"
                 android:textAppearance="@style/title1"
                 android:hint="@string/search_hint"
                 android:background="@drawable/bg_line_edit_text"
@@ -61,7 +68,7 @@
                 android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="@id/image_serach"
                 app:layout_constraintEnd_toEndOf="@id/edit_text_search"
-                android:background="@{vm.uiState.searchContentIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_dark_purple_600}"
+                android:background="@{vm.uiState.searchContentIsEmpty == true ? @drawable/img_line_gray_600 : @drawable/img_line_dark_purple_600}"
                 android:layout_width="0dp"
                 android:layout_height="1dp"/>
 

@@ -1,15 +1,12 @@
 package com.example.darestory.ui.main.search.recent
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentRecentSearchBinding
-import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.search.recent.adapter.RecentSearchAdapter
-import com.example.darestory.util.DareLog
-import com.example.domain.model.enums.SortType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -23,7 +20,7 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
     private val recentSearchAdapter : RecentSearchAdapter by lazy {
         RecentSearchAdapter(object : RecentSearchAdapter.RecentSearchDelegate {
             override fun onClickItem(recent: String) {
-                DareLog.D(recent)
+                viewModel.setSearchContent(recent)
             }
         })
     }
@@ -35,9 +32,8 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
                 layoutManager = LinearLayoutManager(context)
                 adapter = recentSearchAdapter
             }
-
-            viewModel.test1()
-            viewModel.test2()
+            bindEditTextKeyboard()
+            viewModel.getRecentSearchList()
         }
     }
 
@@ -46,11 +42,36 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
 
         repeatOnStarted(viewLifecycleOwner) {
             launch {
+                viewModel.uiState.recentSearchedList.collect{
+                    recentSearchAdapter.submitList(it)
+                }
+            }
+            launch {
                 viewModel.eventFlow.collect {
-
+                    sortEvent(it as RecentSearchEvent)
                 }
             }
         }
+    }
+
+    private fun sortEvent(event : RecentSearchEvent){
+        when(event){
+            RecentSearchEvent.GoBackEvent -> findNavController().popBackStack()
+        }
+    }
+
+    private fun bindEditTextKeyboard(){
+        binding.apply {
+            editTextSearch.apply {
+                setOnEditorActionListener { _, keyCode, keyEvent ->
+                    if(keyCode == EditorInfo.IME_ACTION_SEARCH) {
+                        viewModel.insertRecentSearch(text.toString())
+                        true
+                    }else false
+                }
+            }
+        }
+
     }
 
     override fun onStart() {
