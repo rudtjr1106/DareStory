@@ -14,22 +14,14 @@
         android:layout_height="match_parent"
         android:background="@color/background">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
-            app:layout_constraintTop_toTopOf="parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_home"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_home"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@color/background"
-                android:paddingBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@id/constraint_layout_bottom_nav"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="0dp"
+            android:background="@color/background"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@id/constraint_layout_bottom_nav"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_layout_bottom_nav"
