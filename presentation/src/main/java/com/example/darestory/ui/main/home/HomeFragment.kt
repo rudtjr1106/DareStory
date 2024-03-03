@@ -1,10 +1,14 @@
 package com.example.darestory.ui.main.home
 
+import android.graphics.Color
 import android.os.Build
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentHomeBinding
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
@@ -12,6 +16,7 @@ import com.example.darestory.util.DareLog
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.ProseWriteType
 import com.example.domain.model.enums.SortType
+import com.google.android.material.color.ColorContrast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -19,7 +24,6 @@ import kotlinx.coroutines.launch
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewModel>(
     FragmentHomeBinding::inflate
 ) {
-
     override val viewModel: HomeViewModel by viewModels()
 
     private val homeAdapter : HomeAdapter by lazy {
@@ -51,6 +55,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
             recyclerHome.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = homeAdapter
+            }
+
+            swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.purple_600))
+            swipeRefreshLayout.setOnRefreshListener {
+                swipeRefreshLayout.isRefreshing = false
+                viewModel.getAllProse()
             }
 
             viewModel.getAllProse()

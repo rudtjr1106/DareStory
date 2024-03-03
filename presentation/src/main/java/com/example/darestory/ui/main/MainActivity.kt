@@ -10,6 +10,7 @@ import com.example.darestory.PageState
 import com.example.darestory.R
 import com.example.darestory.base.BaseActivity
 import com.example.darestory.databinding.ActivityMainBinding
+import com.example.darestory.util.DareLog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -37,10 +38,6 @@ class MainActivity :
     private fun initNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view_main_host) as NavHostFragment
         navController = navHostFragment.navController
-    }
 
-    @SuppressLint("MissingSuperCall")
-    override fun onBackPressed() {
-        navController.popBackStack()
     }
 }

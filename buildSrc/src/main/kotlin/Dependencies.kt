@@ -35,5 +35,6 @@ object AndroidX{
     const val ROOM_RUNTIME = "androidx.room:room-runtime:${Versions.ROOM}"
     const val ROOM_COMPILER = "androidx.room:room-compiler:${Versions.ROOM}"
     const val ROOM = "androidx.room:room-ktx:${Versions.ROOM}"
+    const val SWIPE_REFRESH = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.REFRESH}"
 }
 
