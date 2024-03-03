@@ -90,10 +90,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
     override fun onStart() {
         super.onStart()
     }
-
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    override fun onResume() {
-//        super.onResume()
-//        viewModel.updateSortType(SortType.POPULAR)
-//    }
 }

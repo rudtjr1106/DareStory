@@ -11,11 +11,14 @@ class TodayProseViewPagerViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private lateinit var proseItem : ProseVo
+    companion object{
+        const val DEVELOP_PROSE_ID = -100
+    }
 
     init {
         binding.apply {
             constraintLayoutTodayProse.setOnClickListener {
-                listener.onClickProse(proseItem.proseId)
+                if(proseItem.proseId != DEVELOP_PROSE_ID) listener.onClickProse(proseItem.proseId)
             }
         }
     }

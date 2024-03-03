@@ -26,6 +26,10 @@ class HomeViewModel @Inject constructor(
 
     companion object{
         const val MAX_TODAY_PROSE = 3
+        const val DEFAULT_AUTHOR = "조경석"
+        const val DEFAULT_TITLE = "이 글은 터치가 되지 않습니다."
+        const val DEFAULT_CONTENT = "개발자 조경석입니다."
+        const val DEVELOP_PROSE_ID = -100
     }
 
     private val proseListStateFlow: MutableStateFlow<List<HomeProseVo>> = MutableStateFlow(emptyList())
@@ -41,7 +45,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             showLoading()
             val result = getAllProseUseCase(Unit)
-            if(result.isNotEmpty()) successGetAllProse(result)
+            if(result.isNotEmpty()) successGetAllProse(result) else showDefaultPage()
         }
     }
 
@@ -51,7 +55,7 @@ class HomeViewModel @Inject constructor(
             sortTypeStateFlow.update { type }
             showLoading()
             val result = getAllProseUseCase(Unit)
-            if(result.isNotEmpty()) successGetAllProse(result)
+            if(result.isNotEmpty()) successGetAllProse(result) else showDefaultPage()
         }
     }
 
@@ -60,6 +64,16 @@ class HomeViewModel @Inject constructor(
         val sortedByTypeList = getSortedByType(list)
         val todayProseList = getTodayProseList(getSortedByPopularList(list))
         val allProseList = getAllProseList(sortedByTypeList)
+        viewModelScope.launch {
+            proseListStateFlow.update { todayProseList + allProseList}
+            endLoading()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showDefaultPage(){
+        val todayProseList = getTodayProseList(emptyList())
+        val allProseList = getAllProseList(emptyList())
         viewModelScope.launch {
             proseListStateFlow.update { todayProseList + allProseList}
             endLoading()
@@ -92,11 +106,17 @@ class HomeViewModel @Inject constructor(
         val yesterdayList = list.filter {
             it.createdAt.split("/")[0] == yesterday
         }
-        val todayProseList = if(yesterdayList.size > MAX_TODAY_PROSE) yesterdayList.take(MAX_TODAY_PROSE) else yesterdayList
-
-        return listOf(
-            HomeProseVo(proseListVo = todayProseList, homeViewType = HomeViewType.TODAY_PROSE)
-        )
+        if(yesterdayList.isNotEmpty()){
+            val todayProseList = if(yesterdayList.size > MAX_TODAY_PROSE) yesterdayList.take(MAX_TODAY_PROSE) else yesterdayList
+            return listOf(
+                HomeProseVo(proseListVo = todayProseList, homeViewType = HomeViewType.TODAY_PROSE)
+            )
+        }
+        else {
+            return listOf(
+                HomeProseVo(proseListVo = getDefaultProse(), homeViewType = HomeViewType.TODAY_PROSE)
+            )
+        }
 
     }
 
@@ -108,7 +128,7 @@ class HomeViewModel @Inject constructor(
             )
         }
 
-        return homeAllProseList
+        return homeAllProseList.ifEmpty { emptyList() }
     }
 
     fun goToDetailPage(proseId : Int){
@@ -119,7 +139,14 @@ class HomeViewModel @Inject constructor(
         emitEventFlow(HomeEvent.GoToWriteProseEvent)
     }
 
-    fun getSortType() : SortType{
-        return sortTypeStateFlow.value
+    private fun getDefaultProse() : List<ProseVo>{
+        val defaultProseVo = ProseVo(
+            author = DEFAULT_AUTHOR,
+            title = DEFAULT_TITLE,
+            content = DEFAULT_CONTENT,
+            proseId = DEVELOP_PROSE_ID
+
+        )
+        return listOf(defaultProseVo)
     }
 }
