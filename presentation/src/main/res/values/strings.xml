@@ -17,6 +17,16 @@
     <string name="word_nickname">닉네임</string>
     <string name="word_writer">작가</string>
     <string name="word_complete">완료</string>
+    <string name="word_home">홈</string>
+    <string name="word_discussion">토론장</string>
+    <string name="word_my">My</string>
+    <string name="word_sort_popular">인기순</string>
+    <string name="word_sort_recent">최신순</string>
+    <string name="word_sort_age">나이대</string>
+    <string name="word_loading">로딩중...</string>
+    <string name="word_comment">댓글</string>
+    <string name="word_delete">삭제</string>
+    <string name="word_dash">-</string>
 
     <!-- 로그인 -->
     <string name="login_error_toast">이메일 또는 비밀번호를 확인해주세요.</string>
@@ -48,4 +58,49 @@
     <string name="sign_up_verify_complete">인증 완료</string>
     <string name="sign_up_verify_email">입력하신 메일 주소 (%s)로 인증 메일이 발송되었습니다.\n\n메일을 확인 하신 뒤 인증 링크를 클릭해주세요.\n\n혹시 메일을 받지 못하셨나요? 스팸함을 확인하거나,\n재발송이 필요한 경우 이곳 을 클릭해주세요</string>
     <string name="sign_up_email_verify_error_toast">이메일 인증이 완료되지 않았어요.</string>
+
+    <!-- 홈 -->
+    <string name="home_today_prose">오늘의 산문</string>
+    <string name="home_all_prose">전체 산문</string>
+    <string name="home_prose_comment_hint">당신의 생각을 적어주세요.</string>
+    <string name="home_prose_main_author">%s 지음</string>
+    <string name="home_prose_empty_comment">“댓글이 없네요\n 댓글을 첫번째로 남겨봐요”</string>
+    <string name="home_detail_input_title">제목을 입력해주세요.</string>
+    <string name="home_detail_input_content">내용을 입력해주세요.</string>
+    <string name="home_prose_author_say">작가의 말(선택)</string>
+    <string name="home_upload_complete">업로드가 완료되었습니다!</string>
+
+    <!-- 바텀시트 -->
+    <string name="bottom_sheet_edit">수정하기</string>
+    <string name="bottom_sheet_delete">삭제하기</string>
+    <string name="bottom_sheet_report">신고하기</string>
+    <string name="bottom_sheet_bookmark">나만의 책에 담기</string>
+
+    <!-- 다이얼로그 -->
+    <string name="dialog_delete_title">삭제 하시겠습니까?</string>
+    <string name="dialog_delete_content">삭제된 글은 복구되지 않습니다.</string>
+
+    <!-- Toast 에러 -->
+    <string name="toast_error_check_prose_title">제목을 입력해주세요.</string>
+    <string name="toast_error_check_prose_content">내을 입력해주세요.</string>
+
+    <!-- 신고 -->
+    <string name="report_type">신고유형</string>
+    <string name="report_whos_name">\"%s\"</string>
+    <string name="report_who">님 신고하기</string>
+    <string name="report_choice_type">신고 유형을 선택해주세요.</string>
+    <string name="report_content">신고 내용</string>
+    <string name="report_input_content">신고 내용</string>
+    <string name="report_success">신고가 완료되었습니다.</string>
+
+    <!-- 검색 -->
+    <string name="search_hint">검색어를 입력해주세요.</string>
+    <string name="search_recent">최근 검색어</string>
+    <string name="search_result">\"%s\"</string>
+    <string name="search_result_explain">의 검색 결과입니다.</string>
+    <string name="search_type_title">제목</string>
+    <string name="search_empty_result">검색하신 결과가 없어요 :(</string>
+    <string name="search_research">다시 검색하기</string>
+    <string name="search_recommend_title">-정확한 제목을 입력해보세요!</string>
+    <string name="search_recommend_filter">-필터를 바꾸어보세요!</string>
 </resources>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_top"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/image_logo"
+                android:layout_width="56dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:background="@color/gray_600"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image_btn_new_write"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="18dp"
+                android:background="@drawable/ic_edit_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image_btn_search"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ic_search_gray_200"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/image_btn_new_write"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/text_today_prose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:text="@string/home_today_prose"
+            android:textAppearance="@style/h3"
+            android:textColor="@color/gray_200"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/constraint_layout_top" />
+
+        <ImageView
+            android:id="@+id/image_today_prose_double_line"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/img_double_line_gray_200"
+            app:layout_constraintEnd_toEndOf="@id/text_today_prose"
+            app:layout_constraintStart_toStartOf="@id/text_today_prose"
+            app:layout_constraintTop_toBottomOf="@id/text_today_prose" />
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager_today_prose"
+            app:layout_constraintTop_toBottomOf="@id/image_today_prose_double_line"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="269dp" />
+
+        <com.zhpan.indicator.IndicatorView
+            app:layout_constraintTop_toBottomOf="@id/viewPager_today_prose"
+            android:layout_marginTop="12dp"
+            android:id="@+id/indicator_view"
+            app:layout_constraintStart_toStartOf="@id/text_all_prose"
+            app:layout_constraintEnd_toEndOf="@id/text_all_prose"
+            android:layout_width="wrap_content"
+            android:foregroundGravity="center"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/text_all_prose"
+            app:layout_constraintTop_toBottomOf="@id/viewPager_today_prose"
+            android:layout_marginTop="64dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingHorizontal="20dp"
+            android:text="@string/home_all_prose"
+            android:textColor="@color/gray_200"
+            android:textAppearance="@style/h3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/image_all_prose_double_line"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/img_double_line_gray_200"
+            app:layout_constraintTop_toBottomOf="@id/text_all_prose"
+            app:layout_constraintStart_toStartOf="@id/text_all_prose"
+            app:layout_constraintEnd_toEndOf="@id/text_all_prose"/>
+
+        <TextView
+            android:id="@+id/text_btn_sort_popular"
+            android:layout_marginStart="18dp"
+            android:text="@string/word_sort_popular"
+            android:textColor="@color/purple_600"
+            android:textAppearance="@style/title2"
+            android:paddingHorizontal="3dp"
+            android:layout_marginTop="21dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image_all_prose_double_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/image_sort_popular_double_line"
+            app:layout_constraintTop_toBottomOf="@id/text_btn_sort_popular"
+            app:layout_constraintStart_toStartOf="@id/text_btn_sort_popular"
+            app:layout_constraintEnd_toEndOf="@id/text_btn_sort_popular"
+            android:background="@drawable/img_double_line_purple_600"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_btn_sort_recent"
+            android:layout_marginStart="6dp"
+            android:text="@string/word_sort_recent"
+            android:textColor="@color/gray_600"
+            android:textAppearance="@style/body2"
+            android:paddingHorizontal="3dp"
+            android:layout_marginTop="21dp"
+            app:layout_constraintTop_toBottomOf="@id/image_all_prose_double_line"
+            app:layout_constraintStart_toEndOf="@id/text_btn_sort_popular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/image_sort_recent_double_line"
+            app:layout_constraintTop_toBottomOf="@id/text_btn_sort_recent"
+            app:layout_constraintStart_toStartOf="@id/text_btn_sort_recent"
+            app:layout_constraintEnd_toEndOf="@id/text_btn_sort_recent"
+            android:background="@drawable/img_double_line_purple_600"
+            android:layout_width="0dp"
+            android:visibility="invisible"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_btn_sort_age"
+            android:layout_marginStart="6dp"
+            android:text="@string/word_sort_age"
+            android:textColor="@color/gray_600"
+            android:textAppearance="@style/body2"
+            android:paddingHorizontal="3dp"
+            android:layout_marginTop="21dp"
+            app:layout_constraintStart_toEndOf="@id/text_btn_sort_recent"
+            app:layout_constraintTop_toBottomOf="@id/image_all_prose_double_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <ImageView
+            android:id="@+id/image_sort_age_double_line"
+            app:layout_constraintTop_toBottomOf="@id/text_btn_sort_age"
+            app:layout_constraintStart_toStartOf="@id/text_btn_sort_age"
+            app:layout_constraintEnd_toEndOf="@id/text_btn_sort_age"
+            android:visibility="invisible"
+            android:background="@drawable/img_double_line_purple_600"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -13,7 +13,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import com.example.darestory.R
 import com.example.darestory.databinding.InputDialogBinding
-import com.example.darestory.util.DareLog
 import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 
@@ -110,7 +109,7 @@ class InputDialog @Inject constructor(@ActivityContext private val context: Cont
         binding.apply {
             if (editTextInput.text.isNotEmpty()) {
                 imageBtnResetEditText.visibility = View.VISIBLE
-                imageLineEditText.setBackgroundResource(R.drawable.img_line_purple_dark_600)
+                imageLineEditText.setBackgroundResource(R.drawable.img_line_dark_purple_600)
             } else {
                 imageBtnResetEditText.visibility = View.GONE
                 imageLineEditText.setBackgroundResource(R.drawable.img_line_gray_600)

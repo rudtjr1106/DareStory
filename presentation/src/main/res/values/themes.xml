@@ -7,4 +7,8 @@
     </style>
 
     <style name="Theme.DareStory" parent="Base.Theme.DareStory" />
+
+    <style name="Theme.App.RemoveSplash" parent="Base.Theme.DareStory">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>

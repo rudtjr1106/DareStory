@@ -70,7 +70,7 @@
             app:layout_constraintTop_toBottomOf="@id/edit_text_email_input"
             app:layout_constraintStart_toStartOf="@id/edit_text_email_input"
             app:layout_constraintEnd_toEndOf="@id/edit_text_email_input"
-            android:background="@{vm.uiState.emailIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_purple_dark_600}"
+            android:background="@{vm.uiState.emailIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_dark_purple_600}"
             android:layout_marginTop="2dp"
             android:layout_width="0dp"
             android:layout_height="1dp"/>
@@ -121,7 +121,7 @@
             app:layout_constraintTop_toBottomOf="@id/edit_text_password_input"
             app:layout_constraintStart_toStartOf="@id/edit_text_password_input"
             app:layout_constraintEnd_toEndOf="@id/edit_text_password_input"
-            android:background="@{vm.uiState.passwordIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_purple_dark_600}"
+            android:background="@{vm.uiState.passwordIsEmpty ? @drawable/img_line_gray_600 : @drawable/img_line_dark_purple_600}"
             android:layout_marginTop="2dp"
             android:layout_width="0dp"
             android:layout_height="1dp"/>

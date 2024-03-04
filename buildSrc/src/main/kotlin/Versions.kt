@@ -21,5 +21,7 @@ object Versions {
     const val TIMBER = "4.7.1"
     const val FRAGMENT_KTX = "1.5.2"
     const val NAVIGATION = "2.5.1"
+    const val ROOM = "2.4.3"
+    const val REFRESH = "1.1.0"
 
 }

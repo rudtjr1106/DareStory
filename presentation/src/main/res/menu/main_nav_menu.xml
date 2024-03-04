@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_navigation_home"
+        android:title="@string/word_home"
+        android:icon="@drawable/selector_ic_bottom_nav_home" />
+    <item android:id="@+id/menu_navigation_discussion"
+        android:title="@string/word_discussion"
+        android:icon="@drawable/selector_ic_bottom_nav_discussion" />
+    <item android:id="@+id/menu_navigation_my"
+        android:title="@string/word_my"
+        android:icon="@drawable/selector_ic_bottom_nav_my" />
+</menu>

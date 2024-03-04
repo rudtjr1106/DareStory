@@ -1,13 +1,10 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.EndPoints
-import com.example.domain.model.sign.LoginVo
-import com.example.domain.model.sign.UserVo
+import com.example.domain.model.vo.LoginVo
+import com.example.domain.model.vo.UserVo
 import com.example.domain.repository.SignRepository
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -22,6 +19,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseDatabase.getInstance()
+    private val authDbRef = db.getReference(EndPoints.AUTH)
 
     override suspend fun signUp(requestEmail: String, requestPw: String): Boolean {
         return try {
@@ -35,7 +33,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
 
     override suspend fun login(request: LoginVo): Boolean {
         return try {
-            auth?.signInWithEmailAndPassword(request.email, request.password)?.await()
+            auth.signInWithEmailAndPassword(request.email, request.password).await()
             true
         }
         catch (e: Exception) {
@@ -46,7 +44,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
     override suspend fun getAllNickName(): List<String> {
         return suspendCoroutine { continuation ->
             val nickNameList: MutableList<String> = mutableListOf()
-            db.getReference(EndPoints.AUTH).addListenerForSingleValueEvent(object : ValueEventListener {
+            authDbRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (dataSnapshot in snapshot.children) {
                         nickNameList.add(dataSnapshot.key.toString())
@@ -65,7 +63,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         val userVo = auth.uid?.let { request.copy(userUid = it) }
         val updatedData = mapOf(request.nickName to userVo)
         return try {
-            db.getReference(EndPoints.AUTH).updateChildren(updatedData).await()
+            authDbRef.updateChildren(updatedData).await()
             true
         }
         catch (e : Exception){
@@ -76,7 +74,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
     override suspend fun getAllEmail(): List<String> {
         return suspendCoroutine { continuation ->
             val emailList: MutableList<String> = mutableListOf()
-            db.getReference(EndPoints.AUTH).addListenerForSingleValueEvent(object : ValueEventListener {
+            authDbRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (dataSnapshot in snapshot.children) {
                         val user = dataSnapshot.getValue(UserVo::class.java)
@@ -121,5 +119,35 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
             false
         }
 
+    }
+
+    override suspend fun checkAutoLogin(): UserVo {
+        val currentUser = auth.currentUser
+        return suspendCoroutine { continuation ->
+            authDbRef.orderByChild(EndPoints.AUTH_UID).equalTo(currentUser?.uid)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (childSnapshot in snapshot.children) {
+                            val userInfoMap = childSnapshot.value as? Map<String, Any>
+                            userInfoMap?.let {
+                                val age = it["age"] as? String ?: ""
+                                val email = it["email"] as? String ?: ""
+                                val gender = it["gender"] as? String ?: ""
+                                val nickName = it["nickName"] as? String ?: ""
+                                val userUid = it["userUid"] as? String ?: ""
+                                val userVo = UserVo(age, email, gender, nickName, userUid)
+                                continuation.resume(userVo)
+                                return
+                            }
+                        }
+                    }
+                    continuation.resume(UserVo())
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    continuation.resume(UserVo())
+                }
+            })
+        }
     }
 }

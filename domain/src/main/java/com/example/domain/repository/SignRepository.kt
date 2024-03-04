@@ -1,7 +1,7 @@
 package com.example.domain.repository
 
-import com.example.domain.model.sign.LoginVo
-import com.example.domain.model.sign.UserVo
+import com.example.domain.model.vo.LoginVo
+import com.example.domain.model.vo.UserVo
 
 interface SignRepository {
     suspend fun signUp(requestEmail : String, requestPw : String) : Boolean
@@ -14,4 +14,5 @@ interface SignRepository {
     suspend fun sendEmailVerification() : Boolean
     suspend fun checkEmailVerified() : Boolean
     suspend fun sendPasswordResetEmail(request : String) : Boolean
+    suspend fun checkAutoLogin() : UserVo
 }

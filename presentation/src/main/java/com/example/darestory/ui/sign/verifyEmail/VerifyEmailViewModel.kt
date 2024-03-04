@@ -3,8 +3,8 @@ package com.example.darestory.ui.sign.verifyEmail
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.PageState
 import com.example.darestory.base.BaseViewModel
-import com.example.domain.usecase.CheckEmailVerifiedUseCase
-import com.example.domain.usecase.SendEmailVerificationUseCase
+import com.example.domain.usecase.sign.CheckEmailVerifiedUseCase
+import com.example.domain.usecase.sign.SendEmailVerificationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

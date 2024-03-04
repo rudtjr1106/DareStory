@@ -2,8 +2,6 @@ package com.example.darestory.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Lifecycle
@@ -20,8 +18,6 @@ abstract class BaseActivity<B : ViewDataBinding,STATE: PageState, VM: BaseViewMo
 
     protected lateinit var binding: B
     protected abstract val viewModel: VM
-
-    private var progressView:ProgressBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,15 +36,9 @@ abstract class BaseActivity<B : ViewDataBinding,STATE: PageState, VM: BaseViewMo
     protected open fun initState() {
         repeatOnStarted {
             launch {
-                viewModel.showProgress.collect {
-                    progressView?.visibility = if(it) View.VISIBLE else View.GONE
-                }
+
             }
         }
-    }
-
-    protected fun bindProgressBar(progressBar: ProgressBar) {
-        progressView = progressBar
     }
 
     protected fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {

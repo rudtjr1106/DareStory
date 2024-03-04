@@ -23,4 +23,19 @@
         <item>80대</item>
         <item>90대</item>
     </string-array>
+
+    <string-array name="report_array">
+        <item>욕설/비방</item>
+        <item>사기/사칭</item>
+        <item>스팸</item>
+        <item>음란/성적행위</item>
+        <item>개인정보 유포/수집</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="search_type_array">
+        <item>제목</item>
+        <item>내용</item>
+        <item>제목+내용</item>
+    </string-array>
 </resources>
