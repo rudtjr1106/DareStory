@@ -9,4 +9,12 @@ import javax.inject.Inject
 class DiscussionViewModel @Inject constructor() : BaseViewModel<PageState.Default>() {
     override val uiState: PageState.Default
         get() = TODO("Not yet implemented")
+
+    fun getDiscussionList(){
+
+    }
+
+    fun onClickScrollUp(){
+        emitEventFlow(DiscussionEvent.ScrollUpEvent)
+    }
 }

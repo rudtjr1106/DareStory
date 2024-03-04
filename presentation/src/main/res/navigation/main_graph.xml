@@ -13,6 +13,10 @@
         tools:layout="@layout/fragment_home">
 
         <action
+            android:id="@+id/action_home_to_discussion"
+            app:destination="@id/discussionFragment"/>
+
+        <action
             android:id="@+id/action_home_to_detail"
             app:destination="@id/detailFragment"/>
 
@@ -32,6 +36,10 @@
         android:name="com.example.darestory.ui.main.discussion.DiscussionFragment"
         android:label="fragment_discussion"
         tools:layout="@layout/fragment_discussion">
+
+        <action
+            android:id="@+id/action_discussion_to_home"
+            app:destination="@id/homeFragment"/>
 
     </fragment>
 

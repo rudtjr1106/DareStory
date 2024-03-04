@@ -103,4 +103,5 @@
     <string name="search_research">다시 검색하기</string>
     <string name="search_recommend_title">-정확한 제목을 입력해보세요!</string>
     <string name="search_recommend_filter">-필터를 바꾸어보세요!</string>
+    <string name="word_book">책</string>
 </resources>
