@@ -1,6 +1,5 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.EndPoints
 import com.example.domain.model.vo.LoginVo
 import com.example.domain.model.vo.UserVo
@@ -20,6 +19,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseDatabase.getInstance()
+    private val authDbRef = db.getReference(EndPoints.AUTH)
 
     override suspend fun signUp(requestEmail: String, requestPw: String): Boolean {
         return try {
@@ -33,7 +33,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
 
     override suspend fun login(request: LoginVo): Boolean {
         return try {
-            auth?.signInWithEmailAndPassword(request.email, request.password)?.await()
+            auth.signInWithEmailAndPassword(request.email, request.password).await()
             true
         }
         catch (e: Exception) {
@@ -44,7 +44,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
     override suspend fun getAllNickName(): List<String> {
         return suspendCoroutine { continuation ->
             val nickNameList: MutableList<String> = mutableListOf()
-            db.getReference(EndPoints.AUTH).addListenerForSingleValueEvent(object : ValueEventListener {
+            authDbRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (dataSnapshot in snapshot.children) {
                         nickNameList.add(dataSnapshot.key.toString())
@@ -63,7 +63,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         val userVo = auth.uid?.let { request.copy(userUid = it) }
         val updatedData = mapOf(request.nickName to userVo)
         return try {
-            db.getReference(EndPoints.AUTH).updateChildren(updatedData).await()
+            authDbRef.updateChildren(updatedData).await()
             true
         }
         catch (e : Exception){
@@ -74,7 +74,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
     override suspend fun getAllEmail(): List<String> {
         return suspendCoroutine { continuation ->
             val emailList: MutableList<String> = mutableListOf()
-            db.getReference(EndPoints.AUTH).addListenerForSingleValueEvent(object : ValueEventListener {
+            authDbRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (dataSnapshot in snapshot.children) {
                         val user = dataSnapshot.getValue(UserVo::class.java)
@@ -124,7 +124,8 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
     override suspend fun checkAutoLogin(): UserVo {
         val currentUser = auth.currentUser
         return suspendCoroutine { continuation ->
-            db.getReference(EndPoints.AUTH).orderByChild(EndPoints.AUTH_UID).equalTo(currentUser?.uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            authDbRef.orderByChild(EndPoints.AUTH_UID).equalTo(currentUser?.uid)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         for (childSnapshot in snapshot.children) {
@@ -141,7 +142,6 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
                             }
                         }
                     }
-                    // 맵에서 사용자 정보를 가져오지 못한 경우 빈 UserVo를 반환
                     continuation.resume(UserVo())
                 }
                 override fun onCancelled(error: DatabaseError) {

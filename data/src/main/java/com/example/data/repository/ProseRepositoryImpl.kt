@@ -1,6 +1,5 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.EndPoints
 import com.example.data.dao.RecentSearchProseDao
 import com.example.data.entitiy.RecentSearchProseEntity
@@ -26,57 +25,54 @@ class ProseRepositoryImpl @Inject constructor(
     private val recentSearchDao: RecentSearchProseDao,
 ) : ProseRepository {
 
-    companion object{
+    companion object {
         const val LIMIT_RECENT_SEARCH = 10
     }
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseDatabase.getInstance()
-    override suspend fun getAllProse(): List<ProseVo> {
-        return suspendCoroutine { continuation ->
-            val proseList: MutableList<ProseVo> = mutableListOf()
-            db.getReference(EndPoints.PROSE)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        for (dataSnapshot in snapshot.children) {
-                            val prose = dataSnapshot.getValue(ProseVo::class.java)
-                            prose?.let {
-                                proseList.add(it)
-                            }
-                        }
-                        continuation.resume(proseList)
-                    }
+    private val proseDbRef = db.getReference(EndPoints.PROSE)
 
-                    override fun onCancelled(error: DatabaseError) {
-                        continuation.resume(proseList)
+    override suspend fun getAllProse(): List<ProseVo> = suspendCoroutine {coroutineScope ->
+        val proseList: MutableList<ProseVo> = mutableListOf()
+        proseDbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (dataSnapshot in snapshot.children) {
+                        val prose = dataSnapshot.getValue(ProseVo::class.java)
+                        prose?.let {
+                            proseList.add(it)
+                        }
                     }
-                })
-        }
+                    coroutineScope.resume(proseList)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    coroutineScope.resume(proseList)
+                }
+            })
     }
 
-    override suspend fun getProse(request: Int): ProseVo {
+    override suspend fun getProse(request: Int): ProseVo = suspendCoroutine { coroutineScope ->
         val proseId = request.toString()
-        return suspendCoroutine { continuation ->
-            db.getReference(EndPoints.PROSE).child(proseId)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val prose = snapshot.getValue(ProseVo::class.java)
-                        prose?.let { continuation.resume(it) }
-                    }
+        proseDbRef.child(proseId).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val prose = snapshot.getValue(ProseVo::class.java)
+                    prose?.let { coroutineScope.resume(it) }
+                }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        continuation.resume(ProseVo())
-                    }
-                })
-        }
+                override fun onCancelled(error: DatabaseError) {
+                    coroutineScope.resume(ProseVo())
+                }
+            })
+
     }
 
     override suspend fun likeCancel(request: LikeVo): Boolean = coroutineScope {
         val success = async {
-            removeLikedUser(request.id)
+            removeLikedUser(request.pageId)
         }.await()
 
-        if(success) updateLikeCount(request.id) else false
+        if (success) updateLikeCount(request.pageId) else false
     }
 
     override suspend fun likeAdd(request: LikeVo): Boolean = coroutineScope {
@@ -84,24 +80,24 @@ class ProseRepositoryImpl @Inject constructor(
             addLikedUser(request)
         }.await()
 
-        if(success) updateLikeCount(request.id) else false
+        if (success) updateLikeCount(request.pageId) else false
     }
 
-    private suspend fun removeLikedUser(proseId: Int): Boolean = suspendCoroutine { continuation ->
-        val proseRef = db.getReference(EndPoints.PROSE).child(proseId.toString())
+    private suspend fun removeLikedUser(proseId: Int): Boolean = suspendCoroutine {
+        val proseRef = proseDbRef.child(proseId.toString())
         val likedUsersRef = proseRef.child(EndPoints.LIKED_MEMBER).child(auth.uid.toString())
 
         likedUsersRef.removeValue().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                continuation.resume(true)
+                it.resume(true)
             } else {
-                continuation.resume(false)
+                it.resume(false)
             }
         }
     }
 
     private suspend fun updateLikeCount(proseId: Int): Boolean = suspendCoroutine { continuation ->
-        val proseRef = db.getReference(EndPoints.PROSE).child(proseId.toString())
+        val proseRef = proseDbRef.child(proseId.toString())
         val likedUsersRef = proseRef.child(EndPoints.LIKED_MEMBER)
 
         likedUsersRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -123,18 +119,17 @@ class ProseRepositoryImpl @Inject constructor(
     }
 
 
-    private suspend fun addLikedUser(request: LikeVo): Boolean {
-        return suspendCoroutine { continuation ->
-            db.getReference(EndPoints.PROSE).child(request.id.toString()).child(EndPoints.LIKED_MEMBER)
-                .child(auth.uid.toString()).setValue(request.nickName)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        continuation.resume(true)
-                    } else {
-                        continuation.resume(false)
-                    }
+    private suspend fun addLikedUser(request: LikeVo): Boolean = suspendCoroutine { continuation ->
+        proseDbRef.child(request.pageId.toString()).child(EndPoints.LIKED_MEMBER).child(auth.uid.toString())
+            .setValue(request.nickName)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    continuation.resume(true)
+                } else {
+                    continuation.resume(false)
                 }
-        }
+            }
+
     }
 
     override suspend fun addComment(request: UpdateCommentVo): Boolean = coroutineScope {
@@ -142,7 +137,7 @@ class ProseRepositoryImpl @Inject constructor(
             addProseComment(request)
         }.await()
 
-        if(success) updateCommentCount(request.id) else false
+        if (success) updateCommentCount(request.id) else false
     }
 
     override suspend fun deleteComment(request: UpdateCommentVo): Boolean = coroutineScope {
@@ -150,91 +145,87 @@ class ProseRepositoryImpl @Inject constructor(
             deleteProseComment(request)
         }.await()
 
-        if(success) updateCommentCount(request.id) else false
+        if (success) updateCommentCount(request.id) else false
     }
 
-    private suspend fun deleteProseComment(request: UpdateCommentVo) : Boolean = suspendCoroutine {
-        db.getReference(EndPoints.PROSE).child(request.id.toString()).child(EndPoints.COMMENT)
+    private suspend fun deleteProseComment(request: UpdateCommentVo): Boolean = suspendCoroutine {
+        proseDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
             .addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (commentSnapshot in dataSnapshot.children) {
-                    val commentId = commentSnapshot.child(EndPoints.COMMENT_ID).getValue(Int::class.java)
-                    if (commentId == request.comment.commentId) {
-                        commentSnapshot.ref.removeValue()
-                            .addOnCompleteListener { task ->
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (commentSnapshot in dataSnapshot.children) {
+                        val commentId =
+                            commentSnapshot.child(EndPoints.COMMENT_ID).getValue(Int::class.java)
+                        if (commentId == request.comment.commentId) {
+                            commentSnapshot.ref.removeValue().addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
                                     it.resume(true)
                                 } else {
                                     it.resume(false)
                                 }
                             }
-                        break
+                            break
+                        }
                     }
                 }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                it.resume(false)
-            }
-        })
+                override fun onCancelled(databaseError: DatabaseError) {
+                    it.resume(false)
+                }
+            })
     }
 
-    override suspend fun upload(request: ProseVo): Boolean {
-        return suspendCoroutine {
-            db.getReference(EndPoints.PROSE).orderByChild(EndPoints.PROSE_ID).limitToLast(1)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        var lastProseId = 0
-
-                        for (snapshot in dataSnapshot.children) {
-                            val prose = snapshot.getValue(ProseVo::class.java)
-                            prose?.let {
-                                lastProseId = it.proseId + 1
-                            }
+    override suspend fun upload(request: ProseVo): Boolean = suspendCoroutine {
+        var lastProseId = 0
+        proseDbRef.orderByChild(EndPoints.PROSE_ID).limitToLast(1)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (snapshot in dataSnapshot.children) {
+                        val prose = snapshot.getValue(ProseVo::class.java)
+                        prose?.let {
+                            lastProseId = it.proseId + 1
                         }
-                        val newRequest = request.copy(proseId = lastProseId)
+                    }
+                    val newRequest = request.copy(proseId = lastProseId)
 
-                        db.getReference(EndPoints.PROSE).child(lastProseId.toString())
-                            .setValue(newRequest).addOnCompleteListener { task ->
+                    db.getReference(EndPoints.PROSE).child(lastProseId.toString())
+                        .setValue(newRequest).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 it.resume(true)
                             } else {
                                 it.resume(false)
                             }
                         }
-                    }
+                }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        it.resume(false)
-                    }
-                })
-        }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    it.resume(false)
+                }
+            })
+
     }
 
-    override suspend fun update(request: ProseVo): Boolean {
-        return suspendCoroutine {
-            db.getReference(EndPoints.PROSE).child(request.proseId.toString())
-                .setValue(request).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        it.resume(true)
-                    } else {
-                        it.resume(false)
-                    }
+    override suspend fun update(request: ProseVo): Boolean = suspendCoroutine {
+        proseDbRef.child(request.proseId.toString())
+            .setValue(request)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    it.resume(true)
+                } else {
+                    it.resume(false)
                 }
-        }
+            }
+
     }
 
-    override suspend fun deleteProse(request: Int): Boolean {
-        return suspendCoroutine {
-            db.getReference(EndPoints.PROSE).child(request.toString()).removeValue()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        it.resume(true)
-                    } else {
-                        it.resume(false)
-                    }
+    override suspend fun deleteProse(request: Int): Boolean = suspendCoroutine {
+        proseDbRef.child(request.toString()).removeValue()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    it.resume(true)
+                } else {
+                    it.resume(false)
                 }
-        }
+            }
     }
 
     override suspend fun getRecentSearch(): List<String> {
@@ -246,82 +237,86 @@ class ProseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertRecentSearch(text: String): Boolean {
-        recentSearchDao.insertProse(RecentSearchProseEntity(
-            search = text,
-            saveTime = System.currentTimeMillis(),
-        ))
+        recentSearchDao.insertProse(
+            RecentSearchProseEntity(
+                search = text,
+                saveTime = System.currentTimeMillis(),
+            )
+        )
         return true
     }
 
     override suspend fun getSearchedResult(request: SearchVo): List<ProseVo> = suspendCoroutine {
         val searchedProseList = mutableListOf<ProseVo>()
-        db.getReference(EndPoints.PROSE).addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (proseSnapshot in snapshot.children) {
-                    val prose = proseSnapshot.getValue(ProseVo::class.java)
-                    when(request.type){
-                        SearchType.TITLE -> {
-                            if (prose != null && prose.title.contains(request.text)) {
-                                searchedProseList.add(prose)
+        proseDbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (proseSnapshot in snapshot.children) {
+                        val prose = proseSnapshot.getValue(ProseVo::class.java)
+                        when (request.type) {
+                            SearchType.TITLE -> {
+                                if (prose != null && prose.title.contains(request.text)) {
+                                    searchedProseList.add(prose)
+                                }
                             }
-                        }
-                        SearchType.CONTENT -> {
-                            if (prose != null && prose.content.contains(request.text)) {
-                                searchedProseList.add(prose)
+
+                            SearchType.CONTENT -> {
+                                if (prose != null && prose.content.contains(request.text)) {
+                                    searchedProseList.add(prose)
+                                }
                             }
-                        }
-                        SearchType.TITLE_CONTENT -> {
-                            if (prose != null && (prose.title.contains(request.text) || prose.content.contains(request.text))) {
-                                searchedProseList.add(prose)
+
+                            SearchType.TITLE_CONTENT -> {
+                                if (prose != null && (prose.title.contains(request.text) || prose.content.contains(request.text))
+                                ) {
+                                    searchedProseList.add(prose)
+                                }
                             }
                         }
                     }
+
+                    it.resume(searchedProseList)
                 }
 
-                it.resume(searchedProseList)
-            }
+                override fun onCancelled(error: DatabaseError) {
+                    it.resume(emptyList())
+                }
 
-            override fun onCancelled(error: DatabaseError) {
-                it.resume(emptyList())
-            }
-
-        })
+            })
     }
 
-    private suspend fun addProseComment(request: UpdateCommentVo) : Boolean{
-        var newRequest = CommentVo()
+    private suspend fun addProseComment(request: UpdateCommentVo): Boolean = suspendCoroutine {
+        var newRequest : CommentVo
         var lastId = 0
-        val dbRef = db.getReference(EndPoints.PROSE).child(request.id.toString()).child(EndPoints.COMMENT)
-        return suspendCoroutine {
-            dbRef.limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (snapshot in dataSnapshot.children) {
-                        val comment = snapshot.getValue(CommentVo::class.java)
-                        if (comment != null) {
-                            lastId = comment.commentId + 1
-                        }
+        val dbRef = proseDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
+        dbRef.limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    val comment = snapshot.getValue(CommentVo::class.java)
+                    if (comment != null) {
+                        lastId = comment.commentId + 1
                     }
-                    newRequest = request.comment.copy(commentId = lastId)
-                    dbRef.child(newRequest.commentId.toString()).setValue(newRequest).addOnCompleteListener { task ->
+                }
+                newRequest = request.comment.copy(commentId = lastId)
+                dbRef.child(newRequest.commentId.toString()).setValue(newRequest)
+                    .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             it.resume(true)
                         } else {
                             it.resume(false)
                         }
                     }
-                }
+            }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                    // 에러 처리
-                    return it.resume(false)
-                }
-            })
+            override fun onCancelled(databaseError: DatabaseError) {
+                // 에러 처리
+                return it.resume(false)
+            }
+        })
 
-        }
     }
 
-    private suspend fun updateCommentCount(id : Int) : Boolean = suspendCoroutine { continuation ->
-        val proseRef = db.getReference(EndPoints.PROSE).child(id.toString())
+    private suspend fun updateCommentCount(id: Int): Boolean = suspendCoroutine { continuation ->
+        val proseRef = proseDbRef.child(id.toString())
         val commentRef = proseRef.child(EndPoints.COMMENT)
         commentRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

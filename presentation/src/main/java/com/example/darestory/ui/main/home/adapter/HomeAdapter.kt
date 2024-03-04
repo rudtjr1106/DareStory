@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.darestory.databinding.ItemAllProseBinding
 import com.example.darestory.databinding.ItemLayoutHomeTodayProseBinding
-import com.example.darestory.ui.main.home.viewHolder.HomeAllProseViewHolder
+import com.example.darestory.ui.main.home.viewHolder.HomeNormalProseViewHolder
 import com.example.darestory.ui.main.home.viewHolder.HomeTodayProseViewHolder
 import com.example.domain.model.enums.HomeViewType
 import com.example.domain.model.enums.SortType
 import com.example.domain.model.vo.HomeProseVo
-import com.example.domain.model.vo.ProseVo
 
 class HomeAdapter(private val listener: HomeDelegate) : ListAdapter<HomeProseVo, RecyclerView.ViewHolder>(
     HomeItemDiffCallBack()
@@ -30,7 +29,7 @@ class HomeAdapter(private val listener: HomeDelegate) : ListAdapter<HomeProseVo,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HomeTodayProseViewHolder -> holder.bind(currentList[position].proseListVo)
-            is HomeAllProseViewHolder -> holder.bind(currentList[position].allProseVo)
+            is HomeNormalProseViewHolder -> holder.bind(currentList[position].allProseVo)
         }
     }
 
@@ -40,9 +39,9 @@ class HomeAdapter(private val listener: HomeDelegate) : ListAdapter<HomeProseVo,
                 val binding = ItemLayoutHomeTodayProseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 HomeTodayProseViewHolder(binding, listener, sortType)
             }
-            HomeViewType.ALL_PROSE -> {
+            HomeViewType.NORMAL_PROSE -> {
                 val binding = ItemAllProseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                HomeAllProseViewHolder(binding, listener)
+                HomeNormalProseViewHolder(binding, listener)
             }
         }
     }

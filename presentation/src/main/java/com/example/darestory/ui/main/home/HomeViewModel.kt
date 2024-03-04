@@ -30,6 +30,7 @@ class HomeViewModel @Inject constructor(
         const val DEFAULT_TITLE = "이 글은 터치가 되지 않습니다."
         const val DEFAULT_CONTENT = "개발자 조경석입니다."
         const val DEVELOP_PROSE_ID = -100
+        const val SPLIT_DATE = 0
     }
 
     private val proseListStateFlow: MutableStateFlow<List<HomeProseVo>> = MutableStateFlow(emptyList())
@@ -103,20 +104,15 @@ class HomeViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getTodayProseList(list : List<ProseVo>) : List<HomeProseVo>{
         val yesterday = TimeFormatter.getYesterDay()
-        val yesterdayList = list.filter {
-            it.createdAt.split("/")[0] == yesterday
-        }
-        if(yesterdayList.isNotEmpty()){
+        val yesterdayList = list.filter { it.createdAt.split("/")[SPLIT_DATE] == yesterday }
+        val homeProseVo = if(yesterdayList.isNotEmpty()){
             val todayProseList = if(yesterdayList.size > MAX_TODAY_PROSE) yesterdayList.take(MAX_TODAY_PROSE) else yesterdayList
-            return listOf(
-                HomeProseVo(proseListVo = todayProseList, homeViewType = HomeViewType.TODAY_PROSE)
-            )
+            HomeProseVo(proseListVo = todayProseList, homeViewType = HomeViewType.TODAY_PROSE)
         }
         else {
-            return listOf(
-                HomeProseVo(proseListVo = getDefaultProse(), homeViewType = HomeViewType.TODAY_PROSE)
-            )
+            HomeProseVo(proseListVo = getDefaultProse(), homeViewType = HomeViewType.TODAY_PROSE)
         }
+        return listOf(homeProseVo)
 
     }
 
@@ -124,7 +120,7 @@ class HomeViewModel @Inject constructor(
         val homeAllProseList = mutableListOf<HomeProseVo>()
         list.forEach {
             homeAllProseList.add(
-                HomeProseVo(allProseVo = it, homeViewType = HomeViewType.ALL_PROSE)
+                HomeProseVo(allProseVo = it, homeViewType = HomeViewType.NORMAL_PROSE)
             )
         }
 

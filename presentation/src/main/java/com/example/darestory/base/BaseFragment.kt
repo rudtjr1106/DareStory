@@ -7,7 +7,6 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.ViewDataBinding
@@ -20,7 +19,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.darestory.PageState
 import com.example.darestory.ui.common.LoadingDialog
-import com.example.darestory.util.DareLog
 import com.example.darestory.util.DareToast
 import com.example.domain.model.enums.ToastType
 import kotlinx.coroutines.CoroutineScope

@@ -2,8 +2,6 @@ package com.example.darestory.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Lifecycle
@@ -11,7 +9,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.darestory.PageState
-import com.example.darestory.ui.common.LoadingDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -21,8 +18,6 @@ abstract class BaseActivity<B : ViewDataBinding,STATE: PageState, VM: BaseViewMo
 
     protected lateinit var binding: B
     protected abstract val viewModel: VM
-
-    private var loadingView:LoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

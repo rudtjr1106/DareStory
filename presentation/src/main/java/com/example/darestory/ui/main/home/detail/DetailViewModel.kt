@@ -123,7 +123,7 @@ class DetailViewModel @Inject constructor(
 
     fun onClickLikeBtn(id : Int, type : DetailType, isLiked : Boolean){
         val request = LikeVo(
-            id = id,
+            pageId = id,
             nickName = UserInfo.info.nickName,
             isLiked = isLiked
         )
@@ -146,9 +146,8 @@ class DetailViewModel @Inject constructor(
 
     fun onClickCommentAddButton(){
         if(commentEditStateFlow.value.isNotEmpty()){
-            val contentData = detailPageListStateFlow.value.find { it.detailViewType == DetailPageViewType.CONTENT }
             val request = UpdateCommentVo(
-                id = contentData?.detailContent?.pageId ?: -1,
+                id = detailId,
                 comment = CommentVo(
                     content = commentEditStateFlow.value,
                     date = TimeFormatter.getNowDateAndTime(),

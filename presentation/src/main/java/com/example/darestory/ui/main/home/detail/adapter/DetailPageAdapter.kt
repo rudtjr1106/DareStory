@@ -7,18 +7,12 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.darestory.databinding.ItemAllProseBinding
 import com.example.darestory.databinding.ItemDetailProseCommentBinding
 import com.example.darestory.databinding.ItemLayoutDetailBinding
-import com.example.darestory.databinding.ItemLayoutHomeTodayProseBinding
 import com.example.darestory.ui.main.home.detail.viewHolder.DetailPageViewHolder
 import com.example.darestory.ui.main.home.detail.viewHolder.ProseAuthorCommentViewHolder
 import com.example.darestory.ui.main.home.detail.viewHolder.ProseCommentViewHolder
-import com.example.darestory.ui.main.home.viewHolder.HomeAllProseViewHolder
-import com.example.darestory.ui.main.home.viewHolder.HomeTodayProseViewHolder
 import com.example.domain.model.enums.DetailPageViewType
-import com.example.domain.model.enums.DetailType
-import com.example.domain.model.enums.HomeViewType
 import com.example.domain.model.vo.DetailPageVo
 
 class DetailPageAdapter(private val listener: DetailPageDelegate) : ListAdapter<DetailPageVo, RecyclerView.ViewHolder>(

@@ -5,7 +5,7 @@ import com.example.darestory.databinding.ItemAllProseBinding
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.domain.model.vo.ProseVo
 
-class HomeAllProseViewHolder(
+class HomeNormalProseViewHolder(
     private val binding: ItemAllProseBinding,
     private val listener: HomeAdapter.HomeDelegate
 ) : RecyclerView.ViewHolder(binding.root) {

@@ -17,7 +17,7 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
 ) {
 
     override val viewModel: RecentSearchViewModel by viewModels()
-
+    //TODO 검색 타입 받아와서 토론장인지 산문인지 구분해서 최근 검색어 가져오기
     private val recentSearchAdapter : RecentSearchAdapter by lazy {
         RecentSearchAdapter(object : RecentSearchAdapter.RecentSearchDelegate {
             override fun onClickItem(recent: String) {
