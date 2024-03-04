@@ -6,19 +6,15 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.darestory.PageState
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentDiscussionBinding
-import com.example.darestory.databinding.FragmentHomeBinding
 import com.example.darestory.ui.main.discussion.adapter.DiscussionAdapter
-import com.example.darestory.ui.main.home.HomeFragment
-import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.domain.model.enums.SortType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, PageState.Default, DiscussionViewModel>(
+class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, DiscussionPageState, DiscussionViewModel>(
     FragmentDiscussionBinding::inflate
 ) {
 
@@ -40,6 +36,7 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, PageState.Def
 
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onClickSort(type: SortType) {
+                viewModel.updateSortType(type)
                 discussionAdapter.sortType = type
             }
 
@@ -57,7 +54,7 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, PageState.Def
                 adapter = discussionAdapter
             }
             bindRecyclerListener()
-            viewModel.getDiscussionList()
+            viewModel.getAllDiscussionList()
 
         }
     }
@@ -66,6 +63,11 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, PageState.Def
         super.initStates()
 
         repeatOnStarted(viewLifecycleOwner) {
+            launch {
+                viewModel.uiState.discussionList.collect{
+                    discussionAdapter.submitList(it)
+                }
+            }
             launch {
                 viewModel.eventFlow.collect {
 

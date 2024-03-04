@@ -5,7 +5,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_discussion_item"
         android:layout_width="match_parent"
-        android:background="@color/bg_gray_600"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/bg_rectangle_radius_4_filled_bg_gray_600"
         android:paddingBottom="8dp"
         android:layout_height="wrap_content">
         
@@ -34,11 +35,11 @@
 
         <TextView
             android:id="@+id/text_book"
-            app:layout_constraintTop_toBottomOf="@id/text_discussion_title"
+            app:layout_constraintBottom_toTopOf="@id/image_like"
+            android:layout_marginBottom="8dp"
             app:layout_constraintStart_toStartOf="@id/text_discussion_title"
             android:text="@string/word_book"
             android:textAppearance="@style/body3"
-            android:layout_marginTop="18dp"
             android:textColor="@color/gray_500"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -56,10 +57,9 @@
         
         <ImageView
             android:id="@+id/image_like"
-            app:layout_constraintTop_toBottomOf="@id/text_book"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/text_book"
             android:background="@drawable/ic_like_gray_600"
-            android:layout_marginTop="8dp"
             android:layout_width="12dp"
             android:layout_height="12dp"/>
 
@@ -77,7 +77,7 @@
 
         <ImageView
             android:id="@+id/image_comment"
-            app:layout_constraintTop_toBottomOf="@id/text_book"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/text_like_num"
             android:layout_marginStart="8dp"
             android:background="@drawable/ic_comment_gray_600"
