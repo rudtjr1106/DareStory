@@ -69,4 +69,6 @@ dependencies {
     implementation(Google.HILT_ANDROID)
     implementation(Google.HILT_CORE)
     kapt(Google.HILT_COMPILER)
+
+    implementation("com.github.zhpanvip:viewpagerindicator:1.2.3")
 }

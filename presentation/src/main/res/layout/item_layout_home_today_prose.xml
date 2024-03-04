@@ -77,6 +77,18 @@
             android:layout_width="match_parent"
             android:layout_height="269dp" />
 
+        <com.zhpan.indicator.IndicatorView
+            app:layout_constraintTop_toBottomOf="@id/viewPager_today_prose"
+            android:layout_marginTop="12dp"
+            android:id="@+id/indicator_view"
+            app:layout_constraintStart_toStartOf="@id/text_all_prose"
+            app:layout_constraintEnd_toEndOf="@id/text_all_prose"
+            android:layout_width="wrap_content"
+            android:foregroundGravity="center"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+
         <TextView
             android:id="@+id/text_all_prose"
             app:layout_constraintTop_toBottomOf="@id/viewPager_today_prose"

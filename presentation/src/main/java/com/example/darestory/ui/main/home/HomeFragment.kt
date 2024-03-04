@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentHomeBinding
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
-import com.example.darestory.util.DareLog
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.ProseWriteType
 import com.example.domain.model.enums.SortType

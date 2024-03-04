@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel<HomePageState>() {
 
     companion object{
-        const val MAX_TODAY_PROSE = 3
+        const val MAX_TODAY_PROSE = 5
         const val DEFAULT_AUTHOR = "조경석"
         const val DEFAULT_TITLE = "이 글은 터치가 되지 않습니다."
         const val DEFAULT_CONTENT = "개발자 조경석입니다."

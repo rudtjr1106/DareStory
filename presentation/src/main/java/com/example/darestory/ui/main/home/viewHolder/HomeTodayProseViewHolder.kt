@@ -4,15 +4,17 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.example.darestory.R
 import com.example.darestory.databinding.ItemLayoutHomeTodayProseBinding
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.home.adapter.TodayProseViewPagerAdapter
-import com.example.darestory.util.DareLog
 import com.example.darestory.util.UserInfo
 import com.example.darestory.util.px
 import com.example.domain.model.enums.SortType
 import com.example.domain.model.vo.ProseVo
+import com.zhpan.indicator.enums.IndicatorSlideMode
+import com.zhpan.indicator.enums.IndicatorStyle
 
 class HomeTodayProseViewHolder (
     private val binding : ItemLayoutHomeTodayProseBinding,
@@ -22,7 +24,9 @@ class HomeTodayProseViewHolder (
 
     companion object{
         const val MARGIN_HORIZONTAL = 70
-        const val MAX_ITEM = 3
+        const val MAX_ITEM = 5
+        const val INDICATOR_WIDTH = 24
+        const val INDICATOR_HEIGHT = 4
     }
 
     private val todayProseViewPagerAdapter = TodayProseViewPagerAdapter(listener)
@@ -37,7 +41,6 @@ class HomeTodayProseViewHolder (
             }
             initTextButton()
             bindSortTextButton()
-            setIndicator()
         }
     }
 
@@ -66,6 +69,7 @@ class HomeTodayProseViewHolder (
                 offscreenPageLimit = MAX_ITEM.toInt()
             }
         }
+        setIndicator()
     }
 
     private fun initTextButton(){
@@ -114,7 +118,27 @@ class HomeTodayProseViewHolder (
 
     private fun setIndicator(){
         binding.apply {
-            //TODO 여기 인디케이터 안댐
+            indicatorView.apply {
+                setSliderColor(ContextCompat.getColor(root.context, R.color.gray_600), ContextCompat.getColor(root.context, R.color.gray_100))
+                setSliderWidth(INDICATOR_WIDTH.px.toFloat())
+                setSliderHeight(INDICATOR_HEIGHT.px.toFloat())
+                setSlideMode(IndicatorSlideMode.SMOOTH)
+                setIndicatorStyle(IndicatorStyle.ROUND_RECT)
+                setPageSize(viewPagerTodayProse.adapter!!.itemCount)
+                notifyDataChanged()
+            }
+
+            viewPagerTodayProse.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                    indicatorView.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                }
+
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    indicatorView.onPageSelected(position)
+                }
+            })
         }
     }
 
