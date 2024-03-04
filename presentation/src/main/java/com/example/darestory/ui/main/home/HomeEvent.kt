@@ -8,5 +8,6 @@ sealed class HomeEvent : Event {
     data class GoToDetailPageEvent(val proseId : Int, val proseType : DetailType): HomeEvent()
     object GoToWriteProseEvent : HomeEvent()
     object GoToRecentSearchPageEvent : HomeEvent()
+    object ScrollUpEvent : HomeEvent()
 
 }

@@ -153,4 +153,8 @@ class HomeViewModel @Inject constructor(
     fun goToRecentSearchPage(){
         emitEventFlow(HomeEvent.GoToRecentSearchPageEvent)
     }
+
+    fun onClickScrollUp(){
+        emitEventFlow(HomeEvent.ScrollUpEvent)
+    }
 }
