@@ -155,6 +155,11 @@
             android:name="discussionWriteType"
             app:argType="com.example.domain.model.enums.WriteType"/>
 
+        <argument
+            android:name="userName"
+            android:defaultValue=""
+            app:argType="string" />
+
         <action
             android:id="@+id/action_discussion_write_to_result_search"
             app:destination="@id/resultSearchFragment"/>

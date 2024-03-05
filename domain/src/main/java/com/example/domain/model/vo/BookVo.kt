@@ -5,6 +5,6 @@ data class BookVo(
     val image : String = "",
     val author : String = "",
     val publisher : String = "",
-    val pubDate : String = "",
+    val pubdate : String = "",
     val description : String = "",
 )

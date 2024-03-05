@@ -1,5 +1,6 @@
 package com.example.darestory.ui.main.home.detail.write.discussion
 
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -7,9 +8,12 @@ import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentDiscussionWriteBinding
 import com.example.darestory.ui.common.CommonDialog
+import com.example.darestory.util.DareLog
 import com.example.darestory.util.DareToast
+import com.example.darestory.util.SelectedBook
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.ToastType
+import com.example.domain.model.vo.BookVo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -99,7 +103,29 @@ class DiscussionWriteFragment : BaseFragment<FragmentDiscussionWriteBinding, Dis
             }
         }
     }
+
+    override fun onDestroyView() {
+        SelectedBook.updateInfo(BookVo())
+        super.onDestroyView()
+    }
     override fun onStart() {
         super.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(SelectedBook.book.title.isNotEmpty()){
+            setView()
+        }
+    }
+
+    private fun setView(){
+        binding.apply {
+            constraintLayoutSearchBook.visibility = View.GONE
+            constraintLayoutSearchedBook.visibility = View.VISIBLE
+            textBookTitle.text = SelectedBook.book.title
+            textBookSearch.text = getString(R.string.discussion_book_searched)
+            textBookAuthor.text = getString(R.string.book_author, SelectedBook.book.author)
+        }
     }
 }

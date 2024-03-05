@@ -3,6 +3,7 @@ package com.example.domain.model.vo
 data class DiscussionVo(
     val age : String = "",
     val author : String = "",
+    val bookAuthor : String = "",
     val bookImage : String = "",
     val bookTitle : String = "",
     val comment : List<DisCommentVo> = emptyList(),

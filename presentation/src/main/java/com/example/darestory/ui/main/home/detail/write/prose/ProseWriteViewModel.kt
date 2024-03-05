@@ -5,7 +5,7 @@ import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.TimeFormatter
 import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.WriteType
-import com.example.domain.model.enums.UploadProseVo
+import com.example.domain.model.vo.UploadProseVo
 import com.example.domain.model.vo.ProseVo
 import com.example.domain.usecase.home.GetProseUseCase
 import com.example.domain.usecase.home.UploadProseUseCase
@@ -86,7 +86,7 @@ class ProseWriteViewModel @Inject constructor(
         }
     }
 
-    private fun getNewRequest(): UploadProseVo{
+    private fun getNewRequest(): UploadProseVo {
         val proseVo = ProseVo(
             age = UserInfo.info.age,
             author = UserInfo.info.nickName,
@@ -101,7 +101,7 @@ class ProseWriteViewModel @Inject constructor(
         )
     }
 
-    private fun getEditRequest() : UploadProseVo{
+    private fun getEditRequest() : UploadProseVo {
         val proseVo = remainProseVo.copy(
             title = titleStateFlow.value,
             content = contentStateFlow.value,

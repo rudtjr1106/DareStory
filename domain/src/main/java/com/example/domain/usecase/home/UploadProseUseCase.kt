@@ -2,7 +2,7 @@ package com.example.domain.usecase.home
 
 import com.example.domain.base.UseCase
 import com.example.domain.model.enums.WriteType
-import com.example.domain.model.enums.UploadProseVo
+import com.example.domain.model.vo.UploadProseVo
 import com.example.domain.repository.ProseRepository
 import javax.inject.Inject
 

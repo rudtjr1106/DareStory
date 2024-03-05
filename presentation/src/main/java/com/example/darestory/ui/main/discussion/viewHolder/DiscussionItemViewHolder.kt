@@ -2,6 +2,7 @@ package com.example.darestory.ui.main.discussion.viewHolder
 
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.darestory.databinding.ItemDiscussionBookListBinding
 import com.example.darestory.databinding.ItemTodayProseBinding
 import com.example.darestory.ui.main.discussion.adapter.DiscussionAdapter
@@ -26,7 +27,9 @@ class DiscussionItemViewHolder(
     fun bind(item : DiscussionVo) {
         disItem = item
         binding.apply {
-            imageBook.setImageURI(item.bookImage.toUri())
+            Glide.with(root.context)
+                .load(item.bookImage)
+                .into(imageBook)
             textBookTitle.text = item.bookTitle
             textDiscussionTitle.text = item.title
             textCommentNum.text = item.commentCount.toString()

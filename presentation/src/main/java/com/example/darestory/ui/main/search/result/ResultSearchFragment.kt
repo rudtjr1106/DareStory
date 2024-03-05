@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentResultSearchBinding
+import com.example.darestory.ui.common.BookDetailDialog
 import com.example.darestory.ui.common.spinner.SpinnerDialog
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.search.result.adapter.ResultSearchAdapter
+import com.example.darestory.util.SelectedBook
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.SearchType
 import com.example.domain.model.enums.SortType
@@ -28,6 +30,9 @@ class ResultSearchFragment : BaseFragment<FragmentResultSearchBinding, ResultSea
     @Inject
     lateinit var spinnerDialog: SpinnerDialog
 
+    @Inject
+    lateinit var bookDetailDialog: BookDetailDialog
+
     override val viewModel: ResultSearchViewModel by viewModels()
     private val resultSearchFragmentArgs : ResultSearchFragmentArgs by navArgs()
 
@@ -40,7 +45,7 @@ class ResultSearchFragment : BaseFragment<FragmentResultSearchBinding, ResultSea
         },
 
             object : ResultSearchAdapter.ResultSearchDelegate{
-                override fun onClickBook(item: BookVo) { }
+                override fun onClickBook(item: BookVo) { showBookDetailDialog(item) }
             })
     }
 
@@ -94,6 +99,7 @@ class ResultSearchFragment : BaseFragment<FragmentResultSearchBinding, ResultSea
                             DetailType.DISCUSSION -> TODO()
                             DetailType.BOOK -> viewModel.getBookSearchList()
                         }
+                        textResultSearch.text = getString(R.string.search_result, text.toString())
                         true
                     }else false
                 }
@@ -128,8 +134,30 @@ class ResultSearchFragment : BaseFragment<FragmentResultSearchBinding, ResultSea
         }
     }
 
+    private fun showBookDetailDialog(item : BookVo){
+        bookDetailDialog
+            .setImage(item.image)
+            .setTitle(item.title)
+            .setAuthor(item.author)
+            .setPublisher(item.publisher)
+            .setDescription(item.description)
+            .setNegativeButton {
+                bookDetailDialog.dismiss()
+            }
+            .setPositiveButton {
+                goBackWithArg(item)
+                bookDetailDialog.dismiss()
+            }
+            .show()
+    }
+
     private fun goToDetail(id : Int){
-        val action  = ResultSearchFragmentDirections.actionResultToDetail(id, resultSearchFragmentArgs.detailType)
+        val action = ResultSearchFragmentDirections.actionResultToDetail(id, resultSearchFragmentArgs.detailType)
         findNavController().navigate(action)
+    }
+
+    private fun goBackWithArg(item : BookVo){
+        SelectedBook.updateInfo(item)
+        findNavController().popBackStack()
     }
 }

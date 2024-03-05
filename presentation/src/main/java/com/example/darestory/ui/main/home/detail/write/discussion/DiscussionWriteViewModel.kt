@@ -2,10 +2,15 @@ package com.example.darestory.ui.main.home.detail.write.discussion
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
-import com.example.darestory.ui.main.home.detail.write.prose.ProseWriteEvent
+import com.example.darestory.util.SelectedBook
+import com.example.darestory.util.TimeFormatter
+import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.WriteType
+import com.example.domain.model.vo.BookVo
 import com.example.domain.model.vo.DiscussionVo
-import com.example.domain.usecase.book.GetSearchBookUseCase
+import com.example.domain.model.vo.UploadDiscussionVo
+import com.example.domain.usecase.discussion.GetDiscussionUseCase
+import com.example.domain.usecase.discussion.UploadDiscussionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,6 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DiscussionWriteViewModel @Inject constructor(
+    private val getDiscussionUseCase: GetDiscussionUseCase,
+    private val uploadDiscussionUseCase: UploadDiscussionUseCase
 ) : BaseViewModel<DiscussionWritePageState>() {
 
     private val titleStateFlow : MutableStateFlow<String> = MutableStateFlow("")
@@ -28,7 +35,7 @@ class DiscussionWriteViewModel @Inject constructor(
     )
 
     private lateinit var type : WriteType
-    private lateinit var remainProseVo : DiscussionVo
+    private lateinit var remainDiscussionVo : DiscussionVo
 
     fun loadPage(discussionId : Int, type : WriteType){
         this.type = type
@@ -40,14 +47,20 @@ class DiscussionWriteViewModel @Inject constructor(
 
     private fun getDiscussionDetail(discussionId: Int){
         viewModelScope.launch {
-//            val result = getProseUseCase(discussionId)
-//            if(result.proseId != -1) successGetDiscussionDetail(result)
+            val result = getDiscussionUseCase(discussionId)
+            if(result.discussionId != -1) successGetDiscussionDetail(result)
         }
     }
 
     private fun successGetDiscussionDetail(result : DiscussionVo){
-        remainProseVo = result
+        val bookInfo = BookVo(
+            image = result.bookImage,
+            title = result.bookTitle,
+            author = result.bookAuthor
+        )
+        remainDiscussionVo = result
         viewModelScope.launch {
+            SelectedBook.updateInfo(bookInfo)
             titleStateFlow.update { result.title }
             contentStateFlow.update { result.content }
         }
@@ -59,15 +72,15 @@ class DiscussionWriteViewModel @Inject constructor(
 
     fun onClickUploadBtn(){
         if(titleStateFlow.value.isNotEmpty() && contentStateFlow.value.isNotEmpty()){
-//            val request = when(type){
-//                WriteType.EDIT -> getEditRequest()
-//                WriteType.NEW -> getNewRequest()
-//            }
+            val request = when(type){
+                WriteType.EDIT -> getEditRequest()
+                WriteType.NEW -> getNewRequest()
+            }
 
             viewModelScope.launch {
                 showLoading()
-//                val result = uploadProseUseCase(request)
-//                if(result) successUploadProse()
+                val result = uploadDiscussionUseCase(request)
+                if(result) successUploadDiscussion()
             }
         }
         checkEmpty()
@@ -75,10 +88,10 @@ class DiscussionWriteViewModel @Inject constructor(
 
     private fun checkEmpty(){
         if(titleStateFlow.value.isEmpty()){
-            emitEventFlow(ProseWriteEvent.ToastEmptyTitleEvent)
+            emitEventFlow(DiscussionWriteEvent.ToastEmptyTitleEvent)
         }
         else if(contentStateFlow.value.isEmpty()){
-            emitEventFlow(ProseWriteEvent.ToastEmptyContentEvent)
+            emitEventFlow(DiscussionWriteEvent.ToastEmptyContentEvent)
         }
     }
 
@@ -86,35 +99,39 @@ class DiscussionWriteViewModel @Inject constructor(
         emitEventFlow(DiscussionWriteEvent.GoToBookSearch)
     }
 
-//    private fun getNewRequest(): UploadProseVo {
-//        val proseVo = ProseVo(
-//            age = UserInfo.info.age,
-//            author = UserInfo.info.nickName,
-//            authorSay = authorSayStateFlow.value,
-//            content = contentStateFlow.value,
-//            createdAt = TimeFormatter.getNowDateAndTime(),
-//            title = titleStateFlow.value,
-//        )
-//        return UploadProseVo(
-//            type = type,
-//            proseVo = proseVo
-//        )
-//    }
-//
-//    private fun getEditRequest() : UploadProseVo {
-//        val proseVo = remainProseVo.copy(
-//            title = titleStateFlow.value,
-//            content = contentStateFlow.value,
-//            authorSay = authorSayStateFlow.value
-//        )
-//
-//        return UploadProseVo(
-//            type = type,
-//            proseVo = proseVo
-//        )
-//    }
+    private fun getNewRequest(): UploadDiscussionVo {
+        val discussionVo = DiscussionVo(
+            age = UserInfo.info.age,
+            author = UserInfo.info.nickName,
+            bookAuthor = SelectedBook.book.author,
+            bookImage = SelectedBook.book.image,
+            bookTitle = SelectedBook.book.title,
+            content = contentStateFlow.value,
+            createdAt = TimeFormatter.getNowDateAndTime(),
+            title = titleStateFlow.value,
+        )
+        return UploadDiscussionVo(
+            type = type,
+            discussionVo = discussionVo
+        )
+    }
 
-    private fun successUploadProse(){
+    private fun getEditRequest() : UploadDiscussionVo {
+        val discussionVo = remainDiscussionVo.copy(
+            bookAuthor = SelectedBook.book.author,
+            bookImage = SelectedBook.book.image,
+            bookTitle = SelectedBook.book.title,
+            title = titleStateFlow.value,
+            content = contentStateFlow.value,
+        )
+
+        return UploadDiscussionVo(
+            type = type,
+            discussionVo = discussionVo
+        )
+    }
+
+    private fun successUploadDiscussion(){
         endLoading()
         emitEventFlow(DiscussionWriteEvent.SuccessUploadEvent)
     }
