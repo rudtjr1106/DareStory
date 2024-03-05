@@ -8,6 +8,7 @@ import com.example.darestory.databinding.ItemAllProseBinding
 import com.example.darestory.databinding.ItemLayoutDiscussionTopBinding
 import com.example.darestory.ui.main.discussion.adapter.DiscussionAdapter
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
+import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.SortType
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.ProseVo
@@ -18,6 +19,8 @@ class DiscussionTopViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     init {
         binding.apply {
+            textBtnSortAge.text = UserInfo.info.age
+
             imageBtnNewWrite.setOnClickListener {
                 listener.onClickWriteDiscussion()
             }

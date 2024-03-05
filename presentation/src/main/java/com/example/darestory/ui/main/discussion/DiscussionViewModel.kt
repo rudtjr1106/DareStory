@@ -40,6 +40,7 @@ class DiscussionViewModel @Inject constructor(
     }
 
     private fun successGetAllDiscussion(result : List<DiscussionVo>){
+        endLoading()
         val sortedByTypeList = getSortedByType(result)
         val topViewList = getTopDiscussion()
         val discussionList = getDiscussionViewList(sortedByTypeList)
