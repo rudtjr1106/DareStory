@@ -8,4 +8,5 @@ sealed class DiscussionWriteEvent : Event {
     object ToastEmptyTitleEvent : DiscussionWriteEvent()
     object ToastEmptyContentEvent : DiscussionWriteEvent()
     object ToastEmptyBookEvent : DiscussionWriteEvent()
+    object GoToBookSearch : DiscussionWriteEvent()
 }

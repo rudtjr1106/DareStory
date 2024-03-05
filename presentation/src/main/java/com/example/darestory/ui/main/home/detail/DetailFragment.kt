@@ -99,9 +99,14 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
 
     private fun goEditPage(){
         val action = when(detailFragmentArgs.detailType){
-            DetailType.PROSE -> DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = WriteType.EDIT)
+            DetailType.PROSE -> {
+                DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = WriteType.EDIT)
+            }
             //TODO 토론장 페이지 edit은 따로 해야댐
-            DetailType.DISCUSSION -> DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = WriteType.EDIT)
+            DetailType.DISCUSSION -> {
+                DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = WriteType.EDIT)
+            }
+            DetailType.BOOK -> { DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = WriteType.EDIT) }
         }
         findNavController().navigate(action)
     }

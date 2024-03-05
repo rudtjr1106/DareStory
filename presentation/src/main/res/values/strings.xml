@@ -29,6 +29,7 @@
     <string name="word_dash">-</string>
     <string name="word_book">책</string>
     <string name="word_write">글쓰기</string>
+    <string name="word_author">저자</string>
 
     <!-- 로그인 -->
     <string name="login_error_toast">이메일 또는 비밀번호를 확인해주세요.</string>
@@ -111,4 +112,7 @@
     <!-- 토론장 -->
     <string name="discussion_book_search">책 검색</string>
     <string name="discussion_book_title_search_hint">책 제목을 입력해주세요.</string>
+
+    <!-- 책 관련 -->
+    <string name="book_author">저자 : %s</string>
 </resources>

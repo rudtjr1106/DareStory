@@ -1,5 +1,6 @@
 package com.example.darestory.ui.main.search.result
 
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -11,8 +12,10 @@ import com.example.darestory.databinding.FragmentResultSearchBinding
 import com.example.darestory.ui.common.spinner.SpinnerDialog
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.search.result.adapter.ResultSearchAdapter
+import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.SearchType
 import com.example.domain.model.enums.SortType
+import com.example.domain.model.vo.BookVo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,20 +28,20 @@ class ResultSearchFragment : BaseFragment<FragmentResultSearchBinding, ResultSea
     @Inject
     lateinit var spinnerDialog: SpinnerDialog
 
-
     override val viewModel: ResultSearchViewModel by viewModels()
     private val resultSearchFragmentArgs : ResultSearchFragmentArgs by navArgs()
-
 
     private val resultSearchAdapter : ResultSearchAdapter by lazy {
         ResultSearchAdapter(object : HomeAdapter.HomeDelegate {
             override fun onClickSearch() {}
-            override fun onClickProse(proseId: Int) {
-                goToDetail(proseId)
-            }
+            override fun onClickProse(proseId: Int) { goToDetail(proseId) }
             override fun onClickSort(type: SortType) {}
             override fun onClickWriteProse() {}
-        })
+        },
+
+            object : ResultSearchAdapter.ResultSearchDelegate{
+                override fun onClickBook(item: BookVo) { }
+            })
     }
 
     override fun initView() {
@@ -49,6 +52,7 @@ class ResultSearchFragment : BaseFragment<FragmentResultSearchBinding, ResultSea
                 adapter = resultSearchAdapter
             }
             bindEditTextKeyboard()
+            setView(resultSearchFragmentArgs.detailType)
             textResultSearch.text = getString(R.string.search_result, resultSearchFragmentArgs.searchText)
             viewModel.setViewType(resultSearchFragmentArgs.detailType)
             viewModel.getSearchedList(resultSearchFragmentArgs.searchText)
@@ -60,7 +64,7 @@ class ResultSearchFragment : BaseFragment<FragmentResultSearchBinding, ResultSea
 
         repeatOnStarted(viewLifecycleOwner) {
             launch {
-                viewModel.uiState.searchResultProseList.collect{
+                viewModel.uiState.searchResultList.collect{
                     updateResultSearchText()
                     resultSearchAdapter.submitList(it)
                 }
@@ -85,7 +89,11 @@ class ResultSearchFragment : BaseFragment<FragmentResultSearchBinding, ResultSea
             editTextSearch.apply {
                 setOnEditorActionListener { _, keyCode, keyEvent ->
                     if(keyCode == EditorInfo.IME_ACTION_SEARCH) {
-                        viewModel.insertProseRecentSearch(text.toString())
+                        when(resultSearchFragmentArgs.detailType){
+                            DetailType.PROSE -> viewModel.insertProseRecentSearch(text.toString())
+                            DetailType.DISCUSSION -> TODO()
+                            DetailType.BOOK -> viewModel.getBookSearchList()
+                        }
                         true
                     }else false
                 }
@@ -110,6 +118,14 @@ class ResultSearchFragment : BaseFragment<FragmentResultSearchBinding, ResultSea
 
     private fun updateResultSearchText(){
         binding.textResultSearch.text = viewModel.getSearchText()
+    }
+
+    private fun setView(type : DetailType){
+        if(type == DetailType.BOOK){
+            binding.textSpinnerSearchType.visibility = View.GONE
+            binding.imageDownArrow.visibility = View.GONE
+            binding.imageLineTextSpinnerSort.visibility = View.GONE
+        }
     }
 
     private fun goToDetail(id : Int){

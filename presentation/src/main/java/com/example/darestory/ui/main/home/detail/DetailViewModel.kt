@@ -55,6 +55,7 @@ class DetailViewModel @Inject constructor(
         when(type){
             DetailType.PROSE -> getProseDetail(id)
             DetailType.DISCUSSION -> TODO()
+            DetailType.BOOK -> {}
         }
     }
 
@@ -130,6 +131,7 @@ class DetailViewModel @Inject constructor(
         when(type){
             DetailType.PROSE -> proseLikeBtn(request)
             DetailType.DISCUSSION -> {}
+            DetailType.BOOK -> {}
         }
     }
 
@@ -181,6 +183,7 @@ class DetailViewModel @Inject constructor(
         when(type){
             DetailType.PROSE -> contentData?.let { showProseBottomSheet(it) }
             DetailType.DISCUSSION -> {}
+            DetailType.BOOK -> { }
         }
     }
 
@@ -191,6 +194,7 @@ class DetailViewModel @Inject constructor(
         when(type){
             DetailType.PROSE -> { contentData?.let { showCommentBottomSheet(it) } }
             DetailType.DISCUSSION -> {}
+            DetailType.BOOK -> {}
         }
     }
 
@@ -233,6 +237,7 @@ class DetailViewModel @Inject constructor(
         when(detailType){
             DetailType.PROSE -> deleteProseComment(request)
             DetailType.DISCUSSION -> {}
+            DetailType.BOOK -> {}
         }
     }
 

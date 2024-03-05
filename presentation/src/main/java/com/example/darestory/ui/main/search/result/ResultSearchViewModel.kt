@@ -4,8 +4,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.SearchType
+import com.example.domain.model.vo.BookVo
 import com.example.domain.model.vo.ProseVo
+import com.example.domain.model.vo.ResultSearchVo
 import com.example.domain.model.vo.SearchVo
+import com.example.domain.usecase.book.GetSearchBookUseCase
 import com.example.domain.usecase.home.GetProseSearchResultListUseCase
 import com.example.domain.usecase.home.InsertRecentProseSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,19 +21,20 @@ import javax.inject.Inject
 @HiltViewModel
 class ResultSearchViewModel @Inject constructor(
     private val insertRecentProseSearchUseCase: InsertRecentProseSearchUseCase,
-    private val getSearchResultListUseCase: GetProseSearchResultListUseCase
+    private val getSearchResultListUseCase: GetProseSearchResultListUseCase,
+    private val getSearchBookUseCase: GetSearchBookUseCase
 ) : BaseViewModel<ResultSearchPageState>() {
 
     private val searchContentStateFlow : MutableStateFlow<String> = MutableStateFlow("")
     private val searchTypeStateFlow : MutableStateFlow<SearchType> = MutableStateFlow(SearchType.TITLE)
-    private val searchResultProseListStateFlow : MutableStateFlow<List<ProseVo>> = MutableStateFlow(emptyList())
+    private val searchResultListStateFlow : MutableStateFlow<List<ResultSearchVo>> = MutableStateFlow(emptyList())
     private val isResultIsEmpty : MutableStateFlow<Boolean> = MutableStateFlow(false)
     private val searchContentIsEmptyStateFlow : MutableStateFlow<Boolean> = MutableStateFlow(true)
 
     override val uiState: ResultSearchPageState = ResultSearchPageState(
         searchContentStateFlow,
         searchTypeStateFlow,
-        searchResultProseListStateFlow.asStateFlow(),
+        searchResultListStateFlow.asStateFlow(),
         isResultIsEmpty.asStateFlow(),
         searchContentIsEmptyStateFlow.asStateFlow(),
     )
@@ -50,6 +54,13 @@ class ResultSearchViewModel @Inject constructor(
                 }
             }
             DetailType.DISCUSSION -> {}
+            DetailType.BOOK -> {
+                viewModelScope.launch {
+                    searchContentStateFlow.update { text }
+                    onSearchContentTextChangedAfter()
+                    getBookSearchList()
+                }
+            }
         }
     }
 
@@ -84,10 +95,45 @@ class ResultSearchViewModel @Inject constructor(
         }
     }
 
+    fun getBookSearchList(){
+        if(searchContentStateFlow.value.isEmpty()){
+            successGetSearchedBookList(emptyList())
+        }
+        else{
+            viewModelScope.launch {
+                showLoading()
+                val result = getSearchBookUseCase(searchContentStateFlow.value)
+                if(result.items.isNotEmpty()) successGetSearchedBookList(result.items) else successGetSearchedBookList(
+                    emptyList()
+                )
+                endLoading()
+            }
+        }
+    }
+
     private fun successGetSearchedProseList(list : List<ProseVo>){
+        val searchList = mutableListOf<ResultSearchVo>()
+        list.forEach {
+            searchList.add(
+                ResultSearchVo(proseVo = it, type = DetailType.PROSE)
+            )
+        }
         viewModelScope.launch {
-            searchResultProseListStateFlow.update { list }
-            updateIsResultFlow(searchResultProseListStateFlow.value.isEmpty())
+            searchResultListStateFlow.update { searchList }
+            updateIsResultFlow(list.isEmpty())
+        }
+    }
+
+    private fun successGetSearchedBookList(list : List<BookVo>){
+        val searchList = mutableListOf<ResultSearchVo>()
+        list.forEach {
+            searchList.add(
+                ResultSearchVo(bookVo = it, type = DetailType.BOOK)
+            )
+        }
+        viewModelScope.launch {
+            searchResultListStateFlow.update { searchList }
+            updateIsResultFlow(list.isEmpty())
         }
     }
 

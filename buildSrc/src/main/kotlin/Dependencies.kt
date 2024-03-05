@@ -16,6 +16,7 @@ object Google {
     const val FIREBASE_REALTIME_DB = "com.google.firebase:firebase-database-ktx"
     const val OKHTTP = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP}"
     const val GSON = "com.google.code.gson:gson:${Versions.GSON}"
+    const val GLIDE = "com.github.bumptech.glide:glide:${Versions.GLIDE}"
 }
 
 object AndroidX{

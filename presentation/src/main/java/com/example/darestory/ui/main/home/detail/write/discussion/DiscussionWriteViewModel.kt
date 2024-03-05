@@ -15,7 +15,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DiscussionWriteViewModel @Inject constructor(
-    private val getSearchBookUseCase: GetSearchBookUseCase
 ) : BaseViewModel<DiscussionWritePageState>() {
 
     private val titleStateFlow : MutableStateFlow<String> = MutableStateFlow("")
@@ -31,11 +30,6 @@ class DiscussionWriteViewModel @Inject constructor(
     private lateinit var type : WriteType
     private lateinit var remainProseVo : DiscussionVo
 
-    fun test(){
-        viewModelScope.launch {
-            getSearchBookUseCase("미움 받을")
-        }
-    }
     fun loadPage(discussionId : Int, type : WriteType){
         this.type = type
         when(type){
@@ -86,6 +80,10 @@ class DiscussionWriteViewModel @Inject constructor(
         else if(contentStateFlow.value.isEmpty()){
             emitEventFlow(ProseWriteEvent.ToastEmptyContentEvent)
         }
+    }
+
+    fun onClickBookSearch(){
+        emitEventFlow(DiscussionWriteEvent.GoToBookSearch)
     }
 
 //    private fun getNewRequest(): UploadProseVo {

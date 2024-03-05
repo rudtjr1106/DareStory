@@ -6,6 +6,7 @@
         android:id="@+id/constraint_layout_discussion_item"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/bg_rectangle_radius_4_filled_bg_gray_600"
         android:paddingBottom="8dp"
         android:layout_height="wrap_content">
@@ -16,7 +17,6 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
-            android:background="@color/gray_500"
             android:layout_width="90dp"
             android:layout_height="120dp"/>
         
@@ -94,6 +94,17 @@
             android:textAppearance="@style/c3"
             android:textColor="@color/gray_200"
             tools:text="111"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_pub_date"
+            app:layout_constraintBottom_toBottomOf="@id/image_book"
+            app:layout_constraintStart_toStartOf="@id/text_book"
+            tools:text="24.11.5"
+            android:visibility="gone"
+            android:textAppearance="@style/c3"
+            android:textColor="@color/gray_600"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

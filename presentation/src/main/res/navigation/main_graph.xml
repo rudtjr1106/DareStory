@@ -81,6 +81,7 @@
         <argument
             android:name="detailType"
             app:argType="com.example.domain.model.enums.DetailType"/>
+
         <action
             android:id="@+id/action_result_to_detail"
             app:destination="@id/detailFragment"/>
@@ -153,6 +154,11 @@
         <argument
             android:name="discussionWriteType"
             app:argType="com.example.domain.model.enums.WriteType"/>
+
+        <action
+            android:id="@+id/action_discussion_write_to_result_search"
+            app:destination="@id/resultSearchFragment"/>
+
 
     </fragment>
 

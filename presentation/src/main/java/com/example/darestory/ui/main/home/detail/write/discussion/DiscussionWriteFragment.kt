@@ -8,6 +8,7 @@ import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentDiscussionWriteBinding
 import com.example.darestory.ui.common.CommonDialog
 import com.example.darestory.util.DareToast
+import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.ToastType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -29,7 +30,6 @@ class DiscussionWriteFragment : BaseFragment<FragmentDiscussionWriteBinding, Dis
         binding.apply {
             vm = viewModel
             bindEditText()
-            viewModel.test()
             viewModel.loadPage(discussionWriteFragmentArgs.discussionId, discussionWriteFragmentArgs.discussionWriteType)
         }
     }
@@ -54,6 +54,7 @@ class DiscussionWriteFragment : BaseFragment<FragmentDiscussionWriteBinding, Dis
             DiscussionWriteEvent.ToastEmptyContentEvent -> showContentErrorToast()
             DiscussionWriteEvent.ToastEmptyTitleEvent -> showTitleErrorToast()
             DiscussionWriteEvent.ToastEmptyBookEvent -> showBookErrorToast()
+            DiscussionWriteEvent.GoToBookSearch -> goToResultSearch()
         }
     }
 
@@ -78,6 +79,11 @@ class DiscussionWriteFragment : BaseFragment<FragmentDiscussionWriteBinding, Dis
 
     private fun showBookErrorToast(){
         DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_check_book).show()
+    }
+
+    private fun goToResultSearch(){
+        val action = DiscussionWriteFragmentDirections.actionDiscussionWriteToResultSearch(detailType = DetailType.BOOK)
+        findNavController().navigate(action)
     }
 
     private fun bindEditText() {
