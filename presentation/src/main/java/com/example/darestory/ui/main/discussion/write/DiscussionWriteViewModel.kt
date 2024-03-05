@@ -72,7 +72,9 @@ class DiscussionWriteViewModel @Inject constructor(
     }
 
     fun onClickUploadBtn(){
-        if(titleStateFlow.value.isNotEmpty() && contentStateFlow.value.isNotEmpty()){
+        val titleTrim = titleStateFlow.value.trim()
+        val contentTrim = contentStateFlow.value.trim()
+        if(titleTrim.isNotEmpty() && contentTrim.isNotEmpty()){
             val request = when(type){
                 WriteType.EDIT -> getEditRequest()
                 WriteType.NEW -> getNewRequest()

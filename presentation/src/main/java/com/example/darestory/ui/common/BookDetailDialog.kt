@@ -89,6 +89,7 @@ class BookDetailDialog@Inject constructor(@ActivityContext private val context: 
         dialog = builder.create()
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog?.setCancelable(false)
         dialog?.show()
     }
 
