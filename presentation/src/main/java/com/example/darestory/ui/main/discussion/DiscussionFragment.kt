@@ -84,6 +84,8 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, DiscussionPag
     private fun sortEvent(event: DiscussionEvent){
         when(event){
             DiscussionEvent.ScrollUpEvent -> scrollUp()
+            DiscussionEvent.GoToHomeEvent -> goToHome()
+            DiscussionEvent.GoToMyEvent -> goToMy()
         }
     }
 
@@ -118,6 +120,15 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, DiscussionPag
 
     private fun scrollUp(){
         binding.recyclerDiscussion.smoothScrollToPosition(0)
+    }
+
+    private fun goToHome(){
+        val action = DiscussionFragmentDirections.actionDiscussionToHome()
+        findNavController().navigate(action)
+    }
+
+    private fun goToMy(){
+
     }
 
     override fun onStart() {

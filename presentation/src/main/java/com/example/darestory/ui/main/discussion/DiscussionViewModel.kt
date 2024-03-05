@@ -100,4 +100,12 @@ class DiscussionViewModel @Inject constructor(
     fun onClickScrollUp(){
         emitEventFlow(DiscussionEvent.ScrollUpEvent)
     }
+
+    fun onClickBottomNavHome(){
+        emitEventFlow(DiscussionEvent.GoToHomeEvent)
+    }
+
+    fun onClickBottomNavMy(){
+        emitEventFlow(DiscussionEvent.GoToMyEvent)
+    }
 }
