@@ -85,7 +85,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
             is DetailEvent.GoToBack -> findNavController().popBackStack()
             is DetailEvent.ShowBottomSheetEvent -> showBottomSheet(event.type)
             is DetailEvent.GoEditEvent -> goEditPage()
-            is DetailEvent.ShowProseDeleteDialogEvent -> showProseDeleteDialog()
+            is DetailEvent.ShowDeleteDialogEvent -> showDeleteDialog()
             is DetailEvent.ShowCommentDeleteDialogEvent -> showCommentDeleteDialog()
             is DetailEvent.GoReportEvent -> goReportPage(event.who)
         }
@@ -102,16 +102,15 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
             DetailType.PROSE -> {
                 DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = WriteType.EDIT)
             }
-            //TODO 토론장 페이지 edit은 따로 해야댐
             DetailType.DISCUSSION -> {
-                DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = WriteType.EDIT)
+                DetailFragmentDirections.actionDetailToDiscussionWrite(discussionId = detailFragmentArgs.detailId, discussionWriteType = WriteType.EDIT)
             }
             DetailType.BOOK -> { DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = WriteType.EDIT) }
         }
         findNavController().navigate(action)
     }
 
-    private fun showProseDeleteDialog(){
+    private fun showDeleteDialog(){
         commonDialog
             .setTitle(R.string.dialog_delete_title)
             .setDescription(R.string.dialog_delete_content)

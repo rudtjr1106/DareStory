@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vm"
-            type="com.example.darestory.ui.main.home.detail.write.discussion.DiscussionWriteViewModel" />
+            type="com.example.darestory.ui.main.discussion.write.DiscussionWriteViewModel" />
     </data>
 
     <ScrollView

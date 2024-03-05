@@ -8,7 +8,7 @@ sealed class DetailEvent : Event {
     object GoToBack: DetailEvent()
     data class ShowBottomSheetEvent(val type : BottomSheetType) : DetailEvent()
     object GoEditEvent : DetailEvent()
-    object ShowProseDeleteDialogEvent : DetailEvent()
+    object ShowDeleteDialogEvent : DetailEvent()
     object ShowCommentDeleteDialogEvent : DetailEvent()
     data class GoReportEvent(val who : String) : DetailEvent()
 

@@ -1,4 +1,4 @@
-package com.example.darestory.ui.main.home.detail.write.discussion
+package com.example.darestory.ui.main.discussion.write
 
 import com.example.darestory.Event
 
@@ -9,4 +9,5 @@ sealed class DiscussionWriteEvent : Event {
     object ToastEmptyContentEvent : DiscussionWriteEvent()
     object ToastEmptyBookEvent : DiscussionWriteEvent()
     object GoToBookSearch : DiscussionWriteEvent()
+    object SuccessGetDiscussionEvent : DiscussionWriteEvent()
 }

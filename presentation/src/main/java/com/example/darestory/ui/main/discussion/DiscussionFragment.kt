@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentDiscussionBinding
 import com.example.darestory.ui.main.discussion.adapter.DiscussionAdapter
+import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.SortType
 import com.example.domain.model.enums.WriteType
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,6 +34,7 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, DiscussionPag
             }
 
             override fun onClickDiscussion(disId: Int) {
+                goToDiscussionDetail(disId)
             }
 
 
@@ -73,9 +75,15 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, DiscussionPag
             }
             launch {
                 viewModel.eventFlow.collect {
-
+                    sortEvent(it as DiscussionEvent)
                 }
             }
+        }
+    }
+
+    private fun sortEvent(event: DiscussionEvent){
+        when(event){
+            DiscussionEvent.ScrollUpEvent -> scrollUp()
         }
     }
 
@@ -96,6 +104,11 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, DiscussionPag
             })
 
         }
+    }
+
+    private fun goToDiscussionDetail(discussionId : Int){
+        val action = DiscussionFragmentDirections.actionDiscussionToDetail(detailId = discussionId, detailType = DetailType.DISCUSSION)
+        findNavController().navigate(action)
     }
 
     private fun goToDiscussionWrite(){

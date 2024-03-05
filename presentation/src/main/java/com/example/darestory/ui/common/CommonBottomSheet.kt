@@ -101,6 +101,14 @@ class CommonBottomSheet : BottomSheetDialogFragment() {
             BottomSheetType.COMMENT_NORMAL -> listOf(
                 BottomSheetMenuItemType.REPORT
             )
+
+            BottomSheetType.DISCUSSION_AUTHOR -> listOf(
+                BottomSheetMenuItemType.DISCUSSION_EDIT,
+                BottomSheetMenuItemType.DISCUSSION_DELETE
+            )
+            BottomSheetType.DISCUSSION_NORMAL -> listOf(
+                BottomSheetMenuItemType.REPORT
+            )
         }
     }
 }

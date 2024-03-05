@@ -1,4 +1,4 @@
-package com.example.darestory.ui.main.home.detail.write.discussion
+package com.example.darestory.ui.main.discussion.write
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
@@ -64,6 +64,7 @@ class DiscussionWriteViewModel @Inject constructor(
             titleStateFlow.update { result.title }
             contentStateFlow.update { result.content }
         }
+        emitEventFlow(DiscussionWriteEvent.SuccessGetDiscussionEvent)
     }
 
     fun onClickBackBtn(){

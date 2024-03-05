@@ -1,4 +1,4 @@
-package com.example.darestory.ui.main.home.detail.write.prose
+package com.example.darestory.ui.main.home.detail.wrtie
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel

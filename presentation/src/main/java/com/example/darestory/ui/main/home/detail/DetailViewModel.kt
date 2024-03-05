@@ -12,8 +12,15 @@ import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.DetailContentVo
 import com.example.domain.model.vo.DetailPageVo
+import com.example.domain.model.vo.DisCommentVo
+import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.LikeVo
 import com.example.domain.model.vo.ProseVo
+import com.example.domain.usecase.discussion.AddDiscussionCommentUseCase
+import com.example.domain.usecase.discussion.DeleteDiscussionCommentUseCase
+import com.example.domain.usecase.discussion.DeleteDiscussionUseCase
+import com.example.domain.usecase.discussion.GetDiscussionUseCase
+import com.example.domain.usecase.discussion.LikeDiscussionUseCase
 import com.example.domain.usecase.home.AddProseCommentUseCase
 import com.example.domain.usecase.home.DeleteProseCommentUseCase
 import com.example.domain.usecase.home.DeleteProseUseCase
@@ -30,10 +37,15 @@ import kotlin.properties.Delegates
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getProseUseCase: GetProseUseCase,
-    private val proseLikeProseUseCase: LikeProseUseCase,
+    private val getDiscussionUseCase: GetDiscussionUseCase,
+    private val likeProseUseCase: LikeProseUseCase,
+    private val likeDiscussionUseCase: LikeDiscussionUseCase,
     private val addProseCommentUseCase: AddProseCommentUseCase,
+    private val addDiscussionCommentUseCase: AddDiscussionCommentUseCase,
     private val deleteProseUseCase: DeleteProseUseCase,
-    private val deleteProseCommentUseCase: DeleteProseCommentUseCase
+    private val deleteDiscussionUseCase: DeleteDiscussionUseCase,
+    private val deleteProseCommentUseCase: DeleteProseCommentUseCase,
+    private val deleteDiscussionCommentUseCase: DeleteDiscussionCommentUseCase,
 ) : BaseViewModel<DetailPageState>() {
 
     private val detailPageListStateFlow: MutableStateFlow<List<DetailPageVo>> = MutableStateFlow(emptyList())
@@ -54,7 +66,7 @@ class DetailViewModel @Inject constructor(
         detailType = type
         when(type){
             DetailType.PROSE -> getProseDetail(id)
-            DetailType.DISCUSSION -> TODO()
+            DetailType.DISCUSSION -> getDiscussionDetail(id)
             DetailType.BOOK -> {}
         }
     }
@@ -66,6 +78,13 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+    private fun getDiscussionDetail(discussionId : Int){
+        viewModelScope.launch{
+            val result = getDiscussionUseCase(discussionId)
+            if(result.title.isNotEmpty()) successGetDiscussionDetail(result)
+        }
+    }
+
     private fun successGetProseDetail(result : ProseVo){
         val contentList = getProseContentList(result)
         val authorCommentList = if(result.authorSay.isNotEmpty()) getProseAuthorCommentList(result) else emptyList()
@@ -73,10 +92,34 @@ class DetailViewModel @Inject constructor(
         updateDetailPageList(contentList + authorCommentList + commentList)
     }
 
+    private fun successGetDiscussionDetail(result : DiscussionVo){
+        val contentList = getDiscussionContentList(result)
+        val commentList = getDiscussionCommentList(result.comment)
+        updateDetailPageList(contentList + commentList)
+    }
+
     private fun getProseContentList(vo : ProseVo) : List<DetailPageVo>{
         val detailContent = DetailContentVo(
             pageId = vo.proseId,
             pageType = DetailType.PROSE,
+            author = vo.author,
+            commentCount = vo.commentCount,
+            content = vo.content,
+            createdAt = vo.createdAt,
+            likeCount = vo.likeCount,
+            title = vo.title,
+            isLiked = vo.whoLiked.containsValue(UserInfo.info.nickName)
+        )
+
+        return listOf(
+            DetailPageVo(detailContent = detailContent, detailViewType = DetailPageViewType.CONTENT)
+        )
+    }
+
+    private fun getDiscussionContentList(vo : DiscussionVo) : List<DetailPageVo>{
+        val detailContent = DetailContentVo(
+            pageId = vo.discussionId,
+            pageType = DetailType.DISCUSSION,
             author = vo.author,
             commentCount = vo.commentCount,
             content = vo.content,
@@ -106,14 +149,23 @@ class DetailViewModel @Inject constructor(
     private fun getProseCommentList(list : List<CommentVo>) : List<DetailPageVo>{
         val proseCommentList = mutableListOf<DetailPageVo>()
         list.forEach {
-            if(it != null){
-                proseCommentList.add(
-                    DetailPageVo(proseComment = it, detailViewType = DetailPageViewType.PROSE_COMMENT)
-                )
-            }
+            proseCommentList.add(
+                DetailPageVo(proseComment = it, detailViewType = DetailPageViewType.PROSE_COMMENT)
+            )
         }
+        if(proseCommentList.isEmpty()) proseCommentList.add(DetailPageVo(detailViewType = DetailPageViewType.EMPTY))
         return proseCommentList
+    }
 
+    private fun getDiscussionCommentList(list : List<DisCommentVo>) : List<DetailPageVo>{
+        val discussionCommentList = mutableListOf<DetailPageVo>()
+        list.forEach {
+            discussionCommentList.add(
+                DetailPageVo(discussionComment = it, detailViewType = DetailPageViewType.DISCUSSION_COMMENT)
+            )
+        }
+        if(discussionCommentList.isEmpty()) discussionCommentList.add(DetailPageVo(detailViewType = DetailPageViewType.EMPTY))
+        return discussionCommentList
     }
 
     private fun updateDetailPageList(list : List<DetailPageVo>){
@@ -130,14 +182,21 @@ class DetailViewModel @Inject constructor(
         )
         when(type){
             DetailType.PROSE -> proseLikeBtn(request)
-            DetailType.DISCUSSION -> {}
+            DetailType.DISCUSSION -> discussionLikeBtn(request)
             DetailType.BOOK -> {}
         }
     }
 
     private fun proseLikeBtn(request : LikeVo){
         viewModelScope.launch {
-            val result = proseLikeProseUseCase(request)
+            val result = likeProseUseCase(request)
+            if(result) reloadPage()
+        }
+    }
+
+    private fun discussionLikeBtn(request : LikeVo){
+        viewModelScope.launch {
+            val result = likeDiscussionUseCase(request)
             if(result) reloadPage()
         }
     }
@@ -159,7 +218,11 @@ class DetailViewModel @Inject constructor(
             )
             viewModelScope.launch {
                 showLoading()
-                val result = addProseCommentUseCase(request)
+                val result = when(detailType){
+                    DetailType.PROSE -> addProseCommentUseCase(request)
+                    DetailType.DISCUSSION -> addDiscussionCommentUseCase(request)
+                    DetailType.BOOK -> TODO()
+                }
                 if(result) successAddComment()
             }
         }
@@ -182,18 +245,23 @@ class DetailViewModel @Inject constructor(
         val contentData = detailPageListStateFlow.value.find { it.detailViewType == DetailPageViewType.CONTENT }
         when(type){
             DetailType.PROSE -> contentData?.let { showProseBottomSheet(it) }
-            DetailType.DISCUSSION -> {}
+            DetailType.DISCUSSION -> contentData?.let { showDiscussionBottomSheet(it) }
             DetailType.BOOK -> { }
         }
     }
 
     fun onClickCommentMenu(commentId : Int, type: DetailType, writer : String){
         reportWho = writer
-        val contentData = detailPageListStateFlow.value.find { it.proseComment.commentId == commentId }
         this.commentId = commentId
         when(type){
-            DetailType.PROSE -> { contentData?.let { showCommentBottomSheet(it) } }
-            DetailType.DISCUSSION -> {}
+            DetailType.PROSE -> {
+                val contentData = detailPageListStateFlow.value.find { it.proseComment.commentId == commentId }
+                contentData?.let { showCommentBottomSheet(it) }
+            }
+            DetailType.DISCUSSION -> {
+                val contentData = detailPageListStateFlow.value.find { it.discussionComment.commentId == commentId }
+                contentData?.let { showCommentBottomSheet(it) }
+            }
             DetailType.BOOK -> {}
         }
     }
@@ -204,16 +272,27 @@ class DetailViewModel @Inject constructor(
         emitEventFlow(event)
     }
 
+    private fun showDiscussionBottomSheet(content : DetailPageVo){
+        val event = if(content.detailContent.author == UserInfo.info.nickName) DetailEvent.ShowBottomSheetEvent(BottomSheetType.DISCUSSION_AUTHOR)
+        else DetailEvent.ShowBottomSheetEvent(BottomSheetType.DISCUSSION_NORMAL)
+        emitEventFlow(event)
+    }
+
     private fun showCommentBottomSheet(content : DetailPageVo){
-        val event = if(content.proseComment.writer == UserInfo.info.nickName) DetailEvent.ShowBottomSheetEvent(BottomSheetType.COMMENT_WRITER)
+        val event = if(content.proseComment.writer == UserInfo.info.nickName
+            || content.discussionComment.writer == UserInfo.info.nickName) DetailEvent.ShowBottomSheetEvent(BottomSheetType.COMMENT_WRITER)
         else DetailEvent.ShowBottomSheetEvent(BottomSheetType.COMMENT_NORMAL)
         emitEventFlow(event)
     }
 
     fun onClickImageMenuItemType(item : BottomSheetMenuItemType){
        when(item){
+           BottomSheetMenuItemType.DISCUSSION_EDIT,
            BottomSheetMenuItemType.PROSE_EDIT -> emitEventFlow(DetailEvent.GoEditEvent)
-           BottomSheetMenuItemType.PROSE_DELETE -> emitEventFlow(DetailEvent.ShowProseDeleteDialogEvent)
+
+           BottomSheetMenuItemType.DISCUSSION_DELETE,
+           BottomSheetMenuItemType.PROSE_DELETE -> emitEventFlow(DetailEvent.ShowDeleteDialogEvent)
+
            BottomSheetMenuItemType.REPORT -> emitEventFlow(DetailEvent.GoReportEvent(reportWho))
            BottomSheetMenuItemType.PROSE_BOOKMARK -> {}
            BottomSheetMenuItemType.COMMENT_DELETE -> emitEventFlow(DetailEvent.ShowCommentDeleteDialogEvent)
@@ -223,7 +302,11 @@ class DetailViewModel @Inject constructor(
     fun deleteThis(id : Int){
         viewModelScope.launch {
             showLoading()
-            val result = deleteProseUseCase(id)
+            val result = when(detailType){
+                DetailType.PROSE -> deleteProseUseCase(id)
+                DetailType.DISCUSSION -> deleteDiscussionUseCase(id)
+                DetailType.BOOK -> false
+            }
             endLoading()
             if(result) onClickBackButton()
         }
@@ -236,7 +319,7 @@ class DetailViewModel @Inject constructor(
         )
         when(detailType){
             DetailType.PROSE -> deleteProseComment(request)
-            DetailType.DISCUSSION -> {}
+            DetailType.DISCUSSION -> deleteDiscussionComment(request)
             DetailType.BOOK -> {}
         }
     }
@@ -244,6 +327,13 @@ class DetailViewModel @Inject constructor(
     private fun deleteProseComment(request : UpdateCommentVo){
         viewModelScope.launch {
             val result = deleteProseCommentUseCase(request)
+            if(result) reloadPage()
+        }
+    }
+
+    private fun deleteDiscussionComment(request : UpdateCommentVo){
+        viewModelScope.launch {
+            val result = deleteDiscussionCommentUseCase(request)
             if(result) reloadPage()
         }
     }

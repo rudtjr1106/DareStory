@@ -31,6 +31,7 @@
     <string name="word_write">글쓰기</string>
     <string name="word_author">저자</string>
     <string name="word_description">줄거리</string>
+    <string name="word_publisher">출판사</string>
 
     <!-- 로그인 -->
     <string name="login_error_toast">이메일 또는 비밀번호를 확인해주세요.</string>
@@ -114,8 +115,9 @@
     <string name="discussion_book_search">책 검색</string>
     <string name="discussion_book_searched">고른 책</string>
     <string name="discussion_book_title_search_hint">책 제목을 입력해주세요.</string>
+    <string name="discussion_comment_count">댓글 %d개</string>
+    <string name="discussion_add_reply">답글 남기기</string>
 
     <!-- 책 관련 -->
     <string name="book_author">저자 : %s</string>
-    <string name="word_publisher">출판사</string>
 </resources>

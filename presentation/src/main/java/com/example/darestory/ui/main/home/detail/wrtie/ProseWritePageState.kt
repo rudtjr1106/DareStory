@@ -1,4 +1,4 @@
-package com.example.darestory.ui.main.home.detail.write.prose
+package com.example.darestory.ui.main.home.detail.wrtie
 
 import com.example.darestory.PageState
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:background="@color/background"
+        android:paddingBottom="12dp">
+
+        <ImageView
+            app:layout_constraintTop_toTopOf="@id/text_writer"
+            app:layout_constraintBottom_toBottomOf="@id/text_writer"
+            app:layout_constraintEnd_toStartOf="@id/text_writer"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/ic_start_sentence_gray_600"
+            android:layout_width="10dp"
+            android:layout_height="8dp"/>
+
+        <TextView
+            android:id="@+id/text_writer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:textAppearance="@style/body3"
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="조경석" />
+
+        <TextView
+            android:id="@+id/text_created_at"
+            app:layout_constraintStart_toEndOf="@id/text_writer"
+            android:layout_marginStart="4dp"
+            android:textAppearance="@style/c4"
+            android:textColor="@color/gray_400"
+            tools:text="10분전"
+            app:layout_constraintTop_toTopOf="@id/text_writer"
+            app:layout_constraintBottom_toBottomOf="@id/text_writer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/image_btn_comment_menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/ic_menu_gray_400"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+
+        <TextView
+            android:id="@+id/text_comment_content"
+            android:textColor="@color/gray_200"
+            android:textAppearance="@style/body2"
+            tools:text="제가 피그마를 처음 배우는 데 도움이 되는 정보 감사합니다! 제가 피그마를 처음 배우는 데 도움이 되는 정보 감사합니다! 제가 피그마를 처음 배우는 데 도움이 되는 정보 감사합니다!"
+            app:layout_constraintTop_toBottomOf="@id/text_writer"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_comment_count"
+            app:layout_constraintTop_toBottomOf="@id/text_comment_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/gray_300"
+            android:textAppearance="@style/btn3"
+            tools:text="댓글 3개"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_btn_add_reply"
+            app:layout_constraintTop_toTopOf="@id/text_comment_count"
+            app:layout_constraintStart_toEndOf="@id/text_comment_count"
+            android:layout_marginStart="12dp"
+            android:textAppearance="@style/c3"
+            android:text="@string/discussion_add_reply"
+            android:textColor="@color/bg_gray_200"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

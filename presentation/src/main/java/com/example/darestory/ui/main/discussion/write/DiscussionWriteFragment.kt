@@ -1,4 +1,4 @@
-package com.example.darestory.ui.main.home.detail.write.discussion
+package com.example.darestory.ui.main.discussion.write
 
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -8,7 +8,6 @@ import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentDiscussionWriteBinding
 import com.example.darestory.ui.common.CommonDialog
-import com.example.darestory.util.DareLog
 import com.example.darestory.util.DareToast
 import com.example.darestory.util.SelectedBook
 import com.example.domain.model.enums.DetailType
@@ -59,6 +58,7 @@ class DiscussionWriteFragment : BaseFragment<FragmentDiscussionWriteBinding, Dis
             DiscussionWriteEvent.ToastEmptyTitleEvent -> showTitleErrorToast()
             DiscussionWriteEvent.ToastEmptyBookEvent -> showBookErrorToast()
             DiscussionWriteEvent.GoToBookSearch -> goToResultSearch()
+            DiscussionWriteEvent.SuccessGetDiscussionEvent -> onResume()
         }
     }
 
@@ -86,7 +86,8 @@ class DiscussionWriteFragment : BaseFragment<FragmentDiscussionWriteBinding, Dis
     }
 
     private fun goToResultSearch(){
-        val action = DiscussionWriteFragmentDirections.actionDiscussionWriteToResultSearch(detailType = DetailType.BOOK)
+        val action =
+            DiscussionWriteFragmentDirections.actionDiscussionWriteToResultSearch(detailType = DetailType.BOOK)
         findNavController().navigate(action)
     }
 

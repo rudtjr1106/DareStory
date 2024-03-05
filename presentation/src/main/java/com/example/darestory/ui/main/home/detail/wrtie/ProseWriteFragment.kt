@@ -1,4 +1,4 @@
-package com.example.darestory.ui.main.home.detail.write.prose
+package com.example.darestory.ui.main.home.detail.wrtie
 
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels

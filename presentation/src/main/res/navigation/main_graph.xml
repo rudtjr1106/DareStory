@@ -42,6 +42,10 @@
             app:destination="@id/homeFragment"/>
 
         <action
+            android:id="@+id/action_discussion_to_detail"
+            app:destination="@id/detailFragment"/>
+
+        <action
             android:id="@+id/action_discussion_to_discussion_write"
             app:destination="@id/discussionWriteFragment"/>
 
@@ -107,6 +111,10 @@
             app:destination="@id/proseWriteFragment"/>
 
         <action
+            android:id="@+id/action_detail_to_discussion_write"
+            app:destination="@id/discussionWriteFragment"/>
+
+        <action
             android:id="@+id/action_detail_to_report"
             app:destination="@id/reportFragment"/>
 
@@ -114,7 +122,7 @@
 
     <fragment
         android:id="@+id/proseWriteFragment"
-        android:name="com.example.darestory.ui.main.home.detail.write.prose.ProseWriteFragment"
+        android:name="com.example.darestory.ui.main.home.detail.wrtie.ProseWriteFragment"
         android:label="fragment_prose_write"
         tools:layout="@layout/fragment_prose_write">
 
@@ -143,7 +151,7 @@
 
     <fragment
         android:id="@+id/discussionWriteFragment"
-        android:name="com.example.darestory.ui.main.home.detail.write.discussion.DiscussionWriteFragment"
+        android:name="com.example.darestory.ui.main.discussion.write.DiscussionWriteFragment"
         android:label="fragment_discussion_write"
         tools:layout="@layout/fragment_discussion_write">
 
