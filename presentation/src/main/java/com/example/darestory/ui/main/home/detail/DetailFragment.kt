@@ -12,7 +12,7 @@ import com.example.darestory.ui.common.CommonDialog
 import com.example.darestory.ui.main.home.detail.adapter.DetailPageAdapter
 import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.DetailType
-import com.example.domain.model.enums.ProseWriteType
+import com.example.domain.model.enums.WriteType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -99,9 +99,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
 
     private fun goEditPage(){
         val action = when(detailFragmentArgs.detailType){
-            DetailType.PROSE -> DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = ProseWriteType.EDIT)
+            DetailType.PROSE -> DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = WriteType.EDIT)
             //TODO 토론장 페이지 edit은 따로 해야댐
-            DetailType.DISCUSSION -> DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = ProseWriteType.EDIT)
+            DetailType.DISCUSSION -> DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = WriteType.EDIT)
         }
         findNavController().navigate(action)
     }

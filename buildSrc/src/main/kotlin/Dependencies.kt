@@ -14,6 +14,8 @@ object Google {
     const val FIREBASE_AUTH = "com.google.firebase:firebase-auth-ktx"
     const val FIREBASE_FIRE_STORE = "com.google.firebase:firebase-firestore"
     const val FIREBASE_REALTIME_DB = "com.google.firebase:firebase-database-ktx"
+    const val OKHTTP = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP}"
+    const val GSON = "com.google.code.gson:gson:${Versions.GSON}"
 }
 
 object AndroidX{

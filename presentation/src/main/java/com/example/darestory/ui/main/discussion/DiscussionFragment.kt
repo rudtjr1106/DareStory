@@ -4,12 +4,14 @@ import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentDiscussionBinding
 import com.example.darestory.ui.main.discussion.adapter.DiscussionAdapter
 import com.example.domain.model.enums.SortType
+import com.example.domain.model.enums.WriteType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -41,6 +43,7 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, DiscussionPag
             }
 
             override fun onClickWriteDiscussion() {
+                goToDiscussionWrite()
             }
         })
     }
@@ -93,6 +96,11 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, DiscussionPag
             })
 
         }
+    }
+
+    private fun goToDiscussionWrite(){
+        val action = DiscussionFragmentDirections.actionDiscussionToDiscussionWrite(discussionId = -1, discussionWriteType = WriteType.NEW)
+        findNavController().navigate(action)
     }
 
     private fun scrollUp(){

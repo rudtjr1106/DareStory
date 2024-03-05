@@ -27,6 +27,8 @@
     <string name="word_comment">댓글</string>
     <string name="word_delete">삭제</string>
     <string name="word_dash">-</string>
+    <string name="word_book">책</string>
+    <string name="word_write">글쓰기</string>
 
     <!-- 로그인 -->
     <string name="login_error_toast">이메일 또는 비밀번호를 확인해주세요.</string>
@@ -81,8 +83,10 @@
     <string name="dialog_delete_content">삭제된 글은 복구되지 않습니다.</string>
 
     <!-- Toast 에러 -->
-    <string name="toast_error_check_prose_title">제목을 입력해주세요.</string>
-    <string name="toast_error_check_prose_content">내을 입력해주세요.</string>
+    <string name="toast_error_check_book">책을 선택해주세요.</string>
+    <string name="toast_error_check_write_title">제목을 입력해주세요.</string>
+    <string name="toast_error_check_write_content">내용을 입력해주세요.</string>
+
 
     <!-- 신고 -->
     <string name="report_type">신고유형</string>
@@ -103,5 +107,8 @@
     <string name="search_research">다시 검색하기</string>
     <string name="search_recommend_title">-정확한 제목을 입력해보세요!</string>
     <string name="search_recommend_filter">-필터를 바꾸어보세요!</string>
-    <string name="word_book">책</string>
+
+    <!-- 토론장 -->
+    <string name="discussion_book_search">책 검색</string>
+    <string name="discussion_book_title_search_hint">책 제목을 입력해주세요.</string>
 </resources>

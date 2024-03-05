@@ -41,6 +41,10 @@
             android:id="@+id/action_discussion_to_home"
             app:destination="@id/homeFragment"/>
 
+        <action
+            android:id="@+id/action_discussion_to_discussion_write"
+            app:destination="@id/discussionWriteFragment"/>
+
     </fragment>
 
     <fragment
@@ -119,7 +123,7 @@
 
         <argument
             android:name="proseWriteType"
-            app:argType="com.example.domain.model.enums.ProseWriteType"/>
+            app:argType="com.example.domain.model.enums.WriteType"/>
 
     </fragment>
 
@@ -133,6 +137,22 @@
             android:name="userName"
             android:defaultValue=""
             app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/discussionWriteFragment"
+        android:name="com.example.darestory.ui.main.home.detail.write.discussion.DiscussionWriteFragment"
+        android:label="fragment_discussion_write"
+        tools:layout="@layout/fragment_discussion_write">
+
+        <argument
+            android:name="discussionId"
+            app:argType="integer" />
+
+        <argument
+            android:name="discussionWriteType"
+            app:argType="com.example.domain.model.enums.WriteType"/>
 
     </fragment>
 
