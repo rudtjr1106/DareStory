@@ -2,7 +2,9 @@ package com.example.darestory.ui.sign.login
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
+import com.example.darestory.util.UserInfo
 import com.example.domain.model.vo.LoginVo
+import com.example.domain.usecase.sign.CheckAutoLoginUseCase
 import com.example.domain.usecase.sign.LoginUseCase
 import com.example.domain.usecase.sign.SendPasswordResetUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val sendPasswordResetUseCase: SendPasswordResetUseCase
+    private val sendPasswordResetUseCase: SendPasswordResetUseCase,
+    private val checkAutoLoginUseCase: CheckAutoLoginUseCase
 ) : BaseViewModel<LoginPageState>() {
 
     private val emailStateFlow: MutableStateFlow<String> = MutableStateFlow("")
@@ -38,6 +41,10 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun goToMain(){
+        viewModelScope.launch {
+            val result = checkAutoLoginUseCase(Unit)
+            UserInfo.updateInfo(result)
+        }
         emitEventFlow(LoginEvent.GoToMainEvent)
     }
 
