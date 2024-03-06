@@ -55,6 +55,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
             recyclerHome.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = homeAdapter
+                itemAnimator = null
             }
             bindRecyclerListener()
 

@@ -57,6 +57,7 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, DiscussionPag
             recyclerDiscussion.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = discussionAdapter
+                itemAnimator = null
             }
             bindRecyclerListener()
             viewModel.getAllDiscussionList()
