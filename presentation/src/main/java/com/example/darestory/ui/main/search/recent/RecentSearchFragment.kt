@@ -79,7 +79,7 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
     }
 
     private fun goToResultPage(searchedText : String){
-        val action = RecentSearchFragmentDirections.actionRecentToResultSearch(DetailType.PROSE, searchedText)
+        val action = RecentSearchFragmentDirections.actionRecentToResultSearch(recentSearchFragmentArgs.detailType, searchedText)
         findNavController().navigate(action)
     }
 

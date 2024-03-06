@@ -11,6 +11,7 @@ import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentResultSearchBinding
 import com.example.darestory.ui.common.BookDetailDialog
 import com.example.darestory.ui.common.spinner.SpinnerDialog
+import com.example.darestory.ui.main.discussion.adapter.DiscussionAdapter
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.search.result.adapter.ResultSearchAdapter
 import com.example.darestory.util.SelectedBook
@@ -39,13 +40,24 @@ class ResultSearchFragment : BaseFragment<FragmentResultSearchBinding, ResultSea
     private val resultSearchAdapter : ResultSearchAdapter by lazy {
         ResultSearchAdapter(object : HomeAdapter.HomeDelegate {
             override fun onClickSearch() {}
-            override fun onClickProse(proseId: Int) { goToDetail(proseId) }
+            override fun onClickProse(proseId: Int) {
+                goToDetail(proseId)
+            }
             override fun onClickSort(type: SortType) {}
             override fun onClickWriteProse() {}
         },
 
             object : ResultSearchAdapter.ResultSearchDelegate{
                 override fun onClickBook(item: BookVo) { showBookDetailDialog(item) }
+            },
+            object : DiscussionAdapter.DiscussionDelegate{
+                override fun onClickSearch() {}
+                override fun onClickDiscussion(disId: Int) {
+                    goToDetail(disId)
+                }
+                override fun onClickSort(type: SortType) {}
+                override fun onClickWriteDiscussion() {}
+
             })
     }
 

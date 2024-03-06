@@ -1,5 +1,6 @@
 package com.example.data.repository
 
+import android.util.Log
 import com.example.data.EndPoints
 import com.example.data.dao.RecentSearchDiscussionDao
 import com.example.data.entitiy.RecentSearchDiscussionEntity
@@ -383,6 +384,7 @@ class DiscussionRepositoryImpl @Inject constructor(
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (discussionSnapshot in snapshot.children) {
                     val discussion = discussionSnapshot.getValue(DiscussionVo::class.java)
+                    Log.d("여기 데이터", discussion.toString())
                     when (request.type) {
                         SearchType.TITLE -> {
                             if (discussion != null && discussion.title.contains(request.text)) {

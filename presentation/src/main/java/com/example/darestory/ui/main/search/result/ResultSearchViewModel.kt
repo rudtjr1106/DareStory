@@ -55,7 +55,7 @@ class ResultSearchViewModel @Inject constructor(
             onSearchContentTextChangedAfter()
             when (detailType) {
                 DetailType.PROSE -> successInsertProseRecentSearch(text)
-                DetailType.DISCUSSION -> {}
+                DetailType.DISCUSSION -> successInsertDiscussionRecentSearch(text)
                 DetailType.BOOK -> getBookSearchList()
             }
         }

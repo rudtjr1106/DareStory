@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.darestory.databinding.ItemAllProseBinding
 import com.example.darestory.databinding.ItemDiscussionBookListBinding
+import com.example.darestory.ui.main.discussion.adapter.DiscussionAdapter
+import com.example.darestory.ui.main.discussion.viewHolder.DiscussionItemViewHolder
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.home.viewHolder.HomeNormalProseViewHolder
 import com.example.darestory.ui.main.search.result.viewHolder.BookItemViewHolder
@@ -19,7 +21,8 @@ import com.example.domain.model.vo.ResultSearchVo
 
 class ResultSearchAdapter(
     private val homeListener: HomeAdapter.HomeDelegate,
-    private val resultSearchListener : ResultSearchDelegate)
+    private val resultSearchListener : ResultSearchDelegate,
+    private val discussionListener : DiscussionAdapter.DiscussionDelegate)
     : ListAdapter<ResultSearchVo, RecyclerView.ViewHolder>(ResultSearchDiffCallBack()) {
 
     interface ResultSearchDelegate {
@@ -29,6 +32,7 @@ class ResultSearchAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HomeNormalProseViewHolder -> holder.bind(currentList[position].proseVo)
+            is DiscussionItemViewHolder -> holder.bind(currentList[position].discussionVo)
             is BookItemViewHolder -> holder.bind(currentList[position].bookVo)
         }
     }
@@ -39,7 +43,10 @@ class ResultSearchAdapter(
                 val binding = ItemAllProseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 HomeNormalProseViewHolder(binding, homeListener)
             }
-            DetailType.DISCUSSION -> TODO()
+            DetailType.DISCUSSION -> {
+                val binding = ItemDiscussionBookListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                DiscussionItemViewHolder(binding, discussionListener)
+            }
             DetailType.BOOK -> {
                 val binding = ItemDiscussionBookListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 BookItemViewHolder(binding, resultSearchListener)
