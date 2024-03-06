@@ -1,6 +1,6 @@
 package com.example.data.repository
 
-import android.util.Log
+import com.example.data.NaverClient
 import com.example.domain.model.vo.BookResponseVo
 import com.example.domain.repository.BookRepository
 import com.google.gson.GsonBuilder
@@ -18,17 +18,14 @@ import kotlin.coroutines.suspendCoroutine
 
 class BookRepositoryImpl @Inject constructor() : BookRepository {
 
-    val clientId = "nrH71bqWh3JJHWLjL8VM"
-    val clientSecret = "CDFjlzTNq2"
-
     override suspend fun searchBook(request: String) : BookResponseVo = suspendCoroutine{
         val text = URLEncoder.encode("$request", "UTF-8")
         println(text)
         val url = URL("https://openapi.naver.com/v1/search/book.json?query=${text}&display=100&start=1")
         val request = Request.Builder()
             .url(url)
-            .addHeader("X-Naver-Client-Id", clientId)
-            .addHeader("X-Naver-Client-Secret", clientSecret)
+            .addHeader("X-Naver-Client-Id", NaverClient.getClientId())
+            .addHeader("X-Naver-Client-Secret", NaverClient.getClientSecret())
             .method("GET", null)
             .build()
 
