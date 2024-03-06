@@ -12,7 +12,8 @@ import com.example.darestory.ui.common.CommonDialog
 import com.example.darestory.ui.main.home.detail.adapter.DetailPageAdapter
 import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.DetailType
-import com.example.domain.model.enums.ProseWriteType
+import com.example.domain.model.enums.WriteType
+import com.example.domain.model.vo.DisCommentVo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,6 +45,10 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
 
             override fun onClickCommentMenu(commentId : Int, writer : String) {
                 viewModel.onClickCommentMenu(commentId, detailFragmentArgs.detailType, writer)
+            }
+
+            override fun onClickReplyComment(commentVo: DisCommentVo) {
+                goToDiscussionReplyComment(commentVo)
             }
         })
     }
@@ -85,7 +90,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
             is DetailEvent.GoToBack -> findNavController().popBackStack()
             is DetailEvent.ShowBottomSheetEvent -> showBottomSheet(event.type)
             is DetailEvent.GoEditEvent -> goEditPage()
-            is DetailEvent.ShowProseDeleteDialogEvent -> showProseDeleteDialog()
+            is DetailEvent.ShowDeleteDialogEvent -> showDeleteDialog()
             is DetailEvent.ShowCommentDeleteDialogEvent -> showCommentDeleteDialog()
             is DetailEvent.GoReportEvent -> goReportPage(event.who)
         }
@@ -99,14 +104,18 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
 
     private fun goEditPage(){
         val action = when(detailFragmentArgs.detailType){
-            DetailType.PROSE -> DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = ProseWriteType.EDIT)
-            //TODO 토론장 페이지 edit은 따로 해야댐
-            DetailType.DISCUSSION -> DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = ProseWriteType.EDIT)
+            DetailType.PROSE -> {
+                DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = WriteType.EDIT)
+            }
+            DetailType.DISCUSSION -> {
+                DetailFragmentDirections.actionDetailToDiscussionWrite(discussionId = detailFragmentArgs.detailId, discussionWriteType = WriteType.EDIT)
+            }
+            DetailType.BOOK -> { DetailFragmentDirections.actionDetailToProseWrite(proseId = detailFragmentArgs.detailId, proseWriteType = WriteType.EDIT) }
         }
         findNavController().navigate(action)
     }
 
-    private fun showProseDeleteDialog(){
+    private fun showDeleteDialog(){
         commonDialog
             .setTitle(R.string.dialog_delete_title)
             .setDescription(R.string.dialog_delete_content)
@@ -136,6 +145,14 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
 
     private fun goReportPage(who : String){
         val action = DetailFragmentDirections.actionDetailToReport(who)
+        findNavController().navigate(action)
+    }
+
+    private fun goToDiscussionReplyComment(disCommentVo: DisCommentVo){
+        val action = DetailFragmentDirections.actionDetailToDiscussionReplyComment(
+            discussionId = detailFragmentArgs.detailId,
+            commentId = disCommentVo.commentId
+        )
         findNavController().navigate(action)
     }
 

@@ -13,6 +13,10 @@
         tools:layout="@layout/fragment_home">
 
         <action
+            android:id="@+id/action_home_to_discussion"
+            app:destination="@id/discussionFragment"/>
+
+        <action
             android:id="@+id/action_home_to_detail"
             app:destination="@id/detailFragment"/>
 
@@ -33,6 +37,22 @@
         android:label="fragment_discussion"
         tools:layout="@layout/fragment_discussion">
 
+        <action
+            android:id="@+id/action_discussion_to_home"
+            app:destination="@id/homeFragment"/>
+
+        <action
+            android:id="@+id/action_discussion_to_recent_search"
+            app:destination="@id/recentSearchFragment"/>
+
+        <action
+            android:id="@+id/action_discussion_to_detail"
+            app:destination="@id/detailFragment"/>
+
+        <action
+            android:id="@+id/action_discussion_to_discussion_write"
+            app:destination="@id/discussionWriteFragment"/>
+
     </fragment>
 
     <fragment
@@ -48,6 +68,10 @@
         android:name="com.example.darestory.ui.main.search.recent.RecentSearchFragment"
         android:label="fragment_recent_search"
         tools:layout="@layout/fragment_recent_search">
+
+        <argument
+            android:name="detailType"
+            app:argType="com.example.domain.model.enums.DetailType"/>
 
         <action
             android:id="@+id/action_recent_to_result_search"
@@ -69,6 +93,7 @@
         <argument
             android:name="detailType"
             app:argType="com.example.domain.model.enums.DetailType"/>
+
         <action
             android:id="@+id/action_result_to_detail"
             app:destination="@id/detailFragment"/>
@@ -90,18 +115,45 @@
             app:argType="com.example.domain.model.enums.DetailType"/>
 
         <action
+            android:id="@+id/action_detail_to_discussion_reply_comment"
+            app:destination="@id/discussionReplyCommentFragment"/>
+
+        <action
             android:id="@+id/action_detail_to_prose_write"
             app:destination="@id/proseWriteFragment"/>
 
         <action
+            android:id="@+id/action_detail_to_discussion_write"
+            app:destination="@id/discussionWriteFragment"/>
+
+        <action
             android:id="@+id/action_detail_to_report"
+            app:destination="@id/reportFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/discussionReplyCommentFragment"
+        android:name="com.example.darestory.ui.main.discussion.replyComment.DiscussionReplyCommentFragment"
+        android:label="fragment_discussion_reply_comment"
+        tools:layout="@layout/fragment_discussion_reply_comment">
+
+        <argument
+            android:name="discussionId"
+            app:argType="integer" />
+
+        <argument
+            android:name="commentId"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_discussion_reply_comment_to_report"
             app:destination="@id/reportFragment"/>
 
     </fragment>
 
     <fragment
         android:id="@+id/proseWriteFragment"
-        android:name="com.example.darestory.ui.main.home.detail.write.prose.ProseWriteFragment"
+        android:name="com.example.darestory.ui.main.home.detail.wrtie.ProseWriteFragment"
         android:label="fragment_prose_write"
         tools:layout="@layout/fragment_prose_write">
 
@@ -111,7 +163,7 @@
 
         <argument
             android:name="proseWriteType"
-            app:argType="com.example.domain.model.enums.ProseWriteType"/>
+            app:argType="com.example.domain.model.enums.WriteType"/>
 
     </fragment>
 
@@ -125,6 +177,32 @@
             android:name="userName"
             android:defaultValue=""
             app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/discussionWriteFragment"
+        android:name="com.example.darestory.ui.main.discussion.write.DiscussionWriteFragment"
+        android:label="fragment_discussion_write"
+        tools:layout="@layout/fragment_discussion_write">
+
+        <argument
+            android:name="discussionId"
+            app:argType="integer" />
+
+        <argument
+            android:name="discussionWriteType"
+            app:argType="com.example.domain.model.enums.WriteType"/>
+
+        <argument
+            android:name="userName"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_discussion_write_to_result_search"
+            app:destination="@id/resultSearchFragment"/>
+
 
     </fragment>
 

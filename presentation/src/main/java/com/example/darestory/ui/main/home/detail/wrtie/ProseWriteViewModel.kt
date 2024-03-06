@@ -1,11 +1,11 @@
-package com.example.darestory.ui.main.home.detail.write.prose
+package com.example.darestory.ui.main.home.detail.wrtie
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.TimeFormatter
 import com.example.darestory.util.UserInfo
-import com.example.domain.model.enums.ProseWriteType
-import com.example.domain.model.enums.UploadProseVo
+import com.example.domain.model.enums.WriteType
+import com.example.domain.model.vo.UploadProseVo
 import com.example.domain.model.vo.ProseVo
 import com.example.domain.usecase.home.GetProseUseCase
 import com.example.domain.usecase.home.UploadProseUseCase
@@ -31,13 +31,13 @@ class ProseWriteViewModel @Inject constructor(
         authorSayStateFlow
     )
 
-    private lateinit var type : ProseWriteType
+    private lateinit var type : WriteType
     private lateinit var remainProseVo : ProseVo
-    fun loadPage(proseId : Int, type : ProseWriteType){
+    fun loadPage(proseId : Int, type : WriteType){
         this.type = type
         when(type){
-            ProseWriteType.EDIT -> getProseDetail(proseId)
-            ProseWriteType.NEW -> {}
+            WriteType.EDIT -> getProseDetail(proseId)
+            WriteType.NEW -> {}
         }
     }
 
@@ -62,10 +62,12 @@ class ProseWriteViewModel @Inject constructor(
     }
 
     fun onClickUploadBtn(){
-        if(titleStateFlow.value.isNotEmpty() && contentStateFlow.value.isNotEmpty()){
+        val titleTrim = titleStateFlow.value.trim()
+        val contentTrim = contentStateFlow.value.trim()
+        if(titleTrim.isNotEmpty() && contentTrim.isNotEmpty()){
             val request = when(type){
-                ProseWriteType.EDIT -> getEditRequest()
-                ProseWriteType.NEW -> getNewRequest()
+                WriteType.EDIT -> getEditRequest()
+                WriteType.NEW -> getNewRequest()
             }
 
             viewModelScope.launch {
@@ -86,7 +88,7 @@ class ProseWriteViewModel @Inject constructor(
         }
     }
 
-    private fun getNewRequest(): UploadProseVo{
+    private fun getNewRequest(): UploadProseVo {
         val proseVo = ProseVo(
             age = UserInfo.info.age,
             author = UserInfo.info.nickName,
@@ -101,7 +103,7 @@ class ProseWriteViewModel @Inject constructor(
         )
     }
 
-    private fun getEditRequest() : UploadProseVo{
+    private fun getEditRequest() : UploadProseVo {
         val proseVo = remainProseVo.copy(
             title = titleStateFlow.value,
             content = contentStateFlow.value,

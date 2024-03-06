@@ -1,4 +1,4 @@
-package com.example.darestory.ui.main.home.detail.write.prose
+package com.example.darestory.ui.main.home.detail.wrtie
 
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -68,11 +68,11 @@ class ProseWriteFragment : BaseFragment<FragmentProseWriteBinding, ProseWritePag
     }
 
     private fun showContentErrorToast(){
-        DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_check_prose_content).show()
+        DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_check_write_content).show()
     }
 
     private fun showTitleErrorToast(){
-        DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_check_prose_title).show()
+        DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_check_write_title).show()
     }
 
     private fun bindEditText() {

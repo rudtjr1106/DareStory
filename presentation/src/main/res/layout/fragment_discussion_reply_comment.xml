@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.example.darestory.ui.main.discussion.replyComment.DiscussionReplyCommentViewModel" />
+    </data>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/background"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_top"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/image_btn_back"
+                android:layout_width="24dp"
+                android:onClick="@{()->vm.onClickBackBtn()}"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/ic_back_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            
+            <TextView
+                app:layout_constraintTop_toTopOf="@id/image_btn_back"
+                app:layout_constraintStart_toEndOf="@id/image_btn_back"
+                app:layout_constraintBottom_toBottomOf="@id/image_btn_back"
+                android:textColor="@color/gray_200"
+                android:textAppearance="@style/h4"
+                android:layout_marginStart="16dp"
+                android:text="@string/discussion_reply_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_comment"
+            app:layout_constraintTop_toBottomOf="@id/constraint_layout_top"
+            app:layout_constraintBottom_toBottomOf="@id/image_divide_line_input_comment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <ImageView
+            android:id="@+id/image_divide_line_input_comment"
+            android:background="@drawable/img_line_gray_600"
+            app:layout_constraintBottom_toTopOf="@id/constraint_layout_input_comment"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_input_comment"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edit_text_comment_input"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginVertical="12dp"
+                android:layout_marginStart="15dp"
+                android:paddingStart="8dp"
+                android:paddingVertical="7dp"
+                android:textAppearance="@style/c3"
+                android:textColorHint="@color/gray_400"
+                android:textColor="@color/gray_200"
+                android:hint="@string/home_prose_comment_hint"
+                android:text="@={vm.uiState.commentEdit}"
+                android:layout_marginEnd="6dp"
+                app:layout_constraintEnd_toStartOf="@id/image_btn_regist_comment"
+                android:background="@drawable/bg_rectangle_empty_gray_400"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/image_btn_regist_comment"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="21dp"
+                android:onClick="@{()->vm.onClickCommentAddButton()}"
+                android:background="@drawable/ic_send_gray_200"
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

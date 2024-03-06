@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="16dp"
+        android:background="@drawable/inset_book_dialog"
+        tools:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_no"
+            android:layout_width="72dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_rectangle_radius_4_empty_dark_purple_700"
+            android:textAppearance="@style/btn2"
+            android:textColor="@color/gray_200"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_yes"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="취소" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_yes"
+            android:layout_width="72dp"
+            android:layout_height="36dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_rectangle_radius_4_filled_dark_purple_700"
+            android:textAppearance="@style/btn2"
+            android:textColor="@color/gray_300"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_no"
+            tools:text="확인" />
+        
+        <TextView
+            android:id="@+id/text_description_content"
+            android:layout_marginHorizontal="11dp"
+            app:layout_constraintBottom_toTopOf="@id/btn_yes"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="@style/body3"
+            android:maxLines="6"
+            android:scrollbars="vertical"
+            android:textColor="@color/gray_200"
+            tools:text="지금은 남의 땅― 빼앗긴 들에도 봄은 오는가? 나는 온몸에 햇살을 받고푸른 하늘 푸른 들이 맞붙은 곳으로 가르마 같은 논길을 따라 꿈 속을 가듯 걸어만 간다. 입술을 다문 하늘아, 지금은 남의 땅― 빼앗긴 들에도 봄은 오는가? 나는 온몸에 햇살을 받고푸른 하늘 푸른 들이 맞붙은 곳으로 가르마 같은 논길을 따라 꿈 속을 가듯 걸어만 간다. 입술을 다문 하늘아,"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_description"
+            android:textColor="@color/gray_600"
+            android:textAppearance="@style/c3"
+            android:text="@string/word_description"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintStart_toStartOf="@id/text_description_content"
+            app:layout_constraintBottom_toTopOf="@id/text_description_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        
+        <ImageView
+            android:id="@+id/image_book"
+            app:layout_constraintBottom_toTopOf="@id/text_description"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="75dp"
+            android:layout_height="100dp"/>
+
+        <TextView
+            android:id="@+id/text_book_title"
+            app:layout_constraintTop_toTopOf="@id/image_book"
+            app:layout_constraintStart_toEndOf="@id/image_book"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="13dp"
+            android:maxLines="2"
+            android:layout_marginStart="12dp"
+            android:textAppearance="@style/title2"
+            android:textColor="@color/gray_200"
+            tools:text="오늘 여기서 우리는 김치찌개를 먹어야 하는가?"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_author"
+            app:layout_constraintTop_toBottomOf="@id/text_book_title"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="@id/text_book_title"
+            android:text="@string/word_author"
+            android:textColor="@color/gray_600"
+            android:textAppearance="@style/c3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_author_name"
+            app:layout_constraintStart_toEndOf="@id/text_author"
+            app:layout_constraintTop_toTopOf="@id/text_author"
+            tools:text="조경석"
+            android:layout_marginStart="4dp"
+            android:textAppearance="@style/c3"
+            android:textColor="@color/gray_200"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_publisher"
+            app:layout_constraintTop_toBottomOf="@id/text_author"
+            app:layout_constraintStart_toStartOf="@id/text_author"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/c3"
+            android:textColor="@color/gray_600"
+            android:text="@string/word_publisher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_publisher_content"
+            app:layout_constraintTop_toTopOf="@id/text_publisher"
+            app:layout_constraintStart_toEndOf="@id/text_publisher"
+            android:layout_marginStart="4dp"
+            android:textAppearance="@style/c3"
+            android:textColor="@color/gray_200"
+            tools:text="경기도"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

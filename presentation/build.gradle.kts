@@ -71,4 +71,5 @@ dependencies {
     kapt(Google.HILT_COMPILER)
 
     implementation("com.github.zhpanvip:viewpagerindicator:1.2.3")
+    implementation(Google.GLIDE)
 }

@@ -1,5 +1,5 @@
 package com.example.domain.model.enums
 
-enum class ProseWriteType {
+enum class WriteType {
     EDIT, NEW
 }

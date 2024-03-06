@@ -81,6 +81,7 @@
                 android:id="@+id/constraint_layout_bottom_discussion_nav"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:onClick="@{()->vm.goToDiscussion()}"
                 android:layout_marginVertical="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/constraint_layout_bottom_my_nav"

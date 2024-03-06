@@ -56,4 +56,9 @@ dependencies {
     annotationProcessor(AndroidX.ROOM_COMPILER)
     kapt(AndroidX.ROOM_COMPILER)
     implementation(AndroidX.ROOM)
+
+    //OKHTTP
+    api(Google.OKHTTP)
+    //GSON
+    api(Google.GSON)
 }

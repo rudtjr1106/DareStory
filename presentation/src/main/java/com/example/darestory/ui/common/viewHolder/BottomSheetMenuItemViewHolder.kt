@@ -31,8 +31,10 @@ class BottomSheetMenuItemViewHolder(
 
     private fun getMenuIconRes(menuType: BottomSheetMenuItemType):Int {
         return when(menuType) {
+            BottomSheetMenuItemType.DISCUSSION_EDIT,
             BottomSheetMenuItemType.PROSE_EDIT -> R.drawable.ic_edit_white
 
+            BottomSheetMenuItemType.DISCUSSION_DELETE,
             BottomSheetMenuItemType.COMMENT_DELETE,
             BottomSheetMenuItemType.PROSE_DELETE -> R.drawable.ic_delete_empty_white
 
@@ -44,8 +46,10 @@ class BottomSheetMenuItemViewHolder(
 
     private fun getMenuContentStringRes(menuType: BottomSheetMenuItemType):Int {
         return when(menuType) {
+            BottomSheetMenuItemType.DISCUSSION_EDIT,
             BottomSheetMenuItemType.PROSE_EDIT -> R.string.bottom_sheet_edit
 
+            BottomSheetMenuItemType.DISCUSSION_DELETE,
             BottomSheetMenuItemType.COMMENT_DELETE,
             BottomSheetMenuItemType.PROSE_DELETE -> R.string.bottom_sheet_delete
 

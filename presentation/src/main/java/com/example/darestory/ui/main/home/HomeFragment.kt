@@ -11,7 +11,7 @@ import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentHomeBinding
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.domain.model.enums.DetailType
-import com.example.domain.model.enums.ProseWriteType
+import com.example.domain.model.enums.WriteType
 import com.example.domain.model.enums.SortType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -55,6 +55,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
             recyclerHome.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = homeAdapter
+                itemAnimator = null
             }
             bindRecyclerListener()
 
@@ -85,6 +86,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
             is HomeEvent.GoToWriteProseEvent -> goToWriteProsePage()
             is HomeEvent.GoToRecentSearchPageEvent -> goToRecentSearchPage()
             is HomeEvent.ScrollUpEvent -> scrollUp()
+            is HomeEvent.GoToDiscussionEvent -> goToDiscussion()
         }
     }
 
@@ -94,12 +96,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
     }
 
     private fun goToWriteProsePage(){
-        val action = HomeFragmentDirections.actionHomeToProseWrite(proseId = -1, proseWriteType = ProseWriteType.NEW)
+        val action = HomeFragmentDirections.actionHomeToProseWrite(proseId = -1, proseWriteType = WriteType.NEW)
         findNavController().navigate(action)
     }
 
     private fun goToRecentSearchPage(){
-        val action = HomeFragmentDirections.actionHomeToProseRecentSearch()
+        val action = HomeFragmentDirections.actionHomeToProseRecentSearch(detailType = DetailType.PROSE)
         findNavController().navigate(action)
     }
 
@@ -124,6 +126,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
 
     private fun scrollUp(){
         binding.recyclerHome.smoothScrollToPosition(0)
+    }
+
+    private fun goToDiscussion(){
+        val action = HomeFragmentDirections.actionHomeToDiscussion()
+        findNavController().navigate(action)
     }
 
     override fun onStart() {

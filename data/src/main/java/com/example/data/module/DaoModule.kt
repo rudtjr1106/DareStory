@@ -1,6 +1,7 @@
 package com.example.data.module
 
 import com.example.data.RoomDB
+import com.example.data.RoomDiscussionDatabase
 import com.example.data.RoomProseDatabase
 import dagger.Module
 import dagger.Provides
@@ -14,5 +15,9 @@ object DaoModule {
 
     @Singleton
     @Provides
-    fun provideRecentSearchDao(@RoomDB db: RoomProseDatabase) = db.recentSearchDao()
+    fun provideRecentProseSearchDao(@RoomDB db: RoomProseDatabase) = db.recentSearchDao()
+
+    @Singleton
+    @Provides
+    fun provideRecentDiscussionSearchDao(@RoomDB db: RoomDiscussionDatabase) = db.recentSearchDao()
 }

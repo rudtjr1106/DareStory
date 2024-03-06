@@ -9,5 +9,6 @@ sealed class HomeEvent : Event {
     object GoToWriteProseEvent : HomeEvent()
     object GoToRecentSearchPageEvent : HomeEvent()
     object ScrollUpEvent : HomeEvent()
+    object GoToDiscussionEvent : HomeEvent()
 
 }

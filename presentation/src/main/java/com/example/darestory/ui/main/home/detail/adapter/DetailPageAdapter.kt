@@ -7,13 +7,19 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.darestory.databinding.ItemDetailCommentEmptyBinding
+import com.example.darestory.databinding.ItemDetailDiscussionCommentBinding
 import com.example.darestory.databinding.ItemDetailProseCommentBinding
 import com.example.darestory.databinding.ItemLayoutDetailBinding
 import com.example.darestory.ui.main.home.detail.viewHolder.DetailPageViewHolder
+import com.example.darestory.ui.main.home.detail.viewHolder.DiscussionCommentViewHolder
+import com.example.darestory.ui.main.home.detail.viewHolder.EmptyCommentViewHolder
 import com.example.darestory.ui.main.home.detail.viewHolder.ProseAuthorCommentViewHolder
 import com.example.darestory.ui.main.home.detail.viewHolder.ProseCommentViewHolder
 import com.example.domain.model.enums.DetailPageViewType
+import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.DetailPageVo
+import com.example.domain.model.vo.DisCommentVo
 
 class DetailPageAdapter(private val listener: DetailPageDelegate) : ListAdapter<DetailPageVo, RecyclerView.ViewHolder>(
     DetailItemDiffCallBack()
@@ -24,6 +30,7 @@ class DetailPageAdapter(private val listener: DetailPageDelegate) : ListAdapter<
         fun onClickBack()
         fun onClickMenu(author: String)
         fun onClickCommentMenu(commentId : Int, writer : String)
+        fun onClickReplyComment(commentVo: DisCommentVo)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -32,6 +39,8 @@ class DetailPageAdapter(private val listener: DetailPageDelegate) : ListAdapter<
             is DetailPageViewHolder -> holder.bind(currentList[position].detailContent)
             is ProseCommentViewHolder -> holder.bind(currentList[position].proseComment)
             is ProseAuthorCommentViewHolder -> holder.bind(currentList[position].proseComment)
+            is DiscussionCommentViewHolder -> holder.bind(currentList[position].discussionComment)
+            is EmptyCommentViewHolder -> holder.bind()
         }
     }
 
@@ -49,6 +58,16 @@ class DetailPageAdapter(private val listener: DetailPageDelegate) : ListAdapter<
             DetailPageViewType.PROSE_AUTHOR_COMMENT -> {
                 val binding = ItemDetailProseCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 ProseAuthorCommentViewHolder(binding)
+            }
+
+            DetailPageViewType.DISCUSSION_COMMENT -> {
+                val binding = ItemDetailDiscussionCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                DiscussionCommentViewHolder(binding, listener)
+            }
+
+            DetailPageViewType.EMPTY -> {
+                val binding = ItemDetailCommentEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                EmptyCommentViewHolder(binding)
             }
         }
     }

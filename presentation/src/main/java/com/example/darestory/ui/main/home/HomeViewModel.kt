@@ -153,4 +153,8 @@ class HomeViewModel @Inject constructor(
     fun onClickScrollUp(){
         emitEventFlow(HomeEvent.ScrollUpEvent)
     }
+
+    fun goToDiscussion(){
+        emitEventFlow(HomeEvent.GoToDiscussionEvent)
+    }
 }
