@@ -117,6 +117,7 @@
     <string name="discussion_book_title_search_hint">책 제목을 입력해주세요.</string>
     <string name="discussion_comment_count">댓글 %d개</string>
     <string name="discussion_add_reply">답글 남기기</string>
+    <string name="discussion_reply_comment">글 상세 보기</string>
 
     <!-- 책 관련 -->
     <string name="book_author">저자 : %s</string>

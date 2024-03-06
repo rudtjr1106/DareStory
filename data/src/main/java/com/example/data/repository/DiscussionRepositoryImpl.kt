@@ -1,11 +1,14 @@
 package com.example.data.repository
 
+import android.util.Log
 import com.example.data.EndPoints
+import com.example.domain.model.vo.CommentRequestVo
 import com.example.domain.model.vo.CommentVo
+import com.example.domain.model.vo.DisCommentVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.LikeVo
-import com.example.domain.model.vo.ProseVo
 import com.example.domain.model.vo.UpdateCommentVo
+import com.example.domain.model.vo.UpdateReplyCommentVo
 import com.example.domain.repository.DiscussionRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -106,6 +109,39 @@ class DiscussionRepositoryImpl @Inject constructor() : DiscussionRepository {
         if (success) updateCommentCount(request.id) else false
     }
 
+    override suspend fun addReplyComment(request: UpdateReplyCommentVo): Boolean = suspendCoroutine {
+        var newRequest : CommentVo
+        var lastId = 0
+        val dbRef = discussionDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
+            .child(request.commentId.toString())
+            .child(EndPoints.REPLY_COMMENT)
+        dbRef.limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    val comment = snapshot.getValue(CommentVo::class.java)
+                    if (comment != null) {
+                        lastId = comment.commentId + 1
+                    }
+                }
+                newRequest = request.comment.copy(commentId = lastId)
+                dbRef.child(newRequest.commentId.toString()).setValue(newRequest)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            it.resume(true)
+                        } else {
+                            it.resume(false)
+                        }
+                    }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // 에러 처리
+                return it.resume(false)
+            }
+        })
+
+    }
+
     override suspend fun deleteComment(request: UpdateCommentVo): Boolean = coroutineScope {
         val success = async {
             deleteDiscussionComment(request)
@@ -114,6 +150,31 @@ class DiscussionRepositoryImpl @Inject constructor() : DiscussionRepository {
         if (success) updateCommentCount(request.id) else false
     }
 
+    override suspend fun deleteReplyComment(request: UpdateReplyCommentVo): Boolean = suspendCoroutine {
+        discussionDbRef.child(request.id.toString()).child(EndPoints.COMMENT).child(request.commentId.toString()).child(EndPoints.REPLY_COMMENT)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (commentSnapshot in dataSnapshot.children) {
+                        val commentId =
+                            commentSnapshot.child(EndPoints.COMMENT_ID).getValue(Int::class.java)
+                        if (commentId == request.comment.commentId) {
+                            commentSnapshot.ref.removeValue().addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    it.resume(true)
+                                } else {
+                                    it.resume(false)
+                                }
+                            }
+                            break
+                        }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    it.resume(false)
+                }
+            })
+    }
     private suspend fun deleteDiscussionComment(request: UpdateCommentVo): Boolean = suspendCoroutine {
         discussionDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -272,5 +333,21 @@ class DiscussionRepositoryImpl @Inject constructor() : DiscussionRepository {
                 }
             }
     }
+
+    override suspend fun getDiscussionReplyComment(request: CommentRequestVo): DisCommentVo = suspendCoroutine{ coroutineScope ->
+        discussionDbRef.child(request.discussionId.toString()).child(EndPoints.COMMENT).child(request.commentId.toString())
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val replyComment = snapshot.getValue(DisCommentVo::class.java)
+                Log.d("달의 이야기", replyComment?.replyComment.toString())
+                replyComment?.let { coroutineScope.resume(it) }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                coroutineScope.resume(DisCommentVo())
+            }
+        })
+    }
+
 
 }

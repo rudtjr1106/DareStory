@@ -107,6 +107,10 @@
             app:argType="com.example.domain.model.enums.DetailType"/>
 
         <action
+            android:id="@+id/action_detail_to_discussion_reply_comment"
+            app:destination="@id/discussionReplyCommentFragment"/>
+
+        <action
             android:id="@+id/action_detail_to_prose_write"
             app:destination="@id/proseWriteFragment"/>
 
@@ -116,6 +120,25 @@
 
         <action
             android:id="@+id/action_detail_to_report"
+            app:destination="@id/reportFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/discussionReplyCommentFragment"
+        android:name="com.example.darestory.ui.main.discussion.replyComment.DiscussionReplyCommentFragment"
+        android:label="fragment_discussion_reply_comment"
+        tools:layout="@layout/fragment_discussion_reply_comment">
+
+        <argument
+            android:name="discussionId"
+            app:argType="integer" />
+
+        <argument
+            android:name="commentId"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_discussion_reply_comment_to_report"
             app:destination="@id/reportFragment"/>
 
     </fragment>

@@ -17,7 +17,9 @@ import com.example.darestory.ui.main.home.detail.viewHolder.EmptyCommentViewHold
 import com.example.darestory.ui.main.home.detail.viewHolder.ProseAuthorCommentViewHolder
 import com.example.darestory.ui.main.home.detail.viewHolder.ProseCommentViewHolder
 import com.example.domain.model.enums.DetailPageViewType
+import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.DetailPageVo
+import com.example.domain.model.vo.DisCommentVo
 
 class DetailPageAdapter(private val listener: DetailPageDelegate) : ListAdapter<DetailPageVo, RecyclerView.ViewHolder>(
     DetailItemDiffCallBack()
@@ -28,6 +30,7 @@ class DetailPageAdapter(private val listener: DetailPageDelegate) : ListAdapter<
         fun onClickBack()
         fun onClickMenu(author: String)
         fun onClickCommentMenu(commentId : Int, writer : String)
+        fun onClickReplyComment(commentVo: DisCommentVo)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

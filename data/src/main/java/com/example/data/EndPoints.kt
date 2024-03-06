@@ -11,6 +11,7 @@ object EndPoints {
     const val LIKED_MEMBER = "whoLiked"
     const val LIKE_COUNT = "likeCount"
     const val COMMENT = "comment"
+    const val REPLY_COMMENT = "replyComment"
     const val COMMENT_COUNT = "commentCount"
     const val COMMENT_ID = "commentId"
     const val REPORT = "report"
