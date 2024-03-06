@@ -95,8 +95,8 @@ class ResultSearchFragment : BaseFragment<FragmentResultSearchBinding, ResultSea
                 setOnEditorActionListener { _, keyCode, keyEvent ->
                     if(keyCode == EditorInfo.IME_ACTION_SEARCH) {
                         when(resultSearchFragmentArgs.detailType){
-                            DetailType.PROSE -> viewModel.insertProseRecentSearch(text.toString())
-                            DetailType.DISCUSSION -> TODO()
+                            DetailType.PROSE -> viewModel.insertProseRecentSearch()
+                            DetailType.DISCUSSION -> viewModel.insertDiscussionRecentSearch()
                             DetailType.BOOK -> viewModel.getBookSearchList()
                         }
                         textResultSearch.text = getString(R.string.search_result, text.toString())

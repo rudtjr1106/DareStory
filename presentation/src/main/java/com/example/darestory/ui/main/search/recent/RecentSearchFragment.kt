@@ -3,6 +3,7 @@ package com.example.darestory.ui.main.search.recent
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentRecentSearchBinding
@@ -17,7 +18,8 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
 ) {
 
     override val viewModel: RecentSearchViewModel by viewModels()
-    //TODO 검색 타입 받아와서 토론장인지 산문인지 구분해서 최근 검색어 가져오기
+    private val recentSearchFragmentArgs : RecentSearchFragmentArgs by navArgs()
+
     private val recentSearchAdapter : RecentSearchAdapter by lazy {
         RecentSearchAdapter(object : RecentSearchAdapter.RecentSearchDelegate {
             override fun onClickItem(recent: String) {
@@ -34,7 +36,7 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
                 adapter = recentSearchAdapter
             }
             bindEditTextKeyboard()
-            viewModel.getRecentSearchList()
+            viewModel.getRecentSearchList(recentSearchFragmentArgs.detailType)
         }
     }
 
@@ -83,7 +85,7 @@ class RecentSearchFragment : BaseFragment<FragmentRecentSearchBinding, RecentSea
 
     override fun onResume() {
         super.onResume()
-        viewModel.getRecentSearchList()
+        viewModel.getRecentSearchList(recentSearchFragmentArgs.detailType)
     }
 
     override fun onStart() {

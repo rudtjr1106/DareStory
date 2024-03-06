@@ -3,6 +3,7 @@ package com.example.data.module
 import android.content.Context
 import androidx.room.Room
 import com.example.data.RoomDB
+import com.example.data.RoomDiscussionDatabase
 import com.example.data.RoomProseDatabase
 import dagger.Module
 import dagger.Provides
@@ -15,13 +16,22 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RoomModule {
 
-    private const val DB_NAME = "database-prose"
+    private const val PROSE_DB_NAME = "database-prose"
+    private const val DISCUSSION_DB_NAME = "database-discussion"
 
     @Provides
     @Singleton
     @RoomDB
     fun provideRoomProseDataBase(@ApplicationContext context: Context) =
-        Room.databaseBuilder(context, RoomProseDatabase::class.java, DB_NAME)
+        Room.databaseBuilder(context, RoomProseDatabase::class.java, PROSE_DB_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
+
+    @Provides
+    @Singleton
+    @RoomDB
+    fun provideRoomDiscussionDataBase(@ApplicationContext context: Context) =
+        Room.databaseBuilder(context, RoomDiscussionDatabase::class.java, DISCUSSION_DB_NAME)
             .fallbackToDestructiveMigration()
             .build()
 }

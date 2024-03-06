@@ -30,7 +30,7 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, DiscussionPag
     private val discussionAdapter : DiscussionAdapter by lazy {
         DiscussionAdapter(object : DiscussionAdapter.DiscussionDelegate {
             override fun onClickSearch() {
-
+                goToRecentSearch()
             }
 
             override fun onClickDiscussion(disId: Int) {
@@ -115,6 +115,11 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, DiscussionPag
 
     private fun goToDiscussionWrite(){
         val action = DiscussionFragmentDirections.actionDiscussionToDiscussionWrite(discussionId = -1, discussionWriteType = WriteType.NEW)
+        findNavController().navigate(action)
+    }
+
+    private fun goToRecentSearch(){
+        val action = DiscussionFragmentDirections.actionDiscussionToRecentSearch(detailType = DetailType.DISCUSSION)
         findNavController().navigate(action)
     }
 

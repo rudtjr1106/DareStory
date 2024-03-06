@@ -100,7 +100,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
     }
 
     private fun goToRecentSearchPage(){
-        val action = HomeFragmentDirections.actionHomeToProseRecentSearch()
+        val action = HomeFragmentDirections.actionHomeToProseRecentSearch(detailType = DetailType.PROSE)
         findNavController().navigate(action)
     }
 

@@ -1,10 +1,10 @@
 package com.example.domain.repository
 
 import com.example.domain.model.vo.CommentRequestVo
-import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.DisCommentVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.LikeVo
+import com.example.domain.model.vo.SearchVo
 import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.UpdateReplyCommentVo
 
@@ -21,4 +21,7 @@ interface DiscussionRepository {
     suspend fun likeAdd(request: LikeVo) : Boolean
     suspend fun deleteDiscussion(request : Int) : Boolean
     suspend fun getDiscussionReplyComment(request: CommentRequestVo) : DisCommentVo
+    suspend fun getRecentSearch() : List<String>
+    suspend fun insertRecentSearch(request : String) : Boolean
+    suspend fun getSearchedResult(request: SearchVo) : List<DiscussionVo>
 }

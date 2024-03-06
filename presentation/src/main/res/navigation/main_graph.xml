@@ -42,6 +42,10 @@
             app:destination="@id/homeFragment"/>
 
         <action
+            android:id="@+id/action_discussion_to_recent_search"
+            app:destination="@id/recentSearchFragment"/>
+
+        <action
             android:id="@+id/action_discussion_to_detail"
             app:destination="@id/detailFragment"/>
 
@@ -64,6 +68,10 @@
         android:name="com.example.darestory.ui.main.search.recent.RecentSearchFragment"
         android:label="fragment_recent_search"
         tools:layout="@layout/fragment_recent_search">
+
+        <argument
+            android:name="detailType"
+            app:argType="com.example.domain.model.enums.DetailType"/>
 
         <action
             android:id="@+id/action_recent_to_result_search"

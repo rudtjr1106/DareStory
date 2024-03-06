@@ -2,7 +2,9 @@ package com.example.darestory.ui.main.search.recent
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
-import com.example.darestory.util.DareLog
+import com.example.domain.model.enums.DetailType
+import com.example.domain.usecase.discussion.GetRecentDiscussionSearchUseCase
+import com.example.domain.usecase.discussion.InsertRecentDiscussionSearchUseCase
 import com.example.domain.usecase.home.GetRecentProseSearchUseCase
 import com.example.domain.usecase.home.InsertRecentProseSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,11 +13,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 @HiltViewModel
 class RecentSearchViewModel @Inject constructor(
     private val getRecentProseSearchUseCase: GetRecentProseSearchUseCase,
-    private val insertRecentProseSearchUseCase: InsertRecentProseSearchUseCase
+    private val insertRecentProseSearchUseCase: InsertRecentProseSearchUseCase,
+    private val getRecentDiscussionSearchUseCase: GetRecentDiscussionSearchUseCase,
+    private val insertRecentDiscussionSearchUseCase: InsertRecentDiscussionSearchUseCase
 ) : BaseViewModel<RecentSearchPageState>() {
 
     private val searchContentStateFlow : MutableStateFlow<String> = MutableStateFlow("")
@@ -28,9 +33,16 @@ class RecentSearchViewModel @Inject constructor(
         searchContentIsEmptyStateFlow.asStateFlow(),
     )
 
-    fun getRecentSearchList(){
+    private var detailType by Delegates.notNull<DetailType>()
+
+    fun getRecentSearchList(type : DetailType){
+        detailType = type
         viewModelScope.launch {
-            recentSearchedListStateFlow.update { getRecentProseSearchUseCase(Unit) }
+            when (type) {
+                DetailType.PROSE -> recentSearchedListStateFlow.update { getRecentProseSearchUseCase(Unit) }
+                DetailType.DISCUSSION -> recentSearchedListStateFlow.update { getRecentDiscussionSearchUseCase(Unit) }
+                DetailType.BOOK -> {}
+            }
         }
     }
 
@@ -44,7 +56,11 @@ class RecentSearchViewModel @Inject constructor(
 
     fun insertRecentSearch(text : String){
         viewModelScope.launch {
-            val result = insertRecentProseSearchUseCase(text)
+            val result = when(detailType){
+                DetailType.PROSE -> insertRecentProseSearchUseCase(text)
+                DetailType.DISCUSSION -> insertRecentDiscussionSearchUseCase(text)
+                DetailType.BOOK -> false
+            }
             if(result) successInsertRecentSearch(text)
         }
     }

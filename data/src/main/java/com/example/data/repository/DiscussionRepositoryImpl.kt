@@ -1,12 +1,16 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.EndPoints
+import com.example.data.dao.RecentSearchDiscussionDao
+import com.example.data.entitiy.RecentSearchDiscussionEntity
+import com.example.domain.model.enums.SearchType
 import com.example.domain.model.vo.CommentRequestVo
 import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.DisCommentVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.LikeVo
+import com.example.domain.model.vo.ProseVo
+import com.example.domain.model.vo.SearchVo
 import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.UpdateReplyCommentVo
 import com.example.domain.repository.DiscussionRepository
@@ -21,7 +25,14 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class DiscussionRepositoryImpl @Inject constructor() : DiscussionRepository {
+class DiscussionRepositoryImpl @Inject constructor(
+    private val recentSearchDao: RecentSearchDiscussionDao,
+) : DiscussionRepository {
+
+    companion object {
+        const val LIMIT_RECENT_SEARCH = 10
+    }
+
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseDatabase.getInstance()
@@ -339,7 +350,6 @@ class DiscussionRepositoryImpl @Inject constructor() : DiscussionRepository {
             .addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val replyComment = snapshot.getValue(DisCommentVo::class.java)
-                Log.d("달의 이야기", replyComment?.replyComment.toString())
                 replyComment?.let { coroutineScope.resume(it) }
             }
 
@@ -349,5 +359,59 @@ class DiscussionRepositoryImpl @Inject constructor() : DiscussionRepository {
         })
     }
 
+    override suspend fun getRecentSearch(): List<String> {
+        val list = mutableListOf<String>()
+        recentSearchDao.getRecentSearches(LIMIT_RECENT_SEARCH).forEach {
+            list.add(it.search)
+        }
+        return list
+    }
 
+    override suspend fun insertRecentSearch(text: String): Boolean {
+        recentSearchDao.insertProse(
+            RecentSearchDiscussionEntity(
+                search = text,
+                saveTime = System.currentTimeMillis(),
+            )
+        )
+        return true
+    }
+
+    override suspend fun getSearchedResult(request: SearchVo): List<DiscussionVo> = suspendCoroutine {
+        val searchedDiscussionList = mutableListOf<DiscussionVo>()
+        discussionDbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (discussionSnapshot in snapshot.children) {
+                    val discussion = discussionSnapshot.getValue(DiscussionVo::class.java)
+                    when (request.type) {
+                        SearchType.TITLE -> {
+                            if (discussion != null && discussion.title.contains(request.text)) {
+                                searchedDiscussionList.add(discussion)
+                            }
+                        }
+
+                        SearchType.CONTENT -> {
+                            if (discussion != null && discussion.content.contains(request.text)) {
+                                searchedDiscussionList.add(discussion)
+                            }
+                        }
+
+                        SearchType.TITLE_CONTENT -> {
+                            if (discussion != null && (discussion.title.contains(request.text) || discussion.content.contains(request.text))
+                            ) {
+                                searchedDiscussionList.add(discussion)
+                            }
+                        }
+                    }
+                }
+
+                it.resume(searchedDiscussionList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                it.resume(emptyList())
+            }
+
+        })
+    }
 }
