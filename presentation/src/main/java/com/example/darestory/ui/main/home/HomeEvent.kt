@@ -11,4 +11,6 @@ sealed class HomeEvent : Event {
     object ScrollUpEvent : HomeEvent()
     object GoToDiscussionEvent : HomeEvent()
 
+    object GoToMyEvent : HomeEvent()
+
 }

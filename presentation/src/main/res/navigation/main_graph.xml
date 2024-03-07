@@ -17,6 +17,10 @@
             app:destination="@id/discussionFragment"/>
 
         <action
+            android:id="@+id/action_home_to_my"
+            app:destination="@id/myFragment"/>
+
+        <action
             android:id="@+id/action_home_to_detail"
             app:destination="@id/detailFragment"/>
 
@@ -42,6 +46,10 @@
             app:destination="@id/homeFragment"/>
 
         <action
+            android:id="@+id/action_discussion_to_my"
+            app:destination="@id/myFragment"/>
+
+        <action
             android:id="@+id/action_discussion_to_recent_search"
             app:destination="@id/recentSearchFragment"/>
 
@@ -60,6 +68,14 @@
         android:name="com.example.darestory.ui.main.my.MyFragment"
         android:label="fragment_my"
         tools:layout="@layout/fragment_my">
+
+        <action
+            android:id="@+id/action_my_to_home"
+            app:destination="@id/homeFragment"/>
+
+        <action
+            android:id="@+id/action_my_to_discussion"
+            app:destination="@id/discussionFragment"/>
 
     </fragment>
 

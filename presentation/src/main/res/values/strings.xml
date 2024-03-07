@@ -32,6 +32,13 @@
     <string name="word_author">저자</string>
     <string name="word_description">줄거리</string>
     <string name="word_publisher">출판사</string>
+    <string name="word_ask">문의하기</string>
+    <string name="word_notice">공지사항</string>
+    <string name="word_app_policy">이용약관</string>
+    <string name="word_private_policy">개인정보처리방침</string>
+    <string name="word_app_version">앱 버전</string>
+    <string name="word_logout">로그아웃</string>
+    <string name="word_unregister">회원탈퇴</string>
 
     <!-- 로그인 -->
     <string name="login_error_toast">이메일 또는 비밀번호를 확인해주세요.</string>
@@ -121,4 +128,11 @@
 
     <!-- 책 관련 -->
     <string name="book_author">저자 : %s</string>
+    <string name="my_prose">나의 산문</string>
+    <string name="my_discussion">나의 토론</string>
+    <string name="my_book">나의 책</string>
+    <string name="my_bookmark_prose">나만의 책</string>
+    <string name="my_read_book">내가 읽은 책</string>
+    <string name="my_app">앱 이용</string>
+    <string name="my_account">계정</string>
 </resources>
