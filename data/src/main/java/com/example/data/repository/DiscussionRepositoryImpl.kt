@@ -356,9 +356,23 @@ class DiscussionRepositoryImpl @Inject constructor(
         discussionDbRef.child(request.toString()).removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    it.resume(true)
+                    deleteMyDiscussion(request){ isSuccess ->
+                        it.resume(isSuccess)
+                    }
                 } else {
                     it.resume(false)
+                }
+            }
+    }
+
+    private fun deleteMyDiscussion(discussionId: Int, callback: (Boolean) -> Unit){
+        db.getReference(EndPoints.AUTH).child(DataUserInfo.info.nickName).child(EndPoints.MY_DISCUSSION).child(discussionId.toString())
+            .removeValue()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true)
+                } else {
+                    callback(false)
                 }
             }
     }

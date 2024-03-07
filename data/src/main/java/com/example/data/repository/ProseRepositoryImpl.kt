@@ -239,9 +239,23 @@ class ProseRepositoryImpl @Inject constructor(
         proseDbRef.child(request.toString()).removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    it.resume(true)
+                    deleteMyProse(request) { isSuccess ->
+                        it.resume(isSuccess)
+                    }
                 } else {
                     it.resume(false)
+                }
+            }
+    }
+
+    private fun deleteMyProse(proseId: Int, callback: (Boolean) -> Unit){
+        db.getReference(EndPoints.AUTH).child(DataUserInfo.info.nickName).child(EndPoints.MY_PROSE).child(proseId.toString())
+            .removeValue()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true)
+                } else {
+                    callback(false)
                 }
             }
     }
