@@ -5,8 +5,8 @@ data class UserVo(
     val email: String = "",
     val gender: String = "",
     val myBook : HashMap<String, MyBookVo> = hashMapOf(),
-    val myDiscussion : List<DiscussionVo> = emptyList(),
-    val myProse : List<ProseVo> = emptyList(),
+    val myDiscussion : HashMap<String, DiscussionVo> = hashMapOf(),
+    val myProse : HashMap<String, ProseVo> = hashMapOf(),
     val nickName : String = "",
     val readBook : HashMap<String, BookVo> = hashMapOf(),
     val userUid : String = ""

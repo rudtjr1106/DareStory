@@ -96,6 +96,8 @@
     <string name="toast_error_check_book">책을 선택해주세요.</string>
     <string name="toast_error_check_write_title">제목을 입력해주세요.</string>
     <string name="toast_error_check_write_content">내용을 입력해주세요.</string>
+    <string name="toast_error_length_nick_name">2글자 이상, 10글자 이하인 닉네임만 가능합니다.</string>
+    <string name="toast_error_duplicate_nick_name">중복된 닉네임 입니다.</string>
 
 
     <!-- 신고 -->
@@ -128,6 +130,8 @@
 
     <!-- 책 관련 -->
     <string name="book_author">저자 : %s</string>
+    
+    <!-- my -->
     <string name="my_prose">나의 산문</string>
     <string name="my_discussion">나의 토론</string>
     <string name="my_book">나의 책</string>
@@ -135,4 +139,5 @@
     <string name="my_read_book">내가 읽은 책</string>
     <string name="my_app">앱 이용</string>
     <string name="my_account">계정</string>
+    <string name="my_change_nickName">닉네임 변경</string>
 </resources>
