@@ -18,6 +18,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, PageState.Default, MyViewMode
     override fun initView() {
         binding.apply {
             vm = viewModel
+            viewModel.test()
         }
     }
 

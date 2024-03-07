@@ -131,12 +131,13 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
                         for (childSnapshot in snapshot.children) {
                             val userInfoMap = childSnapshot.value as? Map<String, Any>
                             userInfoMap?.let {
-                                val age = it["age"] as? String ?: ""
-                                val email = it["email"] as? String ?: ""
-                                val gender = it["gender"] as? String ?: ""
-                                val nickName = it["nickName"] as? String ?: ""
-                                val userUid = it["userUid"] as? String ?: ""
-                                val userVo = UserVo(age, email, gender, nickName, userUid)
+                                val userVo = UserVo(
+                                    age = it["age"] as? String ?: "",
+                                    email = it["email"] as? String ?: "",
+                                    gender = it["gender"] as? String ?: "",
+                                    nickName = it["nickName"] as? String ?: "",
+                                    userUid = it["userUid"] as? String ?: ""
+                                )
                                 continuation.resume(userVo)
                                 return
                             }
