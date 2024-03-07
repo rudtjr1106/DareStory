@@ -1,6 +1,7 @@
 package com.example.data.repository
 
 import android.util.Log
+import com.example.data.DataUserInfo
 import com.example.data.EndPoints
 import com.example.data.dao.RecentSearchDiscussionDao
 import com.example.data.entitiy.RecentSearchDiscussionEntity
@@ -87,7 +88,9 @@ class DiscussionRepositoryImpl @Inject constructor(
                     discussionDbRef.child(lastDiscussionId.toString())
                         .setValue(newRequest).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                it.resume(true)
+                                addUserDiscussion(newRequest) { isSuccess ->
+                                    it.resume(isSuccess)
+                                }
                             } else {
                                 it.resume(false)
                             }
@@ -99,6 +102,20 @@ class DiscussionRepositoryImpl @Inject constructor(
                 }
             })
 
+    }
+
+    private fun addUserDiscussion(discussion: DiscussionVo, callback: (Boolean) -> Unit) {
+        val userProseRef = db.getReference(EndPoints.AUTH).child(DataUserInfo.info.nickName).child(EndPoints.MY_DISCUSSION)
+        val discussionId = discussion.discussionId.toString()
+
+        userProseRef.child(discussionId).setValue(discussion)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true)
+                } else {
+                    callback(false)
+                }
+            }
     }
 
     override suspend fun update(request: DiscussionVo): Boolean = suspendCoroutine {

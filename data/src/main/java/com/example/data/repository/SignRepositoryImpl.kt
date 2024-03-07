@@ -1,5 +1,6 @@
 package com.example.data.repository
 
+import com.example.data.DataUserInfo
 import com.example.data.EndPoints
 import com.example.domain.model.vo.LoginVo
 import com.example.domain.model.vo.UserVo
@@ -138,6 +139,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
                                     nickName = it["nickName"] as? String ?: "",
                                     userUid = it["userUid"] as? String ?: ""
                                 )
+                                DataUserInfo.updateInfo(userVo)
                                 continuation.resume(userVo)
                                 return
                             }

@@ -1,5 +1,6 @@
 package com.example.data.repository
 
+import com.example.data.DataUserInfo
 import com.example.data.EndPoints
 import com.example.data.dao.RecentSearchProseDao
 import com.example.data.entitiy.RecentSearchProseEntity
@@ -174,7 +175,7 @@ class ProseRepositoryImpl @Inject constructor(
             })
     }
 
-    override suspend fun upload(request: ProseVo): Boolean = suspendCoroutine {
+    override suspend fun upload(request: ProseVo): Boolean = suspendCoroutine { continuation ->
         var lastProseId = 0
         proseDbRef.orderByChild(EndPoints.PROSE_ID).limitToLast(1)
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -188,21 +189,38 @@ class ProseRepositoryImpl @Inject constructor(
                     val newRequest = request.copy(proseId = lastProseId)
 
                     db.getReference(EndPoints.PROSE).child(lastProseId.toString())
-                        .setValue(newRequest).addOnCompleteListener { task ->
+                        .setValue(newRequest)
+                        .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                it.resume(true)
+                                addUserProse(newRequest) { isSuccess ->
+                                    continuation.resume(isSuccess)
+                                }
                             } else {
-                                it.resume(false)
+                                continuation.resume(false)
                             }
                         }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    it.resume(false)
+                    continuation.resume(false)
                 }
             })
-
     }
+
+    private fun addUserProse(prose: ProseVo, callback: (Boolean) -> Unit) {
+        val userProseRef = db.getReference(EndPoints.AUTH).child(DataUserInfo.info.nickName).child(EndPoints.MY_PROSE)
+        val proseId = prose.proseId.toString()
+
+        userProseRef.child(proseId).setValue(prose)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true)
+                } else {
+                    callback(false)
+                }
+            }
+    }
+
 
     override suspend fun update(request: ProseVo): Boolean = suspendCoroutine {
         proseDbRef.child(request.proseId.toString())
