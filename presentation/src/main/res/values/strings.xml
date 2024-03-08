@@ -139,4 +139,6 @@
     <string name="my_read_book">내가 읽은 책</string>
     <string name="my_app">앱 이용</string>
     <string name="my_account">계정</string>
+    <string name="my_logout_dialog">로그아웃 하시겠습니까?</string>
+    <string name="my_unregister_dialog">정말로 탈퇴 하시겠습니까?</string>
 </resources>

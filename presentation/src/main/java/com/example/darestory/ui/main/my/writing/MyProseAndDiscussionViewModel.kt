@@ -2,12 +2,13 @@ package com.example.darestory.ui.main.my.writing
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
-import com.example.darestory.ui.main.home.detail.DetailEvent
 import com.example.domain.model.enums.BottomSheetMenuItemType
 import com.example.domain.model.enums.DetailType
+import com.example.domain.model.vo.MyOwnBookProseRequestVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.ProseVo
 import com.example.domain.model.vo.ResultSearchVo
+import com.example.domain.usecase.my.DeleteMyOwnBookProseUseCase
 import com.example.domain.usecase.my.GetMyDiscussionUseCase
 import com.example.domain.usecase.my.GetMyOwnBookProseUseCase
 import com.example.domain.usecase.my.GetMyProseUseCase
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class MyProseAndDiscussionViewModel @Inject constructor(
     private val getMyDiscussionUseCase: GetMyDiscussionUseCase,
     private val getMyProseUseCase: GetMyProseUseCase,
-    private val getMyOwnBookProseUseCase : GetMyOwnBookProseUseCase
+    private val getMyOwnBookProseUseCase : GetMyOwnBookProseUseCase,
+    private val deleteMyOwnBookProseUseCase: DeleteMyOwnBookProseUseCase
 ) : BaseViewModel<MyProseAndDiscussionPageState>() {
 
     private val myWritingSearchStateFlow : MutableStateFlow<List<ResultSearchVo>> = MutableStateFlow(
@@ -34,6 +36,8 @@ class MyProseAndDiscussionViewModel @Inject constructor(
         typeStateFlow.asStateFlow(),
         myWritingSearchStateFlow.asStateFlow(),
     )
+
+    private var bookTitle = ""
 
     fun getMyData(type : DetailType, ownBookTitle : String){
         viewModelScope.launch {
@@ -48,8 +52,11 @@ class MyProseAndDiscussionViewModel @Inject constructor(
                     if(result.isNotEmpty()) successGetMyDiscussionData(result)
                 }
                 DetailType.BOOK -> {
+                    bookTitle = ownBookTitle
                     val result = getMyOwnBookProseUseCase(ownBookTitle)
-                    if(result.isNotEmpty()) successGetMyOwnBookProseData(result)
+                    if(result.isNotEmpty()) successGetMyOwnBookProseData(result) else successGetMyOwnBookProseData(
+                        emptyList()
+                    )
                 }
             }
         }
@@ -105,7 +112,19 @@ class MyProseAndDiscussionViewModel @Inject constructor(
     }
 
     private fun deleteMyOwnBookProse(item :ProseVo){
+        val request = MyOwnBookProseRequestVo(
+            title = bookTitle,
+            proseVo = item
+        )
 
+        viewModelScope.launch {
+            val result = deleteMyOwnBookProseUseCase(request)
+            if(result) reload()
+        }
+    }
+
+    private fun reload(){
+        getMyData(typeStateFlow.value, bookTitle)
     }
 
     fun onClickBack(){

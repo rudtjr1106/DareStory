@@ -9,7 +9,7 @@ import com.example.domain.model.enums.BottomSheetMenuItemType
 import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.DetailPageViewType
 import com.example.domain.model.enums.DetailType
-import com.example.domain.model.vo.AddMyOwnBookProseRequestVo
+import com.example.domain.model.vo.MyOwnBookProseRequestVo
 import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.DetailContentVo
@@ -355,7 +355,7 @@ class DetailViewModel @Inject constructor(
         }
     }
     private fun addMyOwnBookProse(){
-        val request = AddMyOwnBookProseRequestVo(
+        val request = MyOwnBookProseRequestVo(
             title = SelectedMyOwnBook.ownBook.myBookTitle,
             proseVo = proseVo
         )

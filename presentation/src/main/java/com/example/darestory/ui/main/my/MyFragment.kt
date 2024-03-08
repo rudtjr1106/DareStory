@@ -1,10 +1,14 @@
 package com.example.darestory.ui.main.my
 
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentMyBinding
+import com.example.darestory.ui.common.CommonDialog
 import com.example.darestory.ui.common.InputDialog
+import com.example.darestory.ui.sign.SignActivity
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.ReadOrOwnType
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +21,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
 ) {
     @Inject
     lateinit var inputDialog: InputDialog
+
+    @Inject
+    lateinit var commonDialog: CommonDialog
 
     override val viewModel: MyViewModel by viewModels()
 
@@ -43,6 +50,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
         when(event){
             is MyEvent.GoToMyProseAndDiscussionEvent -> goToMyProseAndDiscussion(event.type)
             is MyEvent.GoToMyReadOrOwnBookEvent -> goToMyReadOrOwnBook(event.type)
+            is MyEvent.ShowLogoutDialogEvent -> showLogoutDialog()
+            is MyEvent.ShowUnRegisterDialogEvent -> showUnregisterDialog()
+            is MyEvent.GoToLoginEvent -> goToLoginPage()
         }
     }
 
@@ -54,6 +64,38 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
     private fun goToMyReadOrOwnBook(type : ReadOrOwnType){
         val action = MyFragmentDirections.actionMyToMyReadOrOwnBook(type)
         findNavController().navigate(action)
+    }
+
+    private fun showLogoutDialog(){
+        commonDialog
+            .setTitle(R.string.word_logout)
+            .setDescription(R.string.my_logout_dialog)
+            .setNegativeButton(R.string.word_cancel){
+                commonDialog.dismiss()
+            }
+            .setPositiveButton(R.string.word_logout){
+                viewModel.logout()
+                commonDialog.dismiss()
+            }
+    }
+
+    private fun showUnregisterDialog(){
+        commonDialog
+            .setTitle(R.string.word_unregister)
+            .setDescription(R.string.my_unregister_dialog)
+            .setNegativeButton(R.string.word_cancel){
+                commonDialog.dismiss()
+            }
+            .setPositiveButton(R.string.word_unregister){
+                viewModel.unregister()
+                commonDialog.dismiss()
+            }
+    }
+
+    private fun goToLoginPage(){
+        val intent = Intent(requireContext(), SignActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     override fun onStart() {

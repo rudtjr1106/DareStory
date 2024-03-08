@@ -5,10 +5,10 @@ import com.example.domain.model.vo.MyOwnBookProseRequestVo
 import com.example.domain.repository.MyRepository
 import javax.inject.Inject
 
-class AddMyOwnBookProseUseCase @Inject constructor(
+class DeleteMyOwnBookProseUseCase @Inject constructor(
     private val myRepository: MyRepository
 ) : UseCase<MyOwnBookProseRequestVo, Boolean>() {
     override suspend operator fun invoke(request: MyOwnBookProseRequestVo): Boolean {
-        return myRepository.addMyOwnBookProse(request)
+        return myRepository.deleteMyOwnBookProse(request)
     }
 }

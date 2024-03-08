@@ -2,7 +2,7 @@ package com.example.data.repository
 
 import com.example.data.DataUserInfo
 import com.example.data.EndPoints
-import com.example.domain.model.vo.AddMyOwnBookProseRequestVo
+import com.example.domain.model.vo.MyOwnBookProseRequestVo
 import com.example.domain.model.vo.BookVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.MyBookVo
@@ -144,9 +144,22 @@ class MyRepositoryImpl @Inject constructor() : MyRepository {
             }
     }
 
-    override suspend fun addMyOwnBookProse(request: AddMyOwnBookProseRequestVo): Boolean = suspendCoroutine {
+    override suspend fun addMyOwnBookProse(request: MyOwnBookProseRequestVo): Boolean = suspendCoroutine {
         myDbRef.child(DataUserInfo.info.nickName).child(EndPoints.MY_BOOK).child(request.title).child(EndPoints.PROSE)
             .child(request.proseVo.proseId.toString() + "번").setValue(request.proseVo)
+            .addOnCompleteListener {task ->
+                if(task.isSuccessful){
+                    it.resume(true)
+                }
+                else{
+                    it.resume(false)
+                }
+            }
+    }
+
+    override suspend fun deleteMyOwnBookProse(request: MyOwnBookProseRequestVo): Boolean = suspendCoroutine {
+        myDbRef.child(DataUserInfo.info.nickName).child(EndPoints.MY_BOOK).child(request.title).child(EndPoints.PROSE)
+            .child(request.proseVo.proseId.toString() + "번").removeValue()
             .addOnCompleteListener {task ->
                 if(task.isSuccessful){
                     it.resume(true)

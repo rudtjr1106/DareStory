@@ -42,6 +42,27 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         }
     }
 
+    override suspend fun logout(): Boolean {
+        return try {
+            auth.signOut()
+            true
+        }
+        catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun unRegister(): Boolean {
+        return try {
+            auth.currentUser?.delete()?.await()
+            true
+        }
+        catch (e: Exception) {
+            false
+        }
+    }
+
+
     override suspend fun getAllNickName(): List<String> {
         return suspendCoroutine { continuation ->
             val nickNameList: MutableList<String> = mutableListOf()
