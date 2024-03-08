@@ -3,7 +3,9 @@ package com.example.data.repository
 import android.util.Log
 import com.example.data.DataUserInfo
 import com.example.data.EndPoints
+import com.example.domain.model.vo.BookVo
 import com.example.domain.model.vo.DiscussionVo
+import com.example.domain.model.vo.MyBookVo
 import com.example.domain.model.vo.ProseVo
 import com.example.domain.model.vo.UserVo
 import com.example.domain.repository.MyRepository
@@ -77,4 +79,45 @@ class MyRepositoryImpl @Inject constructor() : MyRepository {
                 }
             })
     }
+
+    override suspend fun getMyOwnBook(): List<MyBookVo> = suspendCoroutine { coroutineScope ->
+        val myBookList: MutableList<MyBookVo> = mutableListOf()
+        myDbRef.child(DataUserInfo.info.nickName).child(EndPoints.MY_BOOK)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (dataSnapshot in snapshot.children) {
+                        val myBook = dataSnapshot.getValue(MyBookVo::class.java)
+                        myBook?.let {
+                            myBookList.add(it)
+                        }
+                    }
+                    coroutineScope.resume(myBookList)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    coroutineScope.resume(emptyList())
+                }
+            })
+    }
+
+    override suspend fun getMyReadBook(): List<BookVo> = suspendCoroutine { coroutineScope ->
+        val bookList: MutableList<BookVo> = mutableListOf()
+        myDbRef.child(DataUserInfo.info.nickName).child(EndPoints.MY_READ_BOOK)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (dataSnapshot in snapshot.children) {
+                        val book = dataSnapshot.getValue(BookVo::class.java)
+                        book?.let {
+                            bookList.add(it)
+                        }
+                    }
+                    coroutineScope.resume(bookList)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    coroutineScope.resume(emptyList())
+                }
+            })
+    }
+
 }

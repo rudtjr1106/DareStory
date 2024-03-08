@@ -72,7 +72,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun upload(request: DiscussionVo): Boolean = suspendCoroutine {
-        var lastDiscussionId = 0
+        var lastDiscussionId = 1
         discussionDbRef.orderByChild(EndPoints.DISCUSSION_ID).limitToLast(1)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -84,7 +84,7 @@ class DiscussionRepositoryImpl @Inject constructor(
                     }
                     val newRequest = request.copy(discussionId = lastDiscussionId)
 
-                    discussionDbRef.child(lastDiscussionId.toString())
+                    discussionDbRef.child(lastDiscussionId.toString() + "번")
                         .setValue(newRequest).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 addUserDiscussion(newRequest) { isSuccess ->
@@ -139,7 +139,7 @@ class DiscussionRepositoryImpl @Inject constructor(
 
     override suspend fun addReplyComment(request: UpdateReplyCommentVo): Boolean = suspendCoroutine {
         var newRequest : CommentVo
-        var lastId = 0
+        var lastId = 1
         val dbRef = discussionDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
             .child(request.commentId.toString() + "번")
             .child(EndPoints.REPLY_COMMENT)
@@ -231,7 +231,7 @@ class DiscussionRepositoryImpl @Inject constructor(
 
     private suspend fun addDiscussionComment(request: UpdateCommentVo): Boolean = suspendCoroutine {
         var newRequest : CommentVo
-        var lastId = 0
+        var lastId = 1
         val dbRef = discussionDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
         dbRef.limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

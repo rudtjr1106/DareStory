@@ -81,6 +81,10 @@
             android:id="@+id/action_my_to_my_prose_and_discussion"
             app:destination="@id/myProseAndDiscussionFragment"/>
 
+        <action
+            android:id="@+id/action_my_to_my_read_or_own_book"
+            app:destination="@id/myReadOrOwnBookFragment"/>
+
     </fragment>
 
     <fragment
@@ -239,6 +243,17 @@
         <action
             android:id="@+id/action_my_prose_and_discussion_to_detail"
             app:destination="@id/detailFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/myReadOrOwnBookFragment"
+        android:name="com.example.darestory.ui.main.my.readOrOwnBook.MyReadOrOwnBookFragment"
+        android:label="fragment_my_read_or_own_book"
+        tools:layout="@layout/fragment_my_read_or_own_book">
+
+        <argument
+            android:name="type"
+            app:argType="com.example.domain.model.enums.ReadOrOwnType"/>
     </fragment>
 
 </navigation>

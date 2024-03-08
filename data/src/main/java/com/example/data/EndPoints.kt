@@ -7,6 +7,7 @@ object EndPoints {
     const val MY_PROSE = "myProse"
     const val MY_DISCUSSION = "myDiscussion"
     const val MY_BOOK = "myBook"
+    const val MY_READ_BOOK = "readBook"
     const val PROSE = "prose"
     const val PROSE_ID = "proseId"
     const val DISCUSSION = "discussion"

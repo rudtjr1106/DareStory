@@ -6,6 +6,7 @@ import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentMyBinding
 import com.example.darestory.ui.common.InputDialog
 import com.example.domain.model.enums.DetailType
+import com.example.domain.model.enums.ReadOrOwnType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,12 +41,18 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
 
     private fun sortEvent(event: MyEvent){
         when(event){
-            is MyEvent.GoToMyProseAndDiscussion -> goToMyProseAndDiscussion(event.type)
+            is MyEvent.GoToMyProseAndDiscussionEvent -> goToMyProseAndDiscussion(event.type)
+            is MyEvent.GoToMyReadOrOwnBookEvent -> goToMyReadOrOwnBook(event.type)
         }
     }
 
     private fun goToMyProseAndDiscussion(type : DetailType){
         val action = MyFragmentDirections.actionMyToMyProseAndDiscussion(type)
+        findNavController().navigate(action)
+    }
+
+    private fun goToMyReadOrOwnBook(type : ReadOrOwnType){
+        val action = MyFragmentDirections.actionMyToMyReadOrOwnBook(type)
         findNavController().navigate(action)
     }
 

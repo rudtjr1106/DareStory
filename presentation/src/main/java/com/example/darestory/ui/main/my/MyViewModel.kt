@@ -4,9 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.DetailType
+import com.example.domain.model.enums.ReadOrOwnType
 import com.example.domain.model.vo.UserVo
 import com.example.domain.usecase.my.GetMyInfoUseCase
-import com.example.domain.usecase.sign.GetAllNickNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -63,10 +63,18 @@ class MyViewModel @Inject constructor(
     }
 
     fun onClickMyProse(){
-        emitEventFlow(MyEvent.GoToMyProseAndDiscussion(DetailType.PROSE))
+        emitEventFlow(MyEvent.GoToMyProseAndDiscussionEvent(DetailType.PROSE))
     }
 
     fun onClickMyDiscussion(){
-        emitEventFlow(MyEvent.GoToMyProseAndDiscussion(DetailType.DISCUSSION))
+        emitEventFlow(MyEvent.GoToMyProseAndDiscussionEvent(DetailType.DISCUSSION))
+    }
+
+    fun onClickMyOwnBook(){
+        emitEventFlow(MyEvent.GoToMyReadOrOwnBookEvent(ReadOrOwnType.OWN_BOOK))
+    }
+
+    fun onClickMyReadBook(){
+        emitEventFlow(MyEvent.GoToMyReadOrOwnBookEvent(ReadOrOwnType.READ_BOOK))
     }
 }

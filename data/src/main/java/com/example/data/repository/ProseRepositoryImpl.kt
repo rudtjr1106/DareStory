@@ -176,7 +176,7 @@ class ProseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun upload(request: ProseVo): Boolean = suspendCoroutine { continuation ->
-        var lastProseId = 0
+        var lastProseId = 1
         proseDbRef.orderByChild(EndPoints.PROSE_ID).limitToLast(1)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -188,7 +188,7 @@ class ProseRepositoryImpl @Inject constructor(
                     }
                     val newRequest = request.copy(proseId = lastProseId)
 
-                    db.getReference(EndPoints.PROSE).child(lastProseId.toString())
+                    db.getReference(EndPoints.PROSE).child(lastProseId.toString() + "번")
                         .setValue(newRequest)
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
@@ -318,7 +318,7 @@ class ProseRepositoryImpl @Inject constructor(
 
     private suspend fun addProseComment(request: UpdateCommentVo): Boolean = suspendCoroutine {
         var newRequest : CommentVo
-        var lastId = 0
+        var lastId = 1
         val dbRef = proseDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
         dbRef.limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
