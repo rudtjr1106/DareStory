@@ -26,8 +26,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         return try {
             auth.createUserWithEmailAndPassword(requestEmail, requestPw).await()
             true
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             false
         }
     }
@@ -36,8 +35,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         return try {
             auth.signInWithEmailAndPassword(request.email, request.password).await()
             true
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             false
         }
     }
@@ -46,20 +44,31 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         return try {
             auth.signOut()
             true
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             false
         }
     }
 
-    override suspend fun unRegister(): Boolean {
-        return try {
-            auth.currentUser?.delete()?.await()
-            true
+    override suspend fun unRegister(): Boolean = suspendCoroutine {
+        auth.currentUser?.delete()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                deleteUser { isSuccess ->
+                    it.resume(isSuccess)
+                }
+            } else {
+                it.resume(false)
+            }
         }
-        catch (e: Exception) {
-            false
-        }
+    }
+
+    private fun deleteUser(callback: (Boolean) -> Unit) {
+      authDbRef.child(DataUserInfo.info.nickName).removeValue().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true)
+                } else {
+                    callback(false)
+                }
+            }
     }
 
 
@@ -81,14 +90,13 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         }
     }
 
-    override suspend fun addMyInfo(request: UserVo) : Boolean{
+    override suspend fun addMyInfo(request: UserVo): Boolean {
         val userVo = auth.uid?.let { request.copy(userUid = it) }
         val updatedData = mapOf(request.nickName to userVo)
         return try {
             authDbRef.updateChildren(updatedData).await()
             true
-        }
-        catch (e : Exception){
+        } catch (e: Exception) {
             false
         }
     }
@@ -119,8 +127,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         return try {
             user?.sendEmailVerification()?.await()
             true
-        }
-        catch (e : Exception){
+        } catch (e: Exception) {
             false
         }
     }
@@ -136,8 +143,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         return try {
             auth.sendPasswordResetEmail(request).await()
             true
-        }
-        catch (e : Exception){
+        } catch (e: Exception) {
             false
         }
 
@@ -148,30 +154,31 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         return suspendCoroutine { continuation ->
             authDbRef.orderByChild(EndPoints.AUTH_UID).equalTo(currentUser?.uid)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        for (childSnapshot in snapshot.children) {
-                            val userInfoMap = childSnapshot.value as? Map<String, Any>
-                            userInfoMap?.let {
-                                val userVo = UserVo(
-                                    age = it["age"] as? String ?: "",
-                                    email = it["email"] as? String ?: "",
-                                    gender = it["gender"] as? String ?: "",
-                                    nickName = it["nickName"] as? String ?: "",
-                                    userUid = it["userUid"] as? String ?: ""
-                                )
-                                DataUserInfo.updateInfo(userVo)
-                                continuation.resume(userVo)
-                                return
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            for (childSnapshot in snapshot.children) {
+                                val userInfoMap = childSnapshot.value as? Map<String, Any>
+                                userInfoMap?.let {
+                                    val userVo = UserVo(
+                                        age = it["age"] as? String ?: "",
+                                        email = it["email"] as? String ?: "",
+                                        gender = it["gender"] as? String ?: "",
+                                        nickName = it["nickName"] as? String ?: "",
+                                        userUid = it["userUid"] as? String ?: ""
+                                    )
+                                    DataUserInfo.updateInfo(userVo)
+                                    continuation.resume(userVo)
+                                    return
+                                }
                             }
                         }
+                        continuation.resume(UserVo())
                     }
-                    continuation.resume(UserVo())
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    continuation.resume(UserVo())
-                }
-            })
+
+                    override fun onCancelled(error: DatabaseError) {
+                        continuation.resume(UserVo())
+                    }
+                })
         }
     }
 }

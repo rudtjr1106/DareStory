@@ -77,6 +77,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
                 viewModel.logout()
                 commonDialog.dismiss()
             }
+            .show()
     }
 
     private fun showUnregisterDialog(){
@@ -90,6 +91,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
                 viewModel.unregister()
                 commonDialog.dismiss()
             }
+            .show()
     }
 
     private fun goToLoginPage(){
