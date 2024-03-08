@@ -1,5 +1,6 @@
 package com.example.domain.repository
 
+import com.example.domain.model.vo.AddMyOwnBookProseRequestVo
 import com.example.domain.model.vo.BookVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.MyBookVo
@@ -15,4 +16,5 @@ interface MyRepository {
     suspend fun addMyReadBook(request : BookVo) : Boolean
     suspend fun addMyOwnBook(request : MyBookVo) : Boolean
     suspend fun getMyOwnBookProse(request: String) : List<ProseVo>
+    suspend fun addMyOwnBookProse(request: AddMyOwnBookProseRequestVo) : Boolean
 }

@@ -151,6 +151,10 @@
             app:destination="@id/discussionWriteFragment"/>
 
         <action
+            android:id="@+id/action_detail_to_my_read_or_own_book"
+            app:destination="@id/myReadOrOwnBookFragment"/>
+
+        <action
             android:id="@+id/action_detail_to_report"
             app:destination="@id/reportFragment"/>
     </fragment>
@@ -240,7 +244,6 @@
             android:name="type"
             app:argType="com.example.domain.model.enums.DetailType"/>
 
-
         <argument
             android:name="ownBookName"
             android:defaultValue=""
@@ -264,6 +267,10 @@
         <action
             android:id="@+id/action_my_read_or_own_book_to_result_search"
             app:destination="@id/resultSearchFragment"/>
+
+        <action
+            android:id="@+id/action_my_read_or_own_book_to_my_prose_and_discussion"
+            app:destination="@id/myProseAndDiscussionFragment"/>
 
         <action
             android:id="@+id/action_my_read_or_own_book_to_my_own_book_write"

@@ -12,6 +12,7 @@ import com.example.darestory.ui.common.CommonDialog
 import com.example.darestory.ui.main.home.detail.adapter.DetailPageAdapter
 import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.DetailType
+import com.example.domain.model.enums.ReadOrOwnType
 import com.example.domain.model.enums.WriteType
 import com.example.domain.model.vo.DisCommentVo
 import dagger.hilt.android.AndroidEntryPoint
@@ -93,6 +94,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
             is DetailEvent.ShowDeleteDialogEvent -> showDeleteDialog()
             is DetailEvent.ShowCommentDeleteDialogEvent -> showCommentDeleteDialog()
             is DetailEvent.GoReportEvent -> goReportPage(event.who)
+            DetailEvent.GoToMyOwnBookSelectEvent -> goToMyReadOrOwnBook()
         }
     }
 
@@ -154,6 +156,18 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
             commentId = disCommentVo.commentId
         )
         findNavController().navigate(action)
+    }
+
+    private fun goToMyReadOrOwnBook(){
+        val action = DetailFragmentDirections.actionDetailToMyReadOrOwnBook(
+            type = ReadOrOwnType.SELECT_OWN_BOOK
+        )
+        findNavController().navigate(action)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateMyOwnBookProse()
     }
 
     override fun onStart() {

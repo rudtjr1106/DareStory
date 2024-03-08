@@ -58,7 +58,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getDiscussion(request: Int): DiscussionVo = suspendCoroutine { coroutineScope ->
-        discussionDbRef.child(request.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+        discussionDbRef.child(request.toString() + "번").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val discussion = snapshot.getValue(DiscussionVo::class.java)
                 discussion?.let { coroutineScope.resume(it) }

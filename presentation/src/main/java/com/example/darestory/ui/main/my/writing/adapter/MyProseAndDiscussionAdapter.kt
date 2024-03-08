@@ -14,13 +14,21 @@ import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.home.viewHolder.HomeNormalProseViewHolder
 import com.example.darestory.ui.main.my.writing.viewHolder.MyOwnBookProseViewHolder
 import com.example.domain.model.enums.DetailType
+import com.example.domain.model.vo.BookVo
+import com.example.domain.model.vo.ProseVo
 import com.example.domain.model.vo.ResultSearchVo
 
 class MyProseAndDiscussionAdapter(
     private val homeListener: HomeAdapter.HomeDelegate,
+    private val myProseAndDiscussionListener : MyProseAndDiscussionDelegate,
     private val discussionListener : DiscussionAdapter.DiscussionDelegate
 )
     : ListAdapter<ResultSearchVo, RecyclerView.ViewHolder>(ResultSearchDiffCallBack()) {
+
+    interface MyProseAndDiscussionDelegate {
+        fun onClickMenu(item : ProseVo)
+        fun onClickProse(id: Int)
+    }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HomeNormalProseViewHolder -> holder.bind(currentList[position].proseVo)
@@ -41,7 +49,7 @@ class MyProseAndDiscussionAdapter(
             }
             DetailType.BOOK -> {
                 val binding = ItemMyOwnBookProseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                MyOwnBookProseViewHolder(binding, homeListener)
+                MyOwnBookProseViewHolder(binding, myProseAndDiscussionListener)
             }
         }
     }

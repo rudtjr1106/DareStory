@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentMyProseAndDiscussionBinding
+import com.example.darestory.ui.common.CommonBottomSheet
 import com.example.darestory.ui.main.discussion.adapter.DiscussionAdapter
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.my.writing.adapter.MyProseAndDiscussionAdapter
-import com.example.darestory.ui.main.search.result.adapter.ResultSearchAdapter
+import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.SortType
-import com.example.domain.model.vo.BookVo
+import com.example.domain.model.vo.ProseVo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -35,6 +36,16 @@ class MyProseAndDiscussionFragment : BaseFragment<FragmentMyProseAndDiscussionBi
             override fun onClickSort(type: SortType) {}
             override fun onClickWriteProse() {}
         },
+            object : MyProseAndDiscussionAdapter.MyProseAndDiscussionDelegate{
+                override fun onClickMenu(item: ProseVo) {
+                    showBottomSheet(BottomSheetType.COMMENT_WRITER, item)
+                }
+
+                override fun onClickProse(id: Int) {
+                    goToDetail(id)
+                }
+
+            },
             object : DiscussionAdapter.DiscussionDelegate{
                 override fun onClickSearch() {}
                 override fun onClickDiscussion(disId: Int) {
@@ -100,6 +111,12 @@ class MyProseAndDiscussionFragment : BaseFragment<FragmentMyProseAndDiscussionBi
             MyProseAndDiscussionFragmentDirections.actionMyProseAndDiscussionToDetail(id, myProseAndDiscussionFragmentArgs.type)
         }
         findNavController().navigate(action)
+    }
+
+    private fun showBottomSheet(type : BottomSheetType, item : ProseVo){
+        CommonBottomSheet.newInstance(type) {
+            viewModel.onClickImageMenuItemType(it, item)
+        }.show(parentFragmentManager, "")
     }
 
     override fun onStart() {

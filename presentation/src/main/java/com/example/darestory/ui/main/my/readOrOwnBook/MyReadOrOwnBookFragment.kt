@@ -40,7 +40,11 @@ class MyReadOrOwnBookFragment : BaseFragment<FragmentMyReadOrOwnBookBinding, MyR
 
             object : MyReadOrOwnBookAdapter.MyReadOrOwnBookDelegate{
                 override fun onClickMyBook(item: MyBookVo) {
-                    TODO("Not yet implemented")
+                    when(myReadOrOwnBookFragmentArgs.type){
+                        ReadOrOwnType.READ_BOOK -> {}
+                        ReadOrOwnType.OWN_BOOK -> goToMyProseAndDiscussion(item.myBookTitle)
+                        ReadOrOwnType.SELECT_OWN_BOOK -> viewModel.updateSelectedBook(item)
+                    }
                 }
             })
     }
@@ -87,6 +91,7 @@ class MyReadOrOwnBookFragment : BaseFragment<FragmentMyReadOrOwnBookBinding, MyR
             val textRes = when(type){
                 ReadOrOwnType.READ_BOOK -> R.string.my_read_book
                 ReadOrOwnType.OWN_BOOK -> R.string.my_bookmark_prose
+                ReadOrOwnType.SELECT_OWN_BOOK -> R.string.my_bookmark_prose
             }
             textMyWriteType.text = getString(textRes)
         }
@@ -94,6 +99,11 @@ class MyReadOrOwnBookFragment : BaseFragment<FragmentMyReadOrOwnBookBinding, MyR
 
     private fun goToResultSearchBook(){
         val action = MyReadOrOwnBookFragmentDirections.actionMyReadOrOwnBookToResultSearch(detailType = DetailType.BOOK)
+        findNavController().navigate(action)
+    }
+
+    private fun goToMyProseAndDiscussion(title : String){
+        val action = MyReadOrOwnBookFragmentDirections.actionMyReadOrOwnBookToMyProseAndDiscussion(DetailType.BOOK, title)
         findNavController().navigate(action)
     }
 

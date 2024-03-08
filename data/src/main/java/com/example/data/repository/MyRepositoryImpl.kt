@@ -2,6 +2,7 @@ package com.example.data.repository
 
 import com.example.data.DataUserInfo
 import com.example.data.EndPoints
+import com.example.domain.model.vo.AddMyOwnBookProseRequestVo
 import com.example.domain.model.vo.BookVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.MyBookVo
@@ -133,6 +134,19 @@ class MyRepositoryImpl @Inject constructor() : MyRepository {
 
     override suspend fun addMyOwnBook(request: MyBookVo): Boolean = suspendCoroutine {
         myDbRef.child(DataUserInfo.info.nickName).child(EndPoints.MY_BOOK).child(request.myBookTitle).setValue(request)
+            .addOnCompleteListener {task ->
+                if(task.isSuccessful){
+                    it.resume(true)
+                }
+                else{
+                    it.resume(false)
+                }
+            }
+    }
+
+    override suspend fun addMyOwnBookProse(request: AddMyOwnBookProseRequestVo): Boolean = suspendCoroutine {
+        myDbRef.child(DataUserInfo.info.nickName).child(EndPoints.MY_BOOK).child(request.title).child(EndPoints.PROSE)
+            .child(request.proseVo.proseId.toString() + "번").setValue(request.proseVo)
             .addOnCompleteListener {task ->
                 if(task.isSuccessful){
                     it.resume(true)

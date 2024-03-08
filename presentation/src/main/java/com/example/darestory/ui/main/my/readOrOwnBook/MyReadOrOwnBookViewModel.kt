@@ -3,6 +3,7 @@ package com.example.darestory.ui.main.my.readOrOwnBook
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.SelectedBook
+import com.example.darestory.util.SelectedMyOwnBook
 import com.example.domain.model.enums.ReadOrOwnType
 import com.example.domain.model.vo.BookVo
 import com.example.domain.model.vo.MyBookVo
@@ -45,6 +46,7 @@ class MyReadOrOwnBookViewModel @Inject constructor(
                     if (result.isNotEmpty()) successGetMyReadBookData(result)
                 }
 
+                ReadOrOwnType.SELECT_OWN_BOOK,
                 ReadOrOwnType.OWN_BOOK -> {
                     val result = getMyOwnBookUseCase(Unit)
                     if (result.isNotEmpty()) successGetMyOwnBookData(result)
@@ -92,6 +94,7 @@ class MyReadOrOwnBookViewModel @Inject constructor(
         when (typeStateFlow.value) {
             ReadOrOwnType.READ_BOOK -> emitEventFlow(MyReadOrOwnBookEvent.GoToResultSearchEvent)
             ReadOrOwnType.OWN_BOOK -> emitEventFlow(MyReadOrOwnBookEvent.GoToMyOwnBookWriteEvent)
+            ReadOrOwnType.SELECT_OWN_BOOK -> emitEventFlow(MyReadOrOwnBookEvent.GoToMyOwnBookWriteEvent)
         }
     }
 
@@ -107,6 +110,10 @@ class MyReadOrOwnBookViewModel @Inject constructor(
         reload()
     }
 
+    fun updateSelectedBook(item : MyBookVo){
+        SelectedMyOwnBook.updateInfo(item)
+        emitEventFlow(MyReadOrOwnBookEvent.GoToBackEvent)
+    }
     private fun reload(){
         getMyData(typeStateFlow.value)
     }

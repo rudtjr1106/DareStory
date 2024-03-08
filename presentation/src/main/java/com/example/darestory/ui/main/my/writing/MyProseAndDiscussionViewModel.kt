@@ -2,6 +2,8 @@ package com.example.darestory.ui.main.my.writing
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
+import com.example.darestory.ui.main.home.detail.DetailEvent
+import com.example.domain.model.enums.BottomSheetMenuItemType
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.ProseVo
@@ -93,6 +95,17 @@ class MyProseAndDiscussionViewModel @Inject constructor(
         viewModelScope.launch {
             myWritingSearchStateFlow.update { list }
         }
+    }
+
+    fun onClickImageMenuItemType(type : BottomSheetMenuItemType, item : ProseVo){
+        when(type){
+            BottomSheetMenuItemType.COMMENT_DELETE -> deleteMyOwnBookProse(item)
+            else -> {}
+        }
+    }
+
+    private fun deleteMyOwnBookProse(item :ProseVo){
+
     }
 
     fun onClickBack(){

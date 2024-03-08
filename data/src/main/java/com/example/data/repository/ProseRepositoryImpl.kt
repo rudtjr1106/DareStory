@@ -55,7 +55,7 @@ class ProseRepositoryImpl @Inject constructor(
 
     override suspend fun getProse(request: Int): ProseVo = suspendCoroutine { coroutineScope ->
         val proseId = request.toString()
-        proseDbRef.child(proseId).addListenerForSingleValueEvent(object : ValueEventListener {
+        proseDbRef.child(proseId + "번").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val prose = snapshot.getValue(ProseVo::class.java)
                     prose?.let { coroutineScope.resume(it) }

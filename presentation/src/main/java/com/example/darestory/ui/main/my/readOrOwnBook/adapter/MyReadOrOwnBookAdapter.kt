@@ -36,6 +36,7 @@ class MyReadOrOwnBookAdapter(
                 val binding = ItemDiscussionBookListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 BookItemViewHolder(binding, resultSearchListener)
             }
+            ReadOrOwnType.SELECT_OWN_BOOK,
             ReadOrOwnType.OWN_BOOK -> {
                 val binding = ItemMyOwnBookBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 MyOwnBookViewHolder(binding, myReadOrOwnBookListener)
