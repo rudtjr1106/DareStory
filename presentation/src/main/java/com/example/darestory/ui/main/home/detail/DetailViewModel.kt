@@ -146,7 +146,9 @@ class DetailViewModel @Inject constructor(
         )
     }
 
-    private fun getProseCommentList(list : List<CommentVo>) : List<DetailPageVo>{
+    private fun getProseCommentList(map : HashMap<String, CommentVo>) : List<DetailPageVo>{
+        val list: MutableList<CommentVo> = mutableListOf()
+        map.forEach { list.add(it.value) }
         val proseCommentList = mutableListOf<DetailPageVo>()
         list.forEach {
             proseCommentList.add(
@@ -157,7 +159,9 @@ class DetailViewModel @Inject constructor(
         return proseCommentList
     }
 
-    private fun getDiscussionCommentList(list : List<DisCommentVo>) : List<DetailPageVo>{
+    private fun getDiscussionCommentList(map : HashMap<String, DisCommentVo>) : List<DetailPageVo>{
+        val list: MutableList<DisCommentVo> = mutableListOf()
+        map.forEach { list.add(it.value) }
         val discussionCommentList = mutableListOf<DetailPageVo>()
         list.forEach {
             discussionCommentList.add(

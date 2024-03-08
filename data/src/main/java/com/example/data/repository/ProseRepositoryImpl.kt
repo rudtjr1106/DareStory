@@ -150,7 +150,7 @@ class ProseRepositoryImpl @Inject constructor(
     }
 
     private suspend fun deleteProseComment(request: UpdateCommentVo): Boolean = suspendCoroutine {
-        proseDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
+        proseDbRef.child(request.id.toString() + "번").child(EndPoints.COMMENT)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (commentSnapshot in dataSnapshot.children) {
@@ -329,7 +329,7 @@ class ProseRepositoryImpl @Inject constructor(
                     }
                 }
                 newRequest = request.comment.copy(commentId = lastId)
-                dbRef.child(newRequest.commentId.toString()).setValue(newRequest)
+                dbRef.child(newRequest.commentId.toString() + "번").setValue(newRequest)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             it.resume(true)

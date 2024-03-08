@@ -11,7 +11,6 @@ import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.DisCommentVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.LikeVo
-import com.example.domain.model.vo.ProseVo
 import com.example.domain.model.vo.SearchVo
 import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.UpdateReplyCommentVo
@@ -142,7 +141,7 @@ class DiscussionRepositoryImpl @Inject constructor(
         var newRequest : CommentVo
         var lastId = 0
         val dbRef = discussionDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
-            .child(request.commentId.toString())
+            .child(request.commentId.toString() + "번")
             .child(EndPoints.REPLY_COMMENT)
         dbRef.limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -153,7 +152,7 @@ class DiscussionRepositoryImpl @Inject constructor(
                     }
                 }
                 newRequest = request.comment.copy(commentId = lastId)
-                dbRef.child(newRequest.commentId.toString()).setValue(newRequest)
+                dbRef.child(newRequest.commentId.toString() + "번").setValue(newRequest)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             it.resume(true)
@@ -180,7 +179,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteReplyComment(request: UpdateReplyCommentVo): Boolean = suspendCoroutine {
-        discussionDbRef.child(request.id.toString()).child(EndPoints.COMMENT).child(request.commentId.toString()).child(EndPoints.REPLY_COMMENT)
+        discussionDbRef.child(request.id.toString()).child(EndPoints.COMMENT).child(request.commentId.toString() + "번").child(EndPoints.REPLY_COMMENT)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (commentSnapshot in dataSnapshot.children) {
@@ -243,7 +242,7 @@ class DiscussionRepositoryImpl @Inject constructor(
                     }
                 }
                 newRequest = request.comment.copy(commentId = lastId)
-                dbRef.child(newRequest.commentId.toString()).setValue(newRequest)
+                dbRef.child(newRequest.commentId.toString() + "번").setValue(newRequest)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             it.resume(true)
@@ -378,7 +377,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getDiscussionReplyComment(request: CommentRequestVo): DisCommentVo = suspendCoroutine{ coroutineScope ->
-        discussionDbRef.child(request.discussionId.toString()).child(EndPoints.COMMENT).child(request.commentId.toString())
+        discussionDbRef.child(request.discussionId.toString()).child(EndPoints.COMMENT).child(request.commentId.toString() + "번")
             .addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val replyComment = snapshot.getValue(DisCommentVo::class.java)

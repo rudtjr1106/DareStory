@@ -6,7 +6,7 @@ data class DiscussionVo(
     val bookAuthor : String = "",
     val bookImage : String = "",
     val bookTitle : String = "",
-    val comment : List<DisCommentVo> = emptyList(),
+    val comment : HashMap<String, DisCommentVo> = hashMapOf(),
     val commentCount : Int = 0,
     val content : String = "",
     val createdAt : String = "",

@@ -4,7 +4,7 @@ data class ProseVo(
     val age : String = "",
     val author : String = "",
     val authorSay : String = "",
-    val comment : List<CommentVo> = emptyList(),
+    val comment : HashMap<String, CommentVo> = hashMapOf(),
     val commentCount : Int = 0,
     val content : String = "",
     val createdAt : String = "",
