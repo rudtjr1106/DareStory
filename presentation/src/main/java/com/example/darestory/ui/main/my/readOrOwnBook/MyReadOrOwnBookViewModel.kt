@@ -2,10 +2,12 @@ package com.example.darestory.ui.main.my.readOrOwnBook
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
+import com.example.darestory.util.SelectedBook
 import com.example.domain.model.enums.ReadOrOwnType
 import com.example.domain.model.vo.BookVo
 import com.example.domain.model.vo.MyBookVo
 import com.example.domain.model.vo.MyReadOrOwnBookVo
+import com.example.domain.usecase.my.AddMyReadBookUseCase
 import com.example.domain.usecase.my.GetMyOwnBookUseCase
 import com.example.domain.usecase.my.GetMyReadBookUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,37 +20,41 @@ import javax.inject.Inject
 @HiltViewModel
 class MyReadOrOwnBookViewModel @Inject constructor(
     private val getMyOwnBookUseCase: GetMyOwnBookUseCase,
-    private val getMyReadBookUseCase: GetMyReadBookUseCase
+    private val getMyReadBookUseCase: GetMyReadBookUseCase,
+    private val addMyReadBookUseCase: AddMyReadBookUseCase
 ) : BaseViewModel<MyReadOrOwnBookPageState>() {
 
-    private val typeStateFlow : MutableStateFlow<ReadOrOwnType> = MutableStateFlow(ReadOrOwnType.READ_BOOK)
-    private val myReadOrOwnBookListStateFlow : MutableStateFlow<List<MyReadOrOwnBookVo>> = MutableStateFlow(
-        emptyList()
-    )
+    private val typeStateFlow: MutableStateFlow<ReadOrOwnType> =
+        MutableStateFlow(ReadOrOwnType.READ_BOOK)
+    private val myReadOrOwnBookListStateFlow: MutableStateFlow<List<MyReadOrOwnBookVo>> =
+        MutableStateFlow(
+            emptyList()
+        )
 
     override val uiState: MyReadOrOwnBookPageState = MyReadOrOwnBookPageState(
         typeStateFlow.asStateFlow(),
         myReadOrOwnBookListStateFlow.asStateFlow()
     )
 
-    fun getMyData(type : ReadOrOwnType){
+    fun getMyData(type: ReadOrOwnType) {
         viewModelScope.launch {
             typeStateFlow.update { type }
-            when(type){
+            when (type) {
                 ReadOrOwnType.READ_BOOK -> {
                     val result = getMyReadBookUseCase(Unit)
-                    if(result.isNotEmpty()) successGetMyReadBookData(result)
+                    if (result.isNotEmpty()) successGetMyReadBookData(result)
                 }
+
                 ReadOrOwnType.OWN_BOOK -> {
                     val result = getMyOwnBookUseCase(Unit)
-                    if(result.isNotEmpty()) successGetMyOwnBookData(result)
+                    if (result.isNotEmpty()) successGetMyOwnBookData(result)
                 }
             }
         }
     }
 
 
-    private fun successGetMyReadBookData(result : List<BookVo>){
+    private fun successGetMyReadBookData(result: List<BookVo>) {
         val mutableList = mutableListOf<MyReadOrOwnBookVo>()
         result.forEach {
             val vo = MyReadOrOwnBookVo(
@@ -60,7 +66,7 @@ class MyReadOrOwnBookViewModel @Inject constructor(
         updateMyReadOrOwnBookList(mutableList)
     }
 
-    private fun successGetMyOwnBookData(result : List<MyBookVo>){
+    private fun successGetMyOwnBookData(result: List<MyBookVo>) {
         val mutableList = mutableListOf<MyReadOrOwnBookVo>()
         result.forEach {
             val vo = MyReadOrOwnBookVo(
@@ -72,13 +78,36 @@ class MyReadOrOwnBookViewModel @Inject constructor(
         updateMyReadOrOwnBookList(mutableList)
     }
 
-    private fun updateMyReadOrOwnBookList(list : List<MyReadOrOwnBookVo>){
+    private fun updateMyReadOrOwnBookList(list: List<MyReadOrOwnBookVo>) {
         viewModelScope.launch {
             myReadOrOwnBookListStateFlow.update { list }
         }
     }
 
-    fun onClickBack(){
+    fun onClickBack() {
         emitEventFlow(MyReadOrOwnBookEvent.GoToBackEvent)
+    }
+
+    fun onClickAddBtn() {
+        when (typeStateFlow.value) {
+            ReadOrOwnType.READ_BOOK -> emitEventFlow(MyReadOrOwnBookEvent.GoToResultSearchEvent)
+            ReadOrOwnType.OWN_BOOK -> emitEventFlow(MyReadOrOwnBookEvent.GoToMyOwnBookWriteEvent)
+        }
+    }
+
+    fun addMyReadBook(){
+        viewModelScope.launch {
+            val result = addMyReadBookUseCase(SelectedBook.book)
+            if(result) successAddMyReadBook()
+        }
+    }
+
+    private fun successAddMyReadBook(){
+        SelectedBook.updateInfo(BookVo())
+        reload()
+    }
+
+    private fun reload(){
+        getMyData(typeStateFlow.value)
     }
 }

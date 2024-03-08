@@ -1,6 +1,5 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.DataUserInfo
 import com.example.data.EndPoints
 import com.example.domain.model.vo.BookVo
@@ -118,6 +117,30 @@ class MyRepositoryImpl @Inject constructor() : MyRepository {
                     coroutineScope.resume(emptyList())
                 }
             })
+    }
+
+    override suspend fun addMyReadBook(request: BookVo): Boolean = suspendCoroutine {
+        myDbRef.child(DataUserInfo.info.nickName).child(EndPoints.MY_READ_BOOK).child(request.title).setValue(request)
+            .addOnCompleteListener {task ->
+                if(task.isSuccessful){
+                    it.resume(true)
+                }
+                else{
+                    it.resume(false)
+                }
+            }
+    }
+
+    override suspend fun addMyOwnBook(request: MyBookVo): Boolean = suspendCoroutine {
+        myDbRef.child(DataUserInfo.info.nickName).child(EndPoints.MY_BOOK).child(request.myBookTitle).setValue(request)
+            .addOnCompleteListener {task ->
+                if(task.isSuccessful){
+                    it.resume(true)
+                }
+                else{
+                    it.resume(false)
+                }
+            }
     }
 
 }

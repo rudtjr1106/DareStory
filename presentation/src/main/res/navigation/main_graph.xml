@@ -254,6 +254,21 @@
         <argument
             android:name="type"
             app:argType="com.example.domain.model.enums.ReadOrOwnType"/>
+
+        <action
+            android:id="@+id/action_my_read_or_own_book_to_result_search"
+            app:destination="@id/resultSearchFragment"/>
+
+        <action
+            android:id="@+id/action_my_read_or_own_book_to_my_own_book_write"
+            app:destination="@id/myOwnBookWriteFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/myOwnBookWriteFragment"
+        android:name="com.example.darestory.ui.main.my.readOrOwnBook.write.MyOwnBookWriteFragment"
+        android:label="fragment_my_own_book_write"
+        tools:layout="@layout/fragment_my_own_book_write">
     </fragment>
 
 </navigation>

@@ -12,4 +12,6 @@ interface MyRepository {
     suspend fun getMyProse() : List<ProseVo>
     suspend fun getMyOwnBook() : List<MyBookVo>
     suspend fun getMyReadBook() : List<BookVo>
+    suspend fun addMyReadBook(request : BookVo) : Boolean
+    suspend fun addMyOwnBook(request : MyBookVo) : Boolean
 }
