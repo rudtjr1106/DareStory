@@ -143,4 +143,24 @@ class MyRepositoryImpl @Inject constructor() : MyRepository {
             }
     }
 
+    override suspend fun getMyOwnBookProse(request: String): List<ProseVo> = suspendCoroutine { coroutineScope ->
+        val proseList: MutableList<ProseVo> = mutableListOf()
+        myDbRef.child(DataUserInfo.info.nickName).child(EndPoints.MY_BOOK).child(request).child(EndPoints.PROSE)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (dataSnapshot in snapshot.children) {
+                        val prose = dataSnapshot.getValue(ProseVo::class.java)
+                        prose?.let {
+                            proseList.add(it)
+                        }
+                    }
+                    coroutineScope.resume(proseList)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    coroutineScope.resume(emptyList())
+                }
+            })
+    }
+
 }

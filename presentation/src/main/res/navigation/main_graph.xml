@@ -237,8 +237,14 @@
         tools:layout="@layout/fragment_my_prose_and_discussion">
 
         <argument
-            android:name="discussionWriteType"
+            android:name="type"
             app:argType="com.example.domain.model.enums.DetailType"/>
+
+
+        <argument
+            android:name="ownBookName"
+            android:defaultValue=""
+            app:argType="string" />
 
         <action
             android:id="@+id/action_my_prose_and_discussion_to_detail"

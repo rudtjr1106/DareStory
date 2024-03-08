@@ -9,6 +9,7 @@ import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentMyProseAndDiscussionBinding
 import com.example.darestory.ui.main.discussion.adapter.DiscussionAdapter
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
+import com.example.darestory.ui.main.my.writing.adapter.MyProseAndDiscussionAdapter
 import com.example.darestory.ui.main.search.result.adapter.ResultSearchAdapter
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.SortType
@@ -25,8 +26,8 @@ class MyProseAndDiscussionFragment : BaseFragment<FragmentMyProseAndDiscussionBi
 
     private val myProseAndDiscussionFragmentArgs : MyProseAndDiscussionFragmentArgs by navArgs()
 
-    private val resultSearchAdapter : ResultSearchAdapter by lazy {
-        ResultSearchAdapter(object : HomeAdapter.HomeDelegate {
+    private val myProseAndDiscussionAdapter : MyProseAndDiscussionAdapter by lazy {
+        MyProseAndDiscussionAdapter(object : HomeAdapter.HomeDelegate {
             override fun onClickSearch() {}
             override fun onClickProse(proseId: Int) {
                 goToDetail(proseId)
@@ -34,10 +35,6 @@ class MyProseAndDiscussionFragment : BaseFragment<FragmentMyProseAndDiscussionBi
             override fun onClickSort(type: SortType) {}
             override fun onClickWriteProse() {}
         },
-
-            object : ResultSearchAdapter.ResultSearchDelegate{
-                override fun onClickBook(item: BookVo) { }
-            },
             object : DiscussionAdapter.DiscussionDelegate{
                 override fun onClickSearch() {}
                 override fun onClickDiscussion(disId: Int) {
@@ -54,10 +51,10 @@ class MyProseAndDiscussionFragment : BaseFragment<FragmentMyProseAndDiscussionBi
             vm = viewModel
             recyclerDetail.apply {
                 layoutManager = LinearLayoutManager(context)
-                adapter = resultSearchAdapter
+                adapter = myProseAndDiscussionAdapter
             }
-            setTitle(myProseAndDiscussionFragmentArgs.discussionWriteType)
-            viewModel.getMyData(myProseAndDiscussionFragmentArgs.discussionWriteType)
+            setTitle(myProseAndDiscussionFragmentArgs.type, myProseAndDiscussionFragmentArgs.ownBookName)
+            viewModel.getMyData(myProseAndDiscussionFragmentArgs.type, myProseAndDiscussionFragmentArgs.ownBookName)
         }
     }
 
@@ -67,7 +64,7 @@ class MyProseAndDiscussionFragment : BaseFragment<FragmentMyProseAndDiscussionBi
         repeatOnStarted(viewLifecycleOwner) {
             launch {
                 viewModel.uiState.myWritingList.collect{
-                    resultSearchAdapter.submitList(it)
+                    myProseAndDiscussionAdapter.submitList(it)
                 }
             }
             launch {
@@ -84,19 +81,24 @@ class MyProseAndDiscussionFragment : BaseFragment<FragmentMyProseAndDiscussionBi
         }
     }
 
-    private fun setTitle(type : DetailType){
+    private fun setTitle(type : DetailType, ownBookTitle : String){
         binding.apply {
-            val textRes = when(type){
-                DetailType.PROSE -> R.string.my_prose
-                DetailType.DISCUSSION -> R.string.my_discussion
-                DetailType.BOOK -> R.string.my_prose
+            val text = when(type){
+                DetailType.PROSE -> getString(R.string.my_prose)
+                DetailType.DISCUSSION -> getString(R.string.my_discussion)
+                DetailType.BOOK -> ownBookTitle
             }
-            textMyWriteType.text = getString(textRes)
+            textMyWriteType.text = text
         }
     }
 
     private fun goToDetail(id : Int){
-        val action = MyProseAndDiscussionFragmentDirections.actionMyProseAndDiscussionToDetail(id, myProseAndDiscussionFragmentArgs.discussionWriteType)
+        val action = if(myProseAndDiscussionFragmentArgs.type == DetailType.BOOK){
+            MyProseAndDiscussionFragmentDirections.actionMyProseAndDiscussionToDetail(id, DetailType.PROSE)
+        }
+        else{
+            MyProseAndDiscussionFragmentDirections.actionMyProseAndDiscussionToDetail(id, myProseAndDiscussionFragmentArgs.type)
+        }
         findNavController().navigate(action)
     }
 
