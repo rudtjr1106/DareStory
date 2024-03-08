@@ -1,9 +1,11 @@
 package com.example.darestory.ui.main.my
 
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentMyBinding
 import com.example.darestory.ui.common.InputDialog
+import com.example.domain.model.enums.DetailType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,8 +40,13 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
 
     private fun sortEvent(event: MyEvent){
         when(event){
-            else -> {}
+            is MyEvent.GoToMyProseAndDiscussion -> goToMyProseAndDiscussion(event.type)
         }
+    }
+
+    private fun goToMyProseAndDiscussion(type : DetailType){
+        val action = MyFragmentDirections.actionMyToMyProseAndDiscussion(type)
+        findNavController().navigate(action)
     }
 
     override fun onStart() {

@@ -108,7 +108,7 @@ class DiscussionRepositoryImpl @Inject constructor(
         val userProseRef = db.getReference(EndPoints.AUTH).child(DataUserInfo.info.nickName).child(EndPoints.MY_DISCUSSION)
         val discussionId = discussion.discussionId.toString()
 
-        userProseRef.child(discussionId).setValue(discussion)
+        userProseRef.child(discussionId + "번").setValue(discussion)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     callback(true)
@@ -366,7 +366,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     private fun deleteMyDiscussion(discussionId: Int, callback: (Boolean) -> Unit){
-        db.getReference(EndPoints.AUTH).child(DataUserInfo.info.nickName).child(EndPoints.MY_DISCUSSION).child(discussionId.toString())
+        db.getReference(EndPoints.AUTH).child(DataUserInfo.info.nickName).child(EndPoints.MY_DISCUSSION).child(discussionId.toString()+ "번")
             .removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

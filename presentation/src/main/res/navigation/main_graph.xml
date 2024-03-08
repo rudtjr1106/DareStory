@@ -77,6 +77,10 @@
             android:id="@+id/action_my_to_discussion"
             app:destination="@id/discussionFragment"/>
 
+        <action
+            android:id="@+id/action_my_to_my_prose_and_discussion"
+            app:destination="@id/myProseAndDiscussionFragment"/>
+
     </fragment>
 
     <fragment
@@ -220,6 +224,21 @@
             app:destination="@id/resultSearchFragment"/>
 
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/myProseAndDiscussionFragment"
+        android:name="com.example.darestory.ui.main.my.writing.MyProseAndDiscussionFragment"
+        android:label="fragment_my_prose_and_discussion"
+        tools:layout="@layout/fragment_my_prose_and_discussion">
+
+        <argument
+            android:name="discussionWriteType"
+            app:argType="com.example.domain.model.enums.DetailType"/>
+
+        <action
+            android:id="@+id/action_my_prose_and_discussion_to_detail"
+            app:destination="@id/detailFragment"/>
     </fragment>
 
 </navigation>

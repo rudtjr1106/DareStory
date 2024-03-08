@@ -3,6 +3,7 @@ package com.example.darestory.ui.main.my
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.UserInfo
+import com.example.domain.model.enums.DetailType
 import com.example.domain.model.vo.UserVo
 import com.example.domain.usecase.my.GetMyInfoUseCase
 import com.example.domain.usecase.sign.GetAllNickNameUseCase
@@ -59,5 +60,13 @@ class MyViewModel @Inject constructor(
         viewModelScope.launch {
             myDiscussionCountStateFlow.update { discussionNum }
         }
+    }
+
+    fun onClickMyProse(){
+        emitEventFlow(MyEvent.GoToMyProseAndDiscussion(DetailType.PROSE))
+    }
+
+    fun onClickMyDiscussion(){
+        emitEventFlow(MyEvent.GoToMyProseAndDiscussion(DetailType.DISCUSSION))
     }
 }

@@ -211,7 +211,7 @@ class ProseRepositoryImpl @Inject constructor(
         val userProseRef = db.getReference(EndPoints.AUTH).child(DataUserInfo.info.nickName).child(EndPoints.MY_PROSE)
         val proseId = prose.proseId.toString()
 
-        userProseRef.child(proseId).setValue(prose)
+        userProseRef.child(proseId + "번").setValue(prose)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     callback(true)
@@ -249,7 +249,7 @@ class ProseRepositoryImpl @Inject constructor(
     }
 
     private fun deleteMyProse(proseId: Int, callback: (Boolean) -> Unit){
-        db.getReference(EndPoints.AUTH).child(DataUserInfo.info.nickName).child(EndPoints.MY_PROSE).child(proseId.toString())
+        db.getReference(EndPoints.AUTH).child(DataUserInfo.info.nickName).child(EndPoints.MY_PROSE).child(proseId.toString()+ "번")
             .removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
