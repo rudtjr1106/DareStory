@@ -3,6 +3,7 @@ package com.example.darestory.ui.sign.signUpProfile
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.DareLog
+import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.GenderType
 import com.example.domain.model.error.NickNameError
 import com.example.domain.model.vo.LoginVo
@@ -133,6 +134,7 @@ class SignUpProfileViewModel @Inject constructor(
     }
 
     private fun onSuccessUpdateInfo(){
+        UserInfo.updateInfo(UserVo(nickName = nicknameStateFlow.value))
         emitEventFlow(SignUpProfileEvent.GoCertifyEmail(emailStateFlow.value))
     }
 
