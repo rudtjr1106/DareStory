@@ -1,6 +1,7 @@
 package com.example.darestory.ui.sign.signUpProfile
 
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -28,6 +29,7 @@ class SignUpProfileFragment : BaseFragment<FragmentSignupProfileBinding, SignUpP
     override fun initView() {
         binding.apply {
             vm = viewModel
+            bindEditText()
             viewModel.getAllNickName()
         }
     }
@@ -91,6 +93,15 @@ class SignUpProfileFragment : BaseFragment<FragmentSignupProfileBinding, SignUpP
                     textNicknameTermsDuplicate.setTextColor(ContextCompat.getColor(requireContext(), R.color.check))
                 }
             }
+        }
+    }
+
+    private fun bindEditText(){
+        binding.editTextNickname.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                return@setOnEditorActionListener true
+            }
+            false
         }
     }
 

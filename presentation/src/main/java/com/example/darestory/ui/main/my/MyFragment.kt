@@ -56,8 +56,8 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
             is MyEvent.GoToLoginEvent -> goToLoginPage()
             is MyEvent.GoToNoticeEvent -> goToNoticePage()
             is MyEvent.GoToSendEmailEvent -> sendToEmail()
-            MyEvent.GoToDiscussionEvent -> goToHomePage()
-            MyEvent.GoToHomeEvent -> goToDiscussionPage()
+            MyEvent.GoToDiscussionEvent -> goToDiscussionPage()
+            MyEvent.GoToHomeEvent -> goToHomePage()
         }
     }
 

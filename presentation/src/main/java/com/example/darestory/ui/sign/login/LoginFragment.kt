@@ -1,6 +1,7 @@
 package com.example.darestory.ui.sign.login
 
 import android.content.Intent
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.darestory.R
@@ -27,6 +28,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPageState, LoginVi
     override fun initView() {
         binding.apply {
             vm = viewModel
+            bindEditText()
         }
     }
 
@@ -79,6 +81,22 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginPageState, LoginVi
         val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
+    }
+
+    private fun bindEditText(){
+        binding.editTextEmailInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                return@setOnEditorActionListener true
+            }
+            false
+        }
+
+        binding.editTextPasswordInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                return@setOnEditorActionListener true
+            }
+            false
+        }
     }
 
     private fun showToastSuccessSendResetPw(){
