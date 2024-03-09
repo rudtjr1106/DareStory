@@ -13,4 +13,6 @@ sealed class MyEvent : Event {
     object GoToLoginEvent : MyEvent()
     object GoToNoticeEvent : MyEvent()
     object GoToSendEmailEvent : MyEvent()
+    object GoToHomeEvent : MyEvent()
+    object GoToDiscussionEvent : MyEvent()
 }

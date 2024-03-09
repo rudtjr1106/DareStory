@@ -140,7 +140,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     override suspend fun addReplyComment(request: UpdateReplyCommentVo): Boolean = suspendCoroutine {
         var newRequest : CommentVo
         var lastId = 1
-        val dbRef = discussionDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
+        val dbRef = discussionDbRef.child(request.id.toString() + "번").child(EndPoints.COMMENT)
             .child(request.commentId.toString() + "번")
             .child(EndPoints.REPLY_COMMENT)
         dbRef.limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -179,7 +179,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteReplyComment(request: UpdateReplyCommentVo): Boolean = suspendCoroutine {
-        discussionDbRef.child(request.id.toString()).child(EndPoints.COMMENT).child(request.commentId.toString() + "번").child(EndPoints.REPLY_COMMENT)
+        discussionDbRef.child(request.id.toString() + "번").child(EndPoints.COMMENT).child(request.commentId.toString() + "번").child(EndPoints.REPLY_COMMENT)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (commentSnapshot in dataSnapshot.children) {
@@ -204,7 +204,7 @@ class DiscussionRepositoryImpl @Inject constructor(
             })
     }
     private suspend fun deleteDiscussionComment(request: UpdateCommentVo): Boolean = suspendCoroutine {
-        discussionDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
+        discussionDbRef.child(request.id.toString() + "번").child(EndPoints.COMMENT)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (commentSnapshot in dataSnapshot.children) {
@@ -232,7 +232,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     private suspend fun addDiscussionComment(request: UpdateCommentVo): Boolean = suspendCoroutine {
         var newRequest : CommentVo
         var lastId = 1
-        val dbRef = discussionDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
+        val dbRef = discussionDbRef.child(request.id.toString() + "번").child(EndPoints.COMMENT)
         dbRef.limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
@@ -261,7 +261,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     private suspend fun updateCommentCount(id: Int): Boolean = suspendCoroutine { continuation ->
-        val discussionRef = discussionDbRef.child(id.toString())
+        val discussionRef = discussionDbRef.child(id.toString() + "번")
         val commentRef = discussionRef.child(EndPoints.COMMENT)
         commentRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -304,7 +304,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     private suspend fun removeLikedUser(discussionId: Int): Boolean = suspendCoroutine {
-        val discussionRef = discussionDbRef.child(discussionId.toString())
+        val discussionRef = discussionDbRef.child(discussionId.toString() + "번")
         val likedUsersRef = discussionRef.child(EndPoints.LIKED_MEMBER).child(auth.uid.toString())
 
         likedUsersRef.removeValue().addOnCompleteListener { task ->
@@ -317,7 +317,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     private suspend fun addLikedUser(request: LikeVo): Boolean = suspendCoroutine { continuation ->
-        discussionDbRef.child(request.pageId.toString()).child(EndPoints.LIKED_MEMBER).child(auth.uid.toString())
+        discussionDbRef.child(request.pageId.toString() + "번").child(EndPoints.LIKED_MEMBER).child(auth.uid.toString())
             .setValue(request.nickName)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -330,7 +330,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     private suspend fun updateLikeCount(discussionId: Int): Boolean = suspendCoroutine { continuation ->
-        val discussionRef = discussionDbRef.child(discussionId.toString())
+        val discussionRef = discussionDbRef.child(discussionId.toString() + "번")
         val likedUsersRef = discussionRef.child(EndPoints.LIKED_MEMBER)
 
         likedUsersRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -377,7 +377,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getDiscussionReplyComment(request: CommentRequestVo): DisCommentVo = suspendCoroutine{ coroutineScope ->
-        discussionDbRef.child(request.discussionId.toString()).child(EndPoints.COMMENT).child(request.commentId.toString() + "번")
+        discussionDbRef.child(request.discussionId.toString() + "번").child(EndPoints.COMMENT).child(request.commentId.toString() + "번")
             .addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val replyComment = snapshot.getValue(DisCommentVo::class.java)

@@ -56,6 +56,8 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
             is MyEvent.GoToLoginEvent -> goToLoginPage()
             is MyEvent.GoToNoticeEvent -> goToNoticePage()
             is MyEvent.GoToSendEmailEvent -> sendToEmail()
+            MyEvent.GoToDiscussionEvent -> goToHomePage()
+            MyEvent.GoToHomeEvent -> goToDiscussionPage()
         }
     }
 
@@ -105,6 +107,15 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
 
     private fun goToNoticePage(){
         val action = MyFragmentDirections.actionMyToNotice()
+        findNavController().navigate(action)
+    }
+
+    private fun goToHomePage(){
+        val action = MyFragmentDirections.actionMyToHome()
+        findNavController().navigate(action)
+    }
+    private fun goToDiscussionPage(){
+        val action = MyFragmentDirections.actionMyToDiscussion()
         findNavController().navigate(action)
     }
 
