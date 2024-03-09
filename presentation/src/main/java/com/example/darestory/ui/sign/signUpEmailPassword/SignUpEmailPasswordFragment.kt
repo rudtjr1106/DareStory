@@ -1,6 +1,7 @@
 package com.example.darestory.ui.sign.signUpEmailPassword
 
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -29,6 +30,7 @@ class SignUpEmailPasswordFragment : BaseFragment<FragmentSignupEmailPasswordBind
     override fun initView() {
         binding.apply {
             vm = viewModel
+            bindEditText()
             viewModel.getAllEmail()
         }
     }
@@ -86,6 +88,22 @@ class SignUpEmailPasswordFragment : BaseFragment<FragmentSignupEmailPasswordBind
                 imagePasswordMore8.setBackgroundResource(R.drawable.ic_close_error)
                 textTermsPassword.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
             }
+        }
+    }
+
+    private fun bindEditText(){
+        binding.editTextEmailIdInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                return@setOnEditorActionListener true
+            }
+            false
+        }
+
+        binding.editTextPasswordInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                return@setOnEditorActionListener true
+            }
+            false
         }
     }
 

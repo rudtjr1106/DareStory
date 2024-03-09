@@ -87,6 +87,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
             is HomeEvent.GoToRecentSearchPageEvent -> goToRecentSearchPage()
             is HomeEvent.ScrollUpEvent -> scrollUp()
             is HomeEvent.GoToDiscussionEvent -> goToDiscussion()
+            HomeEvent.GoToMyEvent -> goToMy()
         }
     }
 
@@ -130,6 +131,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
 
     private fun goToDiscussion(){
         val action = HomeFragmentDirections.actionHomeToDiscussion()
+        findNavController().navigate(action)
+    }
+
+    private fun goToMy(){
+        val action = HomeFragmentDirections.actionHomeToMy()
         findNavController().navigate(action)
     }
 

@@ -2,12 +2,14 @@ package com.example.darestory.ui.main.home.detail
 
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.base.BaseViewModel
+import com.example.darestory.util.SelectedMyOwnBook
 import com.example.darestory.util.TimeFormatter
 import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.BottomSheetMenuItemType
 import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.DetailPageViewType
 import com.example.domain.model.enums.DetailType
+import com.example.domain.model.vo.MyOwnBookProseRequestVo
 import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.DetailContentVo
@@ -15,6 +17,7 @@ import com.example.domain.model.vo.DetailPageVo
 import com.example.domain.model.vo.DisCommentVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.LikeVo
+import com.example.domain.model.vo.MyBookVo
 import com.example.domain.model.vo.ProseVo
 import com.example.domain.usecase.discussion.AddDiscussionCommentUseCase
 import com.example.domain.usecase.discussion.DeleteDiscussionCommentUseCase
@@ -26,6 +29,7 @@ import com.example.domain.usecase.home.DeleteProseCommentUseCase
 import com.example.domain.usecase.home.DeleteProseUseCase
 import com.example.domain.usecase.home.GetProseUseCase
 import com.example.domain.usecase.home.LikeProseUseCase
+import com.example.domain.usecase.my.AddMyOwnBookProseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -46,6 +50,7 @@ class DetailViewModel @Inject constructor(
     private val deleteDiscussionUseCase: DeleteDiscussionUseCase,
     private val deleteProseCommentUseCase: DeleteProseCommentUseCase,
     private val deleteDiscussionCommentUseCase: DeleteDiscussionCommentUseCase,
+    private val addMyOwnBookProseUseCase : AddMyOwnBookProseUseCase
 ) : BaseViewModel<DetailPageState>() {
 
     private val detailPageListStateFlow: MutableStateFlow<List<DetailPageVo>> = MutableStateFlow(emptyList())
@@ -60,6 +65,7 @@ class DetailViewModel @Inject constructor(
     private var detailType by Delegates.notNull<DetailType>()
     private var commentId by Delegates.notNull<Int>()
     private var reportWho by Delegates.notNull<String>()
+    private var proseVo by Delegates.notNull<ProseVo>()
 
     fun getDetail(id : Int, type : DetailType){
         detailId = id
@@ -86,6 +92,7 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun successGetProseDetail(result : ProseVo){
+        proseVo = result
         val contentList = getProseContentList(result)
         val authorCommentList = if(result.authorSay.isNotEmpty()) getProseAuthorCommentList(result) else emptyList()
         val commentList = getProseCommentList(result.comment)
@@ -146,7 +153,9 @@ class DetailViewModel @Inject constructor(
         )
     }
 
-    private fun getProseCommentList(list : List<CommentVo>) : List<DetailPageVo>{
+    private fun getProseCommentList(map : HashMap<String, CommentVo>) : List<DetailPageVo>{
+        val list: MutableList<CommentVo> = mutableListOf()
+        map.forEach { list.add(it.value) }
         val proseCommentList = mutableListOf<DetailPageVo>()
         list.forEach {
             proseCommentList.add(
@@ -157,7 +166,9 @@ class DetailViewModel @Inject constructor(
         return proseCommentList
     }
 
-    private fun getDiscussionCommentList(list : List<DisCommentVo>) : List<DetailPageVo>{
+    private fun getDiscussionCommentList(map : HashMap<String, DisCommentVo>) : List<DetailPageVo>{
+        val list: MutableList<DisCommentVo> = mutableListOf()
+        map.forEach { list.add(it.value) }
         val discussionCommentList = mutableListOf<DetailPageVo>()
         list.forEach {
             discussionCommentList.add(
@@ -294,7 +305,7 @@ class DetailViewModel @Inject constructor(
            BottomSheetMenuItemType.PROSE_DELETE -> emitEventFlow(DetailEvent.ShowDeleteDialogEvent)
 
            BottomSheetMenuItemType.REPORT -> emitEventFlow(DetailEvent.GoReportEvent(reportWho))
-           BottomSheetMenuItemType.PROSE_BOOKMARK -> {}
+           BottomSheetMenuItemType.PROSE_BOOKMARK -> emitEventFlow(DetailEvent.GoToMyOwnBookSelectEvent)
            BottomSheetMenuItemType.COMMENT_DELETE -> emitEventFlow(DetailEvent.ShowCommentDeleteDialogEvent)
        }
     }
@@ -335,6 +346,22 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             val result = deleteDiscussionCommentUseCase(request)
             if(result) reloadPage()
+        }
+    }
+
+    fun updateMyOwnBookProse(){
+        if(SelectedMyOwnBook.ownBook.myBookTitle.isNotEmpty()){
+            addMyOwnBookProse()
+        }
+    }
+    private fun addMyOwnBookProse(){
+        val request = MyOwnBookProseRequestVo(
+            title = SelectedMyOwnBook.ownBook.myBookTitle,
+            proseVo = proseVo
+        )
+        viewModelScope.launch {
+            val result = addMyOwnBookProseUseCase(request)
+            if(result) SelectedMyOwnBook.updateInfo(MyBookVo())
         }
     }
 }

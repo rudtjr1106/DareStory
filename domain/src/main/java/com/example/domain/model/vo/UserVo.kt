@@ -4,6 +4,11 @@ data class UserVo(
     val age: String = "",
     val email: String = "",
     val gender: String = "",
+    val myBook : HashMap<String, MyBookVo> = hashMapOf(),
+    val myDiscussion : HashMap<String, DiscussionVo> = hashMapOf(),
+    val myProse : HashMap<String, ProseVo> = hashMapOf(),
     val nickName : String = "",
+    val readBook : HashMap<String, BookVo> = hashMapOf(),
+    val token : String = "",
     val userUid : String = ""
 )

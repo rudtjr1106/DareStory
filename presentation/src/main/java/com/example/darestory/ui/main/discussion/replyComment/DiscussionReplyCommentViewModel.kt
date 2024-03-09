@@ -74,7 +74,9 @@ class DiscussionReplyCommentViewModel @Inject constructor(
         return listOf(vo)
     }
 
-    private fun getReplyCommentList(list : List<CommentVo>) : List<DiscussionCommentPageVo>{
+    private fun getReplyCommentList(map : HashMap<String, CommentVo>) : List<DiscussionCommentPageVo>{
+        val list: MutableList<CommentVo> = mutableListOf()
+        map.forEach { list.add(it.value) }
         val mutableReplyList = mutableListOf<DiscussionCommentPageVo>()
         list.forEach {
             val disCommentVo = DisCommentVo(

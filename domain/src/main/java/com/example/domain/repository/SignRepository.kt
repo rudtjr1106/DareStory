@@ -5,6 +5,8 @@ import com.example.domain.model.vo.UserVo
 
 interface SignRepository {
     suspend fun signUp(requestEmail : String, requestPw : String) : Boolean
+    suspend fun logout() : Boolean
+    suspend fun unRegister() : Boolean
     suspend fun login(request: LoginVo) : Boolean
 
     suspend fun getAllNickName() : List<String>

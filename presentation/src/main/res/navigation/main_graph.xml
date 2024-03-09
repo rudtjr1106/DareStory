@@ -17,6 +17,10 @@
             app:destination="@id/discussionFragment"/>
 
         <action
+            android:id="@+id/action_home_to_my"
+            app:destination="@id/myFragment"/>
+
+        <action
             android:id="@+id/action_home_to_detail"
             app:destination="@id/detailFragment"/>
 
@@ -42,6 +46,10 @@
             app:destination="@id/homeFragment"/>
 
         <action
+            android:id="@+id/action_discussion_to_my"
+            app:destination="@id/myFragment"/>
+
+        <action
             android:id="@+id/action_discussion_to_recent_search"
             app:destination="@id/recentSearchFragment"/>
 
@@ -60,6 +68,26 @@
         android:name="com.example.darestory.ui.main.my.MyFragment"
         android:label="fragment_my"
         tools:layout="@layout/fragment_my">
+
+        <action
+            android:id="@+id/action_my_to_home"
+            app:destination="@id/homeFragment"/>
+
+        <action
+            android:id="@+id/action_my_to_discussion"
+            app:destination="@id/discussionFragment"/>
+
+        <action
+            android:id="@+id/action_my_to_my_prose_and_discussion"
+            app:destination="@id/myProseAndDiscussionFragment"/>
+
+        <action
+            android:id="@+id/action_my_to_my_read_or_own_book"
+            app:destination="@id/myReadOrOwnBookFragment"/>
+
+        <action
+            android:id="@+id/action_my_to_notice"
+            app:destination="@id/noticeFragment"/>
 
     </fragment>
 
@@ -125,6 +153,10 @@
         <action
             android:id="@+id/action_detail_to_discussion_write"
             app:destination="@id/discussionWriteFragment"/>
+
+        <action
+            android:id="@+id/action_detail_to_my_read_or_own_book"
+            app:destination="@id/myReadOrOwnBookFragment"/>
 
         <action
             android:id="@+id/action_detail_to_report"
@@ -204,6 +236,78 @@
             app:destination="@id/resultSearchFragment"/>
 
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/myProseAndDiscussionFragment"
+        android:name="com.example.darestory.ui.main.my.writing.MyProseAndDiscussionFragment"
+        android:label="fragment_my_prose_and_discussion"
+        tools:layout="@layout/fragment_my_prose_and_discussion">
+
+        <argument
+            android:name="type"
+            app:argType="com.example.domain.model.enums.DetailType"/>
+
+        <argument
+            android:name="ownBookName"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_my_prose_and_discussion_to_detail"
+            app:destination="@id/detailFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/myReadOrOwnBookFragment"
+        android:name="com.example.darestory.ui.main.my.readOrOwnBook.MyReadOrOwnBookFragment"
+        android:label="fragment_my_read_or_own_book"
+        tools:layout="@layout/fragment_my_read_or_own_book">
+
+        <argument
+            android:name="type"
+            app:argType="com.example.domain.model.enums.ReadOrOwnType"/>
+
+        <action
+            android:id="@+id/action_my_read_or_own_book_to_result_search"
+            app:destination="@id/resultSearchFragment"/>
+
+        <action
+            android:id="@+id/action_my_read_or_own_book_to_my_prose_and_discussion"
+            app:destination="@id/myProseAndDiscussionFragment"/>
+
+        <action
+            android:id="@+id/action_my_read_or_own_book_to_my_own_book_write"
+            app:destination="@id/myOwnBookWriteFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/myOwnBookWriteFragment"
+        android:name="com.example.darestory.ui.main.my.readOrOwnBook.write.MyOwnBookWriteFragment"
+        android:label="fragment_my_own_book_write"
+        tools:layout="@layout/fragment_my_own_book_write">
+    </fragment>
+
+    <fragment
+        android:id="@+id/noticeFragment"
+        android:name="com.example.darestory.ui.main.my.notice.NoticeFragment"
+        android:label="fragment_notice"
+        tools:layout="@layout/fragment_notice">
+
+        <action
+            android:id="@+id/action_notice_to_detail"
+            app:destination="@id/noticeDetailFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/noticeDetailFragment"
+        android:name="com.example.darestory.ui.main.my.notice.detail.NoticeDetailFragment"
+        android:label="fragment_notice_detail"
+        tools:layout="@layout/fragment_notice_detail">
+
+        <argument
+            android:name="noticeId"
+            app:argType="integer"/>
     </fragment>
 
 </navigation>

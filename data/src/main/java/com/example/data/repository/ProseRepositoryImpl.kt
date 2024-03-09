@@ -1,5 +1,6 @@
 package com.example.data.repository
 
+import com.example.data.DataUserInfo
 import com.example.data.EndPoints
 import com.example.data.dao.RecentSearchProseDao
 import com.example.data.entitiy.RecentSearchProseEntity
@@ -54,7 +55,7 @@ class ProseRepositoryImpl @Inject constructor(
 
     override suspend fun getProse(request: Int): ProseVo = suspendCoroutine { coroutineScope ->
         val proseId = request.toString()
-        proseDbRef.child(proseId).addListenerForSingleValueEvent(object : ValueEventListener {
+        proseDbRef.child(proseId + "번").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val prose = snapshot.getValue(ProseVo::class.java)
                     prose?.let { coroutineScope.resume(it) }
@@ -84,7 +85,7 @@ class ProseRepositoryImpl @Inject constructor(
     }
 
     private suspend fun removeLikedUser(proseId: Int): Boolean = suspendCoroutine {
-        val proseRef = proseDbRef.child(proseId.toString())
+        val proseRef = proseDbRef.child(proseId.toString() + "번")
         val likedUsersRef = proseRef.child(EndPoints.LIKED_MEMBER).child(auth.uid.toString())
 
         likedUsersRef.removeValue().addOnCompleteListener { task ->
@@ -97,7 +98,7 @@ class ProseRepositoryImpl @Inject constructor(
     }
 
     private suspend fun updateLikeCount(proseId: Int): Boolean = suspendCoroutine { continuation ->
-        val proseRef = proseDbRef.child(proseId.toString())
+        val proseRef = proseDbRef.child(proseId.toString() + "번")
         val likedUsersRef = proseRef.child(EndPoints.LIKED_MEMBER)
 
         likedUsersRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -120,7 +121,7 @@ class ProseRepositoryImpl @Inject constructor(
 
 
     private suspend fun addLikedUser(request: LikeVo): Boolean = suspendCoroutine { continuation ->
-        proseDbRef.child(request.pageId.toString()).child(EndPoints.LIKED_MEMBER).child(auth.uid.toString())
+        proseDbRef.child(request.pageId.toString() + "번").child(EndPoints.LIKED_MEMBER).child(auth.uid.toString())
             .setValue(request.nickName)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -149,7 +150,7 @@ class ProseRepositoryImpl @Inject constructor(
     }
 
     private suspend fun deleteProseComment(request: UpdateCommentVo): Boolean = suspendCoroutine {
-        proseDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
+        proseDbRef.child(request.id.toString() + "번").child(EndPoints.COMMENT)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (commentSnapshot in dataSnapshot.children) {
@@ -174,8 +175,8 @@ class ProseRepositoryImpl @Inject constructor(
             })
     }
 
-    override suspend fun upload(request: ProseVo): Boolean = suspendCoroutine {
-        var lastProseId = 0
+    override suspend fun upload(request: ProseVo): Boolean = suspendCoroutine { continuation ->
+        var lastProseId = 1
         proseDbRef.orderByChild(EndPoints.PROSE_ID).limitToLast(1)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -187,22 +188,39 @@ class ProseRepositoryImpl @Inject constructor(
                     }
                     val newRequest = request.copy(proseId = lastProseId)
 
-                    db.getReference(EndPoints.PROSE).child(lastProseId.toString())
-                        .setValue(newRequest).addOnCompleteListener { task ->
+                    db.getReference(EndPoints.PROSE).child(lastProseId.toString() + "번")
+                        .setValue(newRequest)
+                        .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                it.resume(true)
+                                addUserProse(newRequest) { isSuccess ->
+                                    continuation.resume(isSuccess)
+                                }
                             } else {
-                                it.resume(false)
+                                continuation.resume(false)
                             }
                         }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    it.resume(false)
+                    continuation.resume(false)
                 }
             })
-
     }
+
+    private fun addUserProse(prose: ProseVo, callback: (Boolean) -> Unit) {
+        val userProseRef = db.getReference(EndPoints.AUTH).child(DataUserInfo.info.nickName).child(EndPoints.MY_PROSE)
+        val proseId = prose.proseId.toString()
+
+        userProseRef.child(proseId + "번").setValue(prose)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true)
+                } else {
+                    callback(false)
+                }
+            }
+    }
+
 
     override suspend fun update(request: ProseVo): Boolean = suspendCoroutine {
         proseDbRef.child(request.proseId.toString())
@@ -221,9 +239,23 @@ class ProseRepositoryImpl @Inject constructor(
         proseDbRef.child(request.toString()).removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    it.resume(true)
+                    deleteMyProse(request) { isSuccess ->
+                        it.resume(isSuccess)
+                    }
                 } else {
                     it.resume(false)
+                }
+            }
+    }
+
+    private fun deleteMyProse(proseId: Int, callback: (Boolean) -> Unit){
+        db.getReference(EndPoints.AUTH).child(DataUserInfo.info.nickName).child(EndPoints.MY_PROSE).child(proseId.toString()+ "번")
+            .removeValue()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true)
+                } else {
+                    callback(false)
                 }
             }
     }
@@ -286,8 +318,8 @@ class ProseRepositoryImpl @Inject constructor(
 
     private suspend fun addProseComment(request: UpdateCommentVo): Boolean = suspendCoroutine {
         var newRequest : CommentVo
-        var lastId = 0
-        val dbRef = proseDbRef.child(request.id.toString()).child(EndPoints.COMMENT)
+        var lastId = 1
+        val dbRef = proseDbRef.child(request.id.toString() + "번").child(EndPoints.COMMENT)
         dbRef.limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
@@ -297,7 +329,7 @@ class ProseRepositoryImpl @Inject constructor(
                     }
                 }
                 newRequest = request.comment.copy(commentId = lastId)
-                dbRef.child(newRequest.commentId.toString()).setValue(newRequest)
+                dbRef.child(newRequest.commentId.toString() + "번").setValue(newRequest)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             it.resume(true)
@@ -316,7 +348,7 @@ class ProseRepositoryImpl @Inject constructor(
     }
 
     private suspend fun updateCommentCount(id: Int): Boolean = suspendCoroutine { continuation ->
-        val proseRef = proseDbRef.child(id.toString())
+        val proseRef = proseDbRef.child(id.toString() + "번")
         val commentRef = proseRef.child(EndPoints.COMMENT)
         commentRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

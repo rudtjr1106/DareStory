@@ -134,7 +134,8 @@ class DiscussionFragment : BaseFragment<FragmentDiscussionBinding, DiscussionPag
     }
 
     private fun goToMy(){
-
+        val action = DiscussionFragmentDirections.actionDiscussionToMy()
+        findNavController().navigate(action)
     }
 
     override fun onStart() {

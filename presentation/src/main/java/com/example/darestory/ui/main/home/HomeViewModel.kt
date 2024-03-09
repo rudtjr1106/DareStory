@@ -157,4 +157,8 @@ class HomeViewModel @Inject constructor(
     fun goToDiscussion(){
         emitEventFlow(HomeEvent.GoToDiscussionEvent)
     }
+
+    fun onClickBottomNavMy(){
+        emitEventFlow(HomeEvent.GoToMyEvent)
+    }
 }
