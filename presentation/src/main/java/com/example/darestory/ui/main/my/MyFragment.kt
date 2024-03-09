@@ -1,13 +1,13 @@
 package com.example.darestory.ui.main.my
 
 import android.content.Intent
+import android.net.Uri
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentMyBinding
 import com.example.darestory.ui.common.CommonDialog
-import com.example.darestory.ui.common.InputDialog
 import com.example.darestory.ui.sign.SignActivity
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.ReadOrOwnType
@@ -19,8 +19,9 @@ import javax.inject.Inject
 class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
     FragmentMyBinding::inflate
 ) {
-    @Inject
-    lateinit var inputDialog: InputDialog
+    companion object{
+        const val TEXT_MAILTO = "mailto"
+    }
 
     @Inject
     lateinit var commonDialog: CommonDialog
@@ -54,6 +55,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
             is MyEvent.ShowUnRegisterDialogEvent -> showUnregisterDialog()
             is MyEvent.GoToLoginEvent -> goToLoginPage()
             is MyEvent.GoToNoticeEvent -> goToNoticePage()
+            is MyEvent.GoToSendEmailEvent -> sendToEmail()
         }
     }
 
@@ -104,6 +106,13 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
     private fun goToNoticePage(){
         val action = MyFragmentDirections.actionMyToNotice()
         findNavController().navigate(action)
+    }
+
+    private fun sendToEmail(){
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+            TEXT_MAILTO, context?.getString(R.string.dare_story_email) ?: "", null)
+        )
+        startActivity(intent)
     }
 
     override fun onStart() {

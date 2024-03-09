@@ -142,4 +142,6 @@
     <string name="my_logout_dialog">로그아웃 하시겠습니까?</string>
     <string name="my_unregister_dialog">정말로 탈퇴 하시겠습니까?</string>
     <string name="word_me">관리자</string>
+
+    <string name="dare_story_email">rudtjr1206@naver.com</string>
 </resources>

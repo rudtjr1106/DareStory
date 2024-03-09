@@ -107,4 +107,8 @@ class MyViewModel @Inject constructor(
     fun onClickNotice(){
         emitEventFlow(MyEvent.GoToNoticeEvent)
     }
+
+    fun onClickAsk(){
+        emitEventFlow(MyEvent.GoToSendEmailEvent)
+    }
 }
