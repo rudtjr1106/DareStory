@@ -1,5 +1,6 @@
 package com.example.data.repository
 
+import android.util.Log
 import com.example.data.DataUserInfo
 import com.example.data.EndPoints
 import com.example.domain.model.vo.LoginVo
@@ -10,6 +11,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -21,13 +23,18 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseDatabase.getInstance()
     private val authDbRef = db.getReference(EndPoints.AUTH)
+    private lateinit var fcmToken : String
 
-    override suspend fun signUp(requestEmail: String, requestPw: String): Boolean {
-        return try {
-            auth.createUserWithEmailAndPassword(requestEmail, requestPw).await()
-            true
-        } catch (e: Exception) {
-            false
+    override suspend fun signUp(requestEmail: String, requestPw: String): Boolean = suspendCoroutine{
+        auth.createUserWithEmailAndPassword(requestEmail, requestPw).addOnCompleteListener {task ->
+            if(task.isSuccessful){
+                setFcmToken { isSuccess ->
+                    it.resume(true)
+                }
+            }
+            else{
+                it.resume(false)
+            }
         }
     }
 
@@ -62,13 +69,13 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
     }
 
     private fun deleteUser(callback: (Boolean) -> Unit) {
-      authDbRef.child(DataUserInfo.info.nickName).removeValue().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    callback(true)
-                } else {
-                    callback(false)
-                }
+        authDbRef.child(DataUserInfo.info.nickName).removeValue().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                callback(true)
+            } else {
+                callback(false)
             }
+        }
     }
 
 
@@ -90,14 +97,27 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         }
     }
 
-    override suspend fun addMyInfo(request: UserVo): Boolean {
-        val userVo = auth.uid?.let { request.copy(userUid = it) }
+    override suspend fun addMyInfo(request: UserVo): Boolean = suspendCoroutine {
+        val userVo = auth.uid?.let { request.copy(userUid = it, token = fcmToken) }
         val updatedData = mapOf(request.nickName to userVo)
-        return try {
-            authDbRef.updateChildren(updatedData).await()
-            true
-        } catch (e: Exception) {
-            false
+        authDbRef.updateChildren(updatedData).addOnCompleteListener { task ->
+            if(task.isSuccessful){
+                it.resume(true)
+            }
+            else{
+                it.resume(false)
+            }
+        }
+    }
+
+    private fun setFcmToken(callback: (Boolean) -> Unit){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                fcmToken = task.result
+                callback(true)
+            } else {
+                callback(false)
+            }
         }
     }
 
@@ -148,37 +168,22 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         }
 
     }
-
-    override suspend fun checkAutoLogin(): UserVo {
-        val currentUser = auth.currentUser
-        return suspendCoroutine { continuation ->
-            authDbRef.orderByChild(EndPoints.AUTH_UID).equalTo(currentUser?.uid)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            for (childSnapshot in snapshot.children) {
-                                val userInfoMap = childSnapshot.value as? Map<String, Any>
-                                userInfoMap?.let {
-                                    val userVo = UserVo(
-                                        age = it["age"] as? String ?: "",
-                                        email = it["email"] as? String ?: "",
-                                        gender = it["gender"] as? String ?: "",
-                                        nickName = it["nickName"] as? String ?: "",
-                                        userUid = it["userUid"] as? String ?: ""
-                                    )
-                                    DataUserInfo.updateInfo(userVo)
-                                    continuation.resume(userVo)
-                                    return
-                                }
-                            }
-                        }
-                        continuation.resume(UserVo())
+    override suspend fun checkAutoLogin(): UserVo = suspendCoroutine {
+        var userInfo = UserVo()
+        authDbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (dataSnapshot in snapshot.children) {
+                    val user = dataSnapshot.getValue(UserVo::class.java)
+                    if(user?.userUid == auth.uid){
+                        userInfo = user!!
                     }
+                }
+                it.resume(userInfo)
+            }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        continuation.resume(UserVo())
-                    }
-                })
-        }
+            override fun onCancelled(error: DatabaseError) {
+                it.resume(userInfo)
+            }
+        })
     }
 }
