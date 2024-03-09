@@ -53,6 +53,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
             is MyEvent.ShowLogoutDialogEvent -> showLogoutDialog()
             is MyEvent.ShowUnRegisterDialogEvent -> showUnregisterDialog()
             is MyEvent.GoToLoginEvent -> goToLoginPage()
+            is MyEvent.GoToNoticeEvent -> goToNoticePage()
         }
     }
 
@@ -98,6 +99,11 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
         val intent = Intent(requireContext(), SignActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
+    }
+
+    private fun goToNoticePage(){
+        val action = MyFragmentDirections.actionMyToNotice()
+        findNavController().navigate(action)
     }
 
     override fun onStart() {

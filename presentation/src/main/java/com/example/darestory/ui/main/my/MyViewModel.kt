@@ -103,4 +103,8 @@ class MyViewModel @Inject constructor(
             if(result) emitEventFlow(MyEvent.GoToLoginEvent)
         }
     }
+
+    fun onClickNotice(){
+        emitEventFlow(MyEvent.GoToNoticeEvent)
+    }
 }

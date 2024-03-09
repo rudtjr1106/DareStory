@@ -19,4 +19,5 @@ object EndPoints {
     const val COMMENT_COUNT = "commentCount"
     const val COMMENT_ID = "commentId"
     const val REPORT = "report"
+    const val NOTICE = "notice"
 }

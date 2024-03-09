@@ -85,6 +85,10 @@
             android:id="@+id/action_my_to_my_read_or_own_book"
             app:destination="@id/myReadOrOwnBookFragment"/>
 
+        <action
+            android:id="@+id/action_my_to_notice"
+            app:destination="@id/noticeFragment"/>
+
     </fragment>
 
     <fragment
@@ -282,6 +286,13 @@
         android:name="com.example.darestory.ui.main.my.readOrOwnBook.write.MyOwnBookWriteFragment"
         android:label="fragment_my_own_book_write"
         tools:layout="@layout/fragment_my_own_book_write">
+    </fragment>
+
+    <fragment
+        android:id="@+id/noticeFragment"
+        android:name="com.example.darestory.ui.main.my.notice.NoticeFragment"
+        android:label="fragment_notice"
+        tools:layout="@layout/fragment_notice">
     </fragment>
 
 </navigation>

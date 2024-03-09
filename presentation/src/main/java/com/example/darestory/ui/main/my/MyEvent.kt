@@ -11,4 +11,5 @@ sealed class MyEvent : Event {
     data class GoToMyProseAndDiscussionEvent(val type : DetailType) : MyEvent()
     data class GoToMyReadOrOwnBookEvent(val type : ReadOrOwnType) : MyEvent()
     object GoToLoginEvent : MyEvent()
+    object GoToNoticeEvent : MyEvent()
 }

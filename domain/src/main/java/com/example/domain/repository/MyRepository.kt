@@ -4,6 +4,7 @@ import com.example.domain.model.vo.MyOwnBookProseRequestVo
 import com.example.domain.model.vo.BookVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.MyBookVo
+import com.example.domain.model.vo.NoticeVo
 import com.example.domain.model.vo.ProseVo
 import com.example.domain.model.vo.UserVo
 
@@ -18,4 +19,5 @@ interface MyRepository {
     suspend fun getMyOwnBookProse(request: String) : List<ProseVo>
     suspend fun addMyOwnBookProse(request: MyOwnBookProseRequestVo) : Boolean
     suspend fun deleteMyOwnBookProse(request: MyOwnBookProseRequestVo) : Boolean
+    suspend fun getNoticeList() : List<NoticeVo>
 }

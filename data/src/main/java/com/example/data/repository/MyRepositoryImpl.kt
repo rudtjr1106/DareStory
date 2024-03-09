@@ -6,6 +6,7 @@ import com.example.domain.model.vo.MyOwnBookProseRequestVo
 import com.example.domain.model.vo.BookVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.MyBookVo
+import com.example.domain.model.vo.NoticeVo
 import com.example.domain.model.vo.ProseVo
 import com.example.domain.model.vo.UserVo
 import com.example.domain.repository.MyRepository
@@ -168,6 +169,26 @@ class MyRepositoryImpl @Inject constructor() : MyRepository {
                     it.resume(false)
                 }
             }
+    }
+
+    override suspend fun getNoticeList(): List<NoticeVo>  = suspendCoroutine { coroutineScope ->
+        val noticeList: MutableList<NoticeVo> = mutableListOf()
+        db.getReference(EndPoints.NOTICE)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (dataSnapshot in snapshot.children) {
+                        val notice = dataSnapshot.getValue(NoticeVo::class.java)
+                        notice?.let {
+                            noticeList.add(it)
+                        }
+                    }
+                    coroutineScope.resume(noticeList)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    coroutineScope.resume(emptyList())
+                }
+            })
     }
 
     override suspend fun getMyOwnBookProse(request: String): List<ProseVo> = suspendCoroutine { coroutineScope ->

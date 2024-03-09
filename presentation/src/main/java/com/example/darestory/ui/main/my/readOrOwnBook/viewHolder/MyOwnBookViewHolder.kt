@@ -1,16 +1,8 @@
 package com.example.darestory.ui.main.my.readOrOwnBook.viewHolder
 
-import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.darestory.R
-import com.example.darestory.databinding.ItemDiscussionBookListBinding
 import com.example.darestory.databinding.ItemMyOwnBookBinding
 import com.example.darestory.ui.main.my.readOrOwnBook.adapter.MyReadOrOwnBookAdapter
-import com.example.darestory.ui.main.search.result.adapter.ResultSearchAdapter
-import com.example.darestory.util.TimeFormatter
-import com.example.domain.model.vo.BookVo
 import com.example.domain.model.vo.MyBookVo
 
 class MyOwnBookViewHolder(
