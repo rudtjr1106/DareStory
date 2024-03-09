@@ -141,4 +141,5 @@
     <string name="my_account">계정</string>
     <string name="my_logout_dialog">로그아웃 하시겠습니까?</string>
     <string name="my_unregister_dialog">정말로 탈퇴 하시겠습니까?</string>
+    <string name="word_me">관리자</string>
 </resources>

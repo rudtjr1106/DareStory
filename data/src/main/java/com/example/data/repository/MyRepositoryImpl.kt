@@ -191,6 +191,23 @@ class MyRepositoryImpl @Inject constructor() : MyRepository {
             })
     }
 
+    override suspend fun getNoticeDetail(request: Int): NoticeVo = suspendCoroutine { coroutineScope ->
+        db.getReference(EndPoints.NOTICE).child(request.toString() + "번")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val notice = snapshot.getValue(NoticeVo::class.java)
+                notice?.let {
+                    coroutineScope.resume(it)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                coroutineScope.resume(NoticeVo())
+            }
+        })
+    }
+
+
     override suspend fun getMyOwnBookProse(request: String): List<ProseVo> = suspendCoroutine { coroutineScope ->
         val proseList: MutableList<ProseVo> = mutableListOf()
         myDbRef.child(DataUserInfo.info.nickName).child(EndPoints.MY_BOOK).child(request).child(EndPoints.PROSE)

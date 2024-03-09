@@ -293,6 +293,21 @@
         android:name="com.example.darestory.ui.main.my.notice.NoticeFragment"
         android:label="fragment_notice"
         tools:layout="@layout/fragment_notice">
+
+        <action
+            android:id="@+id/action_notice_to_detail"
+            app:destination="@id/noticeDetailFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/noticeDetailFragment"
+        android:name="com.example.darestory.ui.main.my.notice.detail.NoticeDetailFragment"
+        android:label="fragment_notice_detail"
+        tools:layout="@layout/fragment_notice_detail">
+
+        <argument
+            android:name="noticeId"
+            app:argType="integer"/>
     </fragment>
 
 </navigation>

@@ -17,7 +17,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticePageState, Noti
 
     private val noticeAdapter = NoticeAdapter(object : NoticeAdapter.NoticeDelegate{
         override fun onClickNotice(noticeId: Int) {
-            TODO("Not yet implemented")
+            goToNoticeDetail(noticeId)
         }
     })
 
@@ -53,6 +53,11 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding, NoticePageState, Noti
         when(event){
             NoticeEvent.GoToBackEvent -> findNavController().popBackStack()
         }
+    }
+
+    private fun goToNoticeDetail(noticeId : Int){
+        val action = NoticeFragmentDirections.actionNoticeToDetail(noticeId)
+        findNavController().navigate(action)
     }
 
     override fun onStart() {

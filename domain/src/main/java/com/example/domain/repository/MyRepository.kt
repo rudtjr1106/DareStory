@@ -20,4 +20,5 @@ interface MyRepository {
     suspend fun addMyOwnBookProse(request: MyOwnBookProseRequestVo) : Boolean
     suspend fun deleteMyOwnBookProse(request: MyOwnBookProseRequestVo) : Boolean
     suspend fun getNoticeList() : List<NoticeVo>
+    suspend fun getNoticeDetail(request : Int) : NoticeVo
 }
