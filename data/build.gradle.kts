@@ -50,7 +50,8 @@ dependencies {
     implementation(Google.FIREBASE_AUTH)
     implementation(Google.FIREBASE_FIRE_STORE)
     implementation(Google.FIREBASE_REALTIME_DB)
-    implementation("com.google.firebase:firebase-messaging:23.4.1")
+    implementation(Google.FIREBASE_FCM)
+    implementation(Google.FIREBASE_ANALYTICS)
 
     // ROOM Database 사용
     implementation(AndroidX.ROOM_RUNTIME)

@@ -11,5 +11,6 @@ data class ProseVo(
     val likeCount : Int = 0,
     val proseId : Int = -1,
     val title : String = "",
+    val token : String = "",
     val whoLiked : HashMap<String, String> = hashMapOf()
 )

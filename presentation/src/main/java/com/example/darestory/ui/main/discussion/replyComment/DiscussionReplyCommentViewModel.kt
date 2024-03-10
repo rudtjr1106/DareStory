@@ -1,16 +1,19 @@
 package com.example.darestory.ui.main.discussion.replyComment
 
 import androidx.lifecycle.viewModelScope
+import com.example.darestory.FcmNotification
 import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.TimeFormatter
 import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.BottomSheetMenuItemType
 import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.CommentType
+import com.example.domain.model.enums.DetailType
 import com.example.domain.model.vo.CommentRequestVo
 import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.DisCommentVo
 import com.example.domain.model.vo.DiscussionCommentPageVo
+import com.example.domain.model.vo.NotificationVo
 import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.UpdateReplyCommentVo
 import com.example.domain.usecase.discussion.AddDiscussionReplyCommentUseCase
@@ -43,8 +46,10 @@ class DiscussionReplyCommentViewModel @Inject constructor(
     private var commentId by Delegates.notNull<Int>()
     private var discussionId by Delegates.notNull<Int>()
     private var replyCommentId by Delegates.notNull<Int>()
+    private var commentToken by Delegates.notNull<String>()
     private var reportWho by Delegates.notNull<String>()
     private var commentType by Delegates.notNull<CommentType>()
+    private val fcmNotification = FcmNotification()
 
     fun loadPage(discussionId : Int, commentId : Int){
         this.discussionId = discussionId
@@ -61,6 +66,7 @@ class DiscussionReplyCommentViewModel @Inject constructor(
     }
 
     private fun successGetReplyComment(result : DisCommentVo){
+        commentToken = result.token
         val mainComment = getMainComment(result)
         val replyComment = getReplyCommentList(result.replyComment)
         updateCommentList(mainComment + replyComment)
@@ -169,6 +175,7 @@ class DiscussionReplyCommentViewModel @Inject constructor(
                 comment = CommentVo(
                     content = commentEditStateFlow.value,
                     date = TimeFormatter.getNowDateAndTime(),
+                    token = UserInfo.info.token,
                     writer = UserInfo.info.nickName
                 )
 
@@ -176,17 +183,29 @@ class DiscussionReplyCommentViewModel @Inject constructor(
             viewModelScope.launch {
                 showLoading()
                 val result = addDiscussionReplyCommentUseCase(request)
-                if(result) successAddComment()
+                endLoading()
+                if(result) {
+                    sendReplyCommentFcmMessage()
+                    successAddComment()
+                }
             }
         }
     }
 
     private fun successAddComment(){
-        endLoading()
         viewModelScope.launch {
             commentEditStateFlow.update { "" }
         }
         reloadPage()
+    }
+
+    private fun sendReplyCommentFcmMessage(){
+        if(commentToken == UserInfo.info.token){
+            return
+        }
+        else{
+            fcmNotification.sendMessage(NotificationVo(commentToken, NotificationVo.Notification(UserInfo.info.nickName, "replyComment")))
+        }
     }
     private fun reloadPage(){
         loadPage(discussionId, commentId)

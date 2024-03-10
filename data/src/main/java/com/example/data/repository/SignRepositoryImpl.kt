@@ -1,6 +1,5 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.DataUserInfo
 import com.example.data.EndPoints
 import com.example.domain.model.vo.LoginVo
@@ -102,6 +101,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         val updatedData = mapOf(request.nickName to userVo)
         authDbRef.updateChildren(updatedData).addOnCompleteListener { task ->
             if(task.isSuccessful){
+                userVo?.let { it1 -> DataUserInfo.updateInfo(it1) }
                 it.resume(true)
             }
             else{
@@ -178,6 +178,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
                         userInfo = user!!
                     }
                 }
+                DataUserInfo.updateInfo(userInfo)
                 it.resume(userInfo)
             }
 

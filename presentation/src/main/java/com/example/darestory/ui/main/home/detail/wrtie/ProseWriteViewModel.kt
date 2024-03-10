@@ -96,6 +96,7 @@ class ProseWriteViewModel @Inject constructor(
             content = contentStateFlow.value,
             createdAt = TimeFormatter.getNowDateAndTime(),
             title = titleStateFlow.value,
+            token = UserInfo.info.token,
         )
         return UploadProseVo(
             type = type,

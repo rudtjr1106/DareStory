@@ -144,4 +144,9 @@
     <string name="word_me">관리자</string>
 
     <string name="dare_story_email">rudtjr1206@naver.com</string>
+
+    <string name="notification_title">달의 이야기</string>
+    <string name="notification_like_body">작가 %s 님이 작가님의 글에 좋은 마음을 남겼습니다!</string>
+    <string name="notification_comment_body">작가 %s 님이 작가님의 글에 좋은 글귀를 남겼습니다!</string>
+    <string name="notification_reply_comment_body">작가 %s 님이 작가님의 의견에 답변을 남겼습니다!</string>
 </resources>

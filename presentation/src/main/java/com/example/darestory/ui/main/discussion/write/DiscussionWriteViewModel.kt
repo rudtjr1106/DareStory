@@ -112,6 +112,7 @@ class DiscussionWriteViewModel @Inject constructor(
             content = contentStateFlow.value,
             createdAt = TimeFormatter.getNowDateAndTime(),
             title = titleStateFlow.value,
+            token = UserInfo.info.token
         )
         return UploadDiscussionVo(
             type = type,

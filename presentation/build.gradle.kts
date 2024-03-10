@@ -63,7 +63,10 @@ dependencies {
     implementation(Kotlin.COROUTINES_CORE)
     implementation(Kotlin.COROUTINES)
 
-    //
+    //FIREBASE
+    implementation(platform(Google.FIREBASE_BOM))
+    implementation(Google.FIREBASE_FCM)
+    implementation(Google.FIREBASE_ANALYTICS)
 
     //힐트
     implementation(Google.HILT_ANDROID)

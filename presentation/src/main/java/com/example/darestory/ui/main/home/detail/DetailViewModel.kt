@@ -1,6 +1,7 @@
 package com.example.darestory.ui.main.home.detail
 
 import androidx.lifecycle.viewModelScope
+import com.example.darestory.FcmNotification
 import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.SelectedMyOwnBook
 import com.example.darestory.util.TimeFormatter
@@ -18,6 +19,7 @@ import com.example.domain.model.vo.DisCommentVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.LikeVo
 import com.example.domain.model.vo.MyBookVo
+import com.example.domain.model.vo.NotificationVo
 import com.example.domain.model.vo.ProseVo
 import com.example.domain.usecase.discussion.AddDiscussionCommentUseCase
 import com.example.domain.usecase.discussion.DeleteDiscussionCommentUseCase
@@ -66,6 +68,8 @@ class DetailViewModel @Inject constructor(
     private var commentId by Delegates.notNull<Int>()
     private var reportWho by Delegates.notNull<String>()
     private var proseVo by Delegates.notNull<ProseVo>()
+    private var discussionVo by Delegates.notNull<DiscussionVo>()
+    private val fcmNotification = FcmNotification()
 
     fun getDetail(id : Int, type : DetailType){
         detailId = id
@@ -100,6 +104,7 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun successGetDiscussionDetail(result : DiscussionVo){
+        discussionVo = result
         val contentList = getDiscussionContentList(result)
         val commentList = getDiscussionCommentList(result.comment)
         updateDetailPageList(contentList + commentList)
@@ -201,14 +206,20 @@ class DetailViewModel @Inject constructor(
     private fun proseLikeBtn(request : LikeVo){
         viewModelScope.launch {
             val result = likeProseUseCase(request)
-            if(result) reloadPage()
+            if(result) {
+                sendLikeFcmMessage(request.isLiked)
+                reloadPage()
+            }
         }
     }
 
     private fun discussionLikeBtn(request : LikeVo){
         viewModelScope.launch {
             val result = likeDiscussionUseCase(request)
-            if(result) reloadPage()
+            if(result) {
+                sendLikeFcmMessage(request.isLiked)
+                reloadPage()
+            }
         }
     }
 
@@ -223,6 +234,7 @@ class DetailViewModel @Inject constructor(
                 comment = CommentVo(
                     content = commentEditStateFlow.value,
                     date = TimeFormatter.getNowDateAndTime(),
+                    token = UserInfo.info.token,
                     writer = UserInfo.info.nickName
                 )
 
@@ -232,9 +244,12 @@ class DetailViewModel @Inject constructor(
                 val result = when(detailType){
                     DetailType.PROSE -> addProseCommentUseCase(request)
                     DetailType.DISCUSSION -> addDiscussionCommentUseCase(request)
-                    DetailType.BOOK -> TODO()
+                    DetailType.BOOK -> false
                 }
-                if(result) successAddComment()
+                if(result) {
+                    sendCommentFcmMessage()
+                    successAddComment()
+                }
             }
         }
     }
@@ -362,6 +377,34 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             val result = addMyOwnBookProseUseCase(request)
             if(result) SelectedMyOwnBook.updateInfo(MyBookVo())
+        }
+    }
+
+    private fun sendLikeFcmMessage(isLiked: Boolean){
+        val token = when(detailType){
+            DetailType.PROSE -> proseVo.token
+            DetailType.DISCUSSION -> discussionVo.token
+            DetailType.BOOK -> ""
+        }
+        if(isLiked || token == UserInfo.info.token){
+            return
+        }
+        else{
+            fcmNotification.sendMessage(NotificationVo(token, NotificationVo.Notification(UserInfo.info.nickName, "like")))
+        }
+    }
+
+    private fun sendCommentFcmMessage(){
+        val token = when(detailType){
+            DetailType.PROSE -> proseVo.token
+            DetailType.DISCUSSION -> discussionVo.token
+            DetailType.BOOK -> ""
+        }
+        if(token == UserInfo.info.token){
+            return
+        }
+        else{
+            fcmNotification.sendMessage(NotificationVo(token, NotificationVo.Notification(UserInfo.info.nickName, "comment")))
         }
     }
 }
