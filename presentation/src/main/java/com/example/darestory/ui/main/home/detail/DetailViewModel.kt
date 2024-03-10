@@ -381,30 +381,44 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun sendLikeFcmMessage(isLiked: Boolean){
-        val token = when(detailType){
-            DetailType.PROSE -> proseVo.token
-            DetailType.DISCUSSION -> discussionVo.token
-            DetailType.BOOK -> ""
-        }
+        val token = getFcmToken()
+        val title = getDetailTitle()
         if(isLiked || token == UserInfo.info.token){
             return
         }
         else{
-            fcmNotification.sendMessage(NotificationVo(token, NotificationVo.Notification(UserInfo.info.nickName, "like")))
+            fcmNotification.sendMessage(NotificationVo(token, NotificationVo.Notification(
+                body = "작가 ${UserInfo.info.nickName} 님이 작가님의 글에 좋은 마음을 남겼습니다!", title
+            )))
         }
     }
 
-    private fun sendCommentFcmMessage(){
-        val token = when(detailType){
+    private fun getFcmToken() : String{
+        return when(detailType){
             DetailType.PROSE -> proseVo.token
             DetailType.DISCUSSION -> discussionVo.token
             DetailType.BOOK -> ""
         }
+    }
+
+    private fun getDetailTitle() : String{
+        return when(detailType){
+            DetailType.PROSE -> proseVo.title
+            DetailType.DISCUSSION -> discussionVo.title
+            DetailType.BOOK -> ""
+        }
+    }
+
+    private fun sendCommentFcmMessage(){
+        val token = getFcmToken()
+        val title = getDetailTitle()
         if(token == UserInfo.info.token){
             return
         }
         else{
-            fcmNotification.sendMessage(NotificationVo(token, NotificationVo.Notification(UserInfo.info.nickName, "comment")))
+            fcmNotification.sendMessage(NotificationVo(token, NotificationVo.Notification(
+                body = "작가 ${UserInfo.info.nickName} 님이 작가님의 글에 좋은 글귀를 남겼습니다!", title
+            )))
         }
     }
 }

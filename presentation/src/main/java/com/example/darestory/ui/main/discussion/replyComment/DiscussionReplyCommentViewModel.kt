@@ -46,7 +46,7 @@ class DiscussionReplyCommentViewModel @Inject constructor(
     private var commentId by Delegates.notNull<Int>()
     private var discussionId by Delegates.notNull<Int>()
     private var replyCommentId by Delegates.notNull<Int>()
-    private var commentToken by Delegates.notNull<String>()
+    private var commentVo by Delegates.notNull<DisCommentVo>()
     private var reportWho by Delegates.notNull<String>()
     private var commentType by Delegates.notNull<CommentType>()
     private val fcmNotification = FcmNotification()
@@ -66,7 +66,7 @@ class DiscussionReplyCommentViewModel @Inject constructor(
     }
 
     private fun successGetReplyComment(result : DisCommentVo){
-        commentToken = result.token
+        commentVo = result
         val mainComment = getMainComment(result)
         val replyComment = getReplyCommentList(result.replyComment)
         updateCommentList(mainComment + replyComment)
@@ -200,11 +200,13 @@ class DiscussionReplyCommentViewModel @Inject constructor(
     }
 
     private fun sendReplyCommentFcmMessage(){
-        if(commentToken == UserInfo.info.token){
+        if(commentVo.token == UserInfo.info.token){
             return
         }
         else{
-            fcmNotification.sendMessage(NotificationVo(commentToken, NotificationVo.Notification(UserInfo.info.nickName, "replyComment")))
+            fcmNotification.sendMessage(NotificationVo(commentVo.token, NotificationVo.Notification(
+                body = "작가 ${UserInfo.info.nickName} 님이 작가님의 의견에 답변을 남겼습니다!", commentVo.content
+            )))
         }
     }
     private fun reloadPage(){

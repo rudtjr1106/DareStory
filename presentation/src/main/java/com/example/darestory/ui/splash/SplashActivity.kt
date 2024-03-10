@@ -1,7 +1,11 @@
 package com.example.darestory.ui.splash
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.darestory.PageState
 import com.example.darestory.base.BaseActivity
 import com.example.darestory.databinding.ActivitySplashBinding
@@ -15,11 +19,16 @@ import kotlinx.coroutines.launch
 class SplashActivity : BaseActivity<ActivitySplashBinding, PageState.Default, SplashViewModel>(
     ActivitySplashBinding::inflate) {
 
+    companion object {
+        private const val PERMISSION_REQUEST_CODE = 5000
+    }
+
     override val viewModel: SplashViewModel by viewModels()
     override fun initView() {
 
         binding.apply {
             vm = viewModel
+            permissionCheck()
             viewModel.checkLogin()
         }
     }
@@ -53,6 +62,22 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, PageState.Default, Sp
         val intent = Intent(this, SignActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun permissionCheck() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val permissionCheck = ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.POST_NOTIFICATIONS
+            )
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                    PERMISSION_REQUEST_CODE
+                )
+            }
+        }
     }
 
 }
