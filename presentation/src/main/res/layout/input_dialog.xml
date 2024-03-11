@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/bg_line_edit_text"
+            android:background="@drawable/bg_line_edit_text_bg_gray_600"
             android:paddingHorizontal="4dp"
             android:textColor="@color/white"
             android:textAppearance="@style/body1"

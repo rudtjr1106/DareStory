@@ -37,9 +37,9 @@ class NoticeDetailViewModel @Inject constructor(
 
     private fun successGetNoticeDetail(result : NoticeVo){
         viewModelScope.launch {
-            titleStateFlow.update { result.title }
+            titleStateFlow.update { result.title.replace("\\n", "\n") }
             createdAtStateFlow.update { result.createdAt}
-            contentStateFlow.update { result.content }
+            contentStateFlow.update { result.content.replace("\\n", "\n") }
             emitEventFlow(NoticeDetailEvent.ShowWriterEvent)
         }
     }

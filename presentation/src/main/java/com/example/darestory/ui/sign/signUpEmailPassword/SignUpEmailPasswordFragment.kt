@@ -1,5 +1,12 @@
 package com.example.darestory.ui.sign.signUpEmailPassword
 
+import android.content.Intent
+import android.net.Uri
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
@@ -9,6 +16,7 @@ import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentSignupEmailPasswordBinding
 import com.example.darestory.ui.common.spinner.SpinnerDialog
+import com.example.darestory.ui.sign.verifyEmail.VerifyEmailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,6 +29,9 @@ class SignUpEmailPasswordFragment : BaseFragment<FragmentSignupEmailPasswordBind
     @Inject
     lateinit var spinnerDialog: SpinnerDialog
 
+    private lateinit var text : String
+    private lateinit var spannableString: Spannable
+
     override val viewModel: SignUpEmailPasswordViewModel by viewModels()
 
     companion object{
@@ -31,6 +42,7 @@ class SignUpEmailPasswordFragment : BaseFragment<FragmentSignupEmailPasswordBind
         binding.apply {
             vm = viewModel
             bindEditText()
+            clickAbleString()
             viewModel.getAllEmail()
         }
     }
@@ -109,5 +121,51 @@ class SignUpEmailPasswordFragment : BaseFragment<FragmentSignupEmailPasswordBind
 
     override fun onItemSelected(itemName: String) {
         viewModel.onSelectedEmailDomain(itemName)
+    }
+
+    private fun clickAbleString(){
+        text = getString(R.string.sign_up_about_service_personal_info)
+        val serviceText = getString(R.string.word_app_policy)
+        spannableString = SpannableStringBuilder(text)
+        val startIndex = text.indexOf(serviceText)
+        val endIndex = text.indexOf(serviceText) + serviceText.length
+        spannableString.setSpan(object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                goToServiceNotionPage()
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                ds.isUnderlineText = true
+                ds.color = ContextCompat.getColor(requireContext(), R.color.white)
+            }
+        }, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        val privateText = getString(R.string.word_private_policy)
+        val startIndex2 = text.indexOf(privateText)
+        val endIndex2 = text.indexOf(privateText) + privateText.length
+        spannableString.setSpan(object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                goToPrivateNotionPage()
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                ds.isUnderlineText = true
+                ds.color = ContextCompat.getColor(requireContext(), R.color.white)
+            }
+        }, startIndex2, endIndex2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        binding.textServicePersonalApp.text = spannableString
+        binding.textServicePersonalApp.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    private fun goToPrivateNotionPage(){
+        startActivity(
+            Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.private_policy)))
+        )
+    }
+
+    private fun goToServiceNotionPage(){
+        startActivity(
+            Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.service_policy)))
+        )
     }
 }

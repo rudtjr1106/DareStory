@@ -17,6 +17,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="16dp"
             android:maxLines="1"
+            android:ellipsize="end"
             android:text="이거는 테스트 제목입니다."
             android:textAppearance="@style/title3"
             android:textColor="@color/gray_200"

@@ -38,13 +38,18 @@ class ProseRepositoryImpl @Inject constructor(
         val proseList: MutableList<ProseVo> = mutableListOf()
         proseDbRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    for (dataSnapshot in snapshot.children) {
-                        val prose = dataSnapshot.getValue(ProseVo::class.java)
-                        prose?.let {
-                            proseList.add(it)
+                    if(snapshot.exists()){
+                        for (dataSnapshot in snapshot.children) {
+                            val prose = dataSnapshot.getValue(ProseVo::class.java)
+                            prose?.let {
+                                proseList.add(it)
+                            }
                         }
+                        coroutineScope.resume(proseList)
                     }
-                    coroutineScope.resume(proseList)
+                    else{
+                        coroutineScope.resume(proseList)
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {

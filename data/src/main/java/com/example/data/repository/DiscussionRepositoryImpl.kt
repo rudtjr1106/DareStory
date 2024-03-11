@@ -42,13 +42,18 @@ class DiscussionRepositoryImpl @Inject constructor(
         val discussionList: MutableList<DiscussionVo> = mutableListOf()
         discussionDbRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (dataSnapshot in snapshot.children) {
-                    val discussion = dataSnapshot.getValue(DiscussionVo::class.java)
-                    discussion?.let {
-                        discussionList.add(it)
+                if(snapshot.exists()){
+                    for (dataSnapshot in snapshot.children) {
+                        val discussion = dataSnapshot.getValue(DiscussionVo::class.java)
+                        discussion?.let {
+                            discussionList.add(it)
+                        }
                     }
+                    coroutineScope.resume(discussionList)
                 }
-                coroutineScope.resume(discussionList)
+                else{
+                    coroutineScope.resume(discussionList)
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

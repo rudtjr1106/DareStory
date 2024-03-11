@@ -23,7 +23,7 @@ class NoticeItemViewHolder(
         binding.apply {
             imageBtnNext.visibility = View.INVISIBLE
             textTitle.text = item.title
-            textExplain.text = item.content
+            textExplain.text = item.content.replace("\\n", "\n")
         }
     }
 }
