@@ -58,6 +58,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
             is MyEvent.GoToSendEmailEvent -> sendToEmail()
             MyEvent.GoToDiscussionEvent -> goToDiscussionPage()
             MyEvent.GoToHomeEvent -> goToHomePage()
+            MyEvent.ErrorMyInfoEvent -> showErrorMyInfoDialog()
         }
     }
 
@@ -82,6 +83,18 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
                 viewModel.logout()
                 commonDialog.dismiss()
             }
+            .show()
+    }
+
+    private fun showErrorMyInfoDialog(){
+        commonDialog
+            .setTitle(R.string.dialog_my_info_error_title)
+            .setDescription(R.string.dialog_my_info_error_content)
+            .setPositiveButton(R.string.word_logout){
+                commonDialog.dismiss()
+                goToLoginPage()
+            }
+            .showOnlyPositive()
             .show()
     }
 

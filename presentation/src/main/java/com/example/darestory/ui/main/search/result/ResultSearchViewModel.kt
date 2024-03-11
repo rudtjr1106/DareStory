@@ -61,6 +61,14 @@ class ResultSearchViewModel @Inject constructor(
         }
     }
 
+    fun reSearch(){
+        when (detailType) {
+            DetailType.PROSE -> successInsertProseRecentSearch(searchContentStateFlow.value)
+            DetailType.DISCUSSION -> successInsertDiscussionRecentSearch(searchContentStateFlow.value)
+            DetailType.BOOK -> getBookSearchList()
+        }
+    }
+
     fun insertProseRecentSearch(){
         viewModelScope.launch {
             val result = insertRecentProseSearchUseCase(searchContentStateFlow.value)

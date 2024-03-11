@@ -71,12 +71,25 @@ class DiscussionReplyCommentFragment : BaseFragment<FragmentDiscussionReplyComme
             DiscussionReplyCommentEvent.GoToBack -> findNavController().popBackStack()
             is DiscussionReplyCommentEvent.ShowBottomSheetEvent -> showBottomSheet(event.type)
             DiscussionReplyCommentEvent.ShowCommentDeleteDialogEvent -> showCommentDeleteDialog()
+            DiscussionReplyCommentEvent.DeleteCommentErrorEvent -> showDeleteDiscussionCommentErrorDialog()
         }
     }
 
     private fun goReportPage(who : String){
         val action = DiscussionReplyCommentFragmentDirections.actionDiscussionReplyCommentToReport(who)
         findNavController().navigate(action)
+    }
+
+    private fun showDeleteDiscussionCommentErrorDialog(){
+        commonDialog
+            .setTitle(R.string.dialog_delete_comment_error_title)
+            .setDescription(R.string.dialog_delete_comment_error_content)
+            .setPositiveButton(R.string.word_confirm){
+                findNavController().popBackStack()
+                commonDialog.dismiss()
+            }
+            .showOnlyPositive()
+            .show()
     }
 
     private fun showBottomSheet(type : BottomSheetType){

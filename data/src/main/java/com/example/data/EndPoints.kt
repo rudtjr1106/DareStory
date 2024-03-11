@@ -2,8 +2,8 @@ package com.example.data
 
 object EndPoints {
 
+    const val APP = "app"
     const val AUTH = "user"
-    const val AUTH_UID = "userUid"
     const val MY_PROSE = "myProse"
     const val MY_DISCUSSION = "myDiscussion"
     const val MY_BOOK = "myBook"

@@ -13,5 +13,6 @@ data class DiscussionVo(
     val discussionId : Int = -1,
     val likeCount : Int = 0,
     val title : String = "",
+    val token : String = "",
     val whoLiked : HashMap<String, String> = hashMapOf()
 )

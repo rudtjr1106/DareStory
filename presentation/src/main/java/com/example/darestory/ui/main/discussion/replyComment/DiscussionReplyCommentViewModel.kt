@@ -1,16 +1,20 @@
 package com.example.darestory.ui.main.discussion.replyComment
 
 import androidx.lifecycle.viewModelScope
+import com.example.darestory.FcmNotification
 import com.example.darestory.base.BaseViewModel
+import com.example.darestory.util.DareLog
 import com.example.darestory.util.TimeFormatter
 import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.BottomSheetMenuItemType
 import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.CommentType
+import com.example.domain.model.enums.DetailType
 import com.example.domain.model.vo.CommentRequestVo
 import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.DisCommentVo
 import com.example.domain.model.vo.DiscussionCommentPageVo
+import com.example.domain.model.vo.NotificationVo
 import com.example.domain.model.vo.UpdateCommentVo
 import com.example.domain.model.vo.UpdateReplyCommentVo
 import com.example.domain.usecase.discussion.AddDiscussionReplyCommentUseCase
@@ -43,8 +47,10 @@ class DiscussionReplyCommentViewModel @Inject constructor(
     private var commentId by Delegates.notNull<Int>()
     private var discussionId by Delegates.notNull<Int>()
     private var replyCommentId by Delegates.notNull<Int>()
+    private var commentVo by Delegates.notNull<DisCommentVo>()
     private var reportWho by Delegates.notNull<String>()
     private var commentType by Delegates.notNull<CommentType>()
+    private val fcmNotification = FcmNotification()
 
     fun loadPage(discussionId : Int, commentId : Int){
         this.discussionId = discussionId
@@ -56,11 +62,12 @@ class DiscussionReplyCommentViewModel @Inject constructor(
             showLoading()
             val result = getReplyCommentUseCase(requestVo)
             endLoading()
-            if(result.writer.isNotEmpty()) successGetReplyComment(result)
+            if(result.writer.isNotEmpty()) successGetReplyComment(result) else emitEventFlow(DiscussionReplyCommentEvent.DeleteCommentErrorEvent)
         }
     }
 
     private fun successGetReplyComment(result : DisCommentVo){
+        commentVo = result
         val mainComment = getMainComment(result)
         val replyComment = getReplyCommentList(result.replyComment)
         updateCommentList(mainComment + replyComment)
@@ -140,7 +147,9 @@ class DiscussionReplyCommentViewModel @Inject constructor(
             comment = CommentVo(commentId = commentId)
         )
         viewModelScope.launch {
+            showLoading()
             val result = deleteDiscussionCommentUseCase(request)
+            endLoading()
             if(result) reloadPage()
         }
     }
@@ -153,7 +162,7 @@ class DiscussionReplyCommentViewModel @Inject constructor(
         )
         viewModelScope.launch {
             val result = deleteDiscussionReplyCommentUseCase(request)
-            if(result) reloadPage()
+            if(result) reloadPage() else emitEventFlow(DiscussionReplyCommentEvent.DeleteCommentErrorEvent)
         }
     }
 
@@ -169,6 +178,7 @@ class DiscussionReplyCommentViewModel @Inject constructor(
                 comment = CommentVo(
                     content = commentEditStateFlow.value,
                     date = TimeFormatter.getNowDateAndTime(),
+                    token = UserInfo.info.token,
                     writer = UserInfo.info.nickName
                 )
 
@@ -176,17 +186,34 @@ class DiscussionReplyCommentViewModel @Inject constructor(
             viewModelScope.launch {
                 showLoading()
                 val result = addDiscussionReplyCommentUseCase(request)
-                if(result) successAddComment()
+                endLoading()
+                if(result) {
+                    sendReplyCommentFcmMessage()
+                    successAddComment()
+                }
+                else{
+                    emitEventFlow(DiscussionReplyCommentEvent.DeleteCommentErrorEvent)
+                }
             }
         }
     }
 
     private fun successAddComment(){
-        endLoading()
         viewModelScope.launch {
             commentEditStateFlow.update { "" }
         }
         reloadPage()
+    }
+
+    private fun sendReplyCommentFcmMessage(){
+        if(commentVo.token == UserInfo.info.token){
+            return
+        }
+        else{
+            fcmNotification.sendMessage(NotificationVo(commentVo.token, NotificationVo.Notification(
+                body = "작가 ${UserInfo.info.nickName} 님이 작가님의 의견에 답변을 남겼습니다!", commentVo.content
+            )))
+        }
     }
     private fun reloadPage(){
         loadPage(discussionId, commentId)

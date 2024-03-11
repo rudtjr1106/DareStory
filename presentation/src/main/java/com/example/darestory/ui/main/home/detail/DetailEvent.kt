@@ -12,5 +12,7 @@ sealed class DetailEvent : Event {
     object ShowCommentDeleteDialogEvent : DetailEvent()
     data class GoReportEvent(val who : String) : DetailEvent()
     object GoToMyOwnBookSelectEvent : DetailEvent()
+    object DeleteProseErrorEvent : DetailEvent()
+    object DeleteDiscussionErrorEvent : DetailEvent()
 
 }

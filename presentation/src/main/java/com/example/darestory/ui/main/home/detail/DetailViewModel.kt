@@ -1,6 +1,7 @@
 package com.example.darestory.ui.main.home.detail
 
 import androidx.lifecycle.viewModelScope
+import com.example.darestory.FcmNotification
 import com.example.darestory.base.BaseViewModel
 import com.example.darestory.util.SelectedMyOwnBook
 import com.example.darestory.util.TimeFormatter
@@ -18,6 +19,7 @@ import com.example.domain.model.vo.DisCommentVo
 import com.example.domain.model.vo.DiscussionVo
 import com.example.domain.model.vo.LikeVo
 import com.example.domain.model.vo.MyBookVo
+import com.example.domain.model.vo.NotificationVo
 import com.example.domain.model.vo.ProseVo
 import com.example.domain.usecase.discussion.AddDiscussionCommentUseCase
 import com.example.domain.usecase.discussion.DeleteDiscussionCommentUseCase
@@ -66,6 +68,8 @@ class DetailViewModel @Inject constructor(
     private var commentId by Delegates.notNull<Int>()
     private var reportWho by Delegates.notNull<String>()
     private var proseVo by Delegates.notNull<ProseVo>()
+    private var discussionVo by Delegates.notNull<DiscussionVo>()
+    private val fcmNotification = FcmNotification()
 
     fun getDetail(id : Int, type : DetailType){
         detailId = id
@@ -79,15 +83,19 @@ class DetailViewModel @Inject constructor(
 
     private fun getProseDetail(proseId : Int){
         viewModelScope.launch{
+            showLoading()
             val result = getProseUseCase(proseId)
-            if(result.title.isNotEmpty()) successGetProseDetail(result)
+            endLoading()
+            if(result.title.isNotEmpty()) successGetProseDetail(result) else emitEventFlow(DetailEvent.DeleteProseErrorEvent)
         }
     }
 
     private fun getDiscussionDetail(discussionId : Int){
         viewModelScope.launch{
+            showLoading()
             val result = getDiscussionUseCase(discussionId)
-            if(result.title.isNotEmpty()) successGetDiscussionDetail(result)
+            endLoading()
+            if(result.title.isNotEmpty()) successGetDiscussionDetail(result)else emitEventFlow(DetailEvent.DeleteProseErrorEvent)
         }
     }
 
@@ -100,6 +108,7 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun successGetDiscussionDetail(result : DiscussionVo){
+        discussionVo = result
         val contentList = getDiscussionContentList(result)
         val commentList = getDiscussionCommentList(result.comment)
         updateDetailPageList(contentList + commentList)
@@ -200,15 +209,31 @@ class DetailViewModel @Inject constructor(
 
     private fun proseLikeBtn(request : LikeVo){
         viewModelScope.launch {
+            showLoading()
             val result = likeProseUseCase(request)
-            if(result) reloadPage()
+            endLoading()
+            if(result) {
+                sendLikeFcmMessage(request.isLiked)
+                reloadPage()
+            }
+            else{
+                emitEventFlow(DetailEvent.DeleteProseErrorEvent)
+            }
         }
     }
 
     private fun discussionLikeBtn(request : LikeVo){
         viewModelScope.launch {
+            showLoading()
             val result = likeDiscussionUseCase(request)
-            if(result) reloadPage()
+            endLoading()
+            if(result) {
+                sendLikeFcmMessage(request.isLiked)
+                reloadPage()
+            }
+            else{
+                emitEventFlow(DetailEvent.DeleteDiscussionErrorEvent)
+            }
         }
     }
 
@@ -223,6 +248,7 @@ class DetailViewModel @Inject constructor(
                 comment = CommentVo(
                     content = commentEditStateFlow.value,
                     date = TimeFormatter.getNowDateAndTime(),
+                    token = UserInfo.info.token,
                     writer = UserInfo.info.nickName
                 )
 
@@ -232,15 +258,25 @@ class DetailViewModel @Inject constructor(
                 val result = when(detailType){
                     DetailType.PROSE -> addProseCommentUseCase(request)
                     DetailType.DISCUSSION -> addDiscussionCommentUseCase(request)
-                    DetailType.BOOK -> TODO()
+                    DetailType.BOOK -> false
                 }
-                if(result) successAddComment()
+                endLoading()
+                if(result) {
+                    sendCommentFcmMessage()
+                    successAddComment()
+                }
+                else{
+                    when(detailType){
+                        DetailType.PROSE -> emitEventFlow(DetailEvent.DeleteProseErrorEvent)
+                        DetailType.DISCUSSION -> emitEventFlow(DetailEvent.DeleteDiscussionErrorEvent)
+                        DetailType.BOOK -> {}
+                    }
+                }
             }
         }
     }
 
     private fun successAddComment(){
-        endLoading()
         viewModelScope.launch {
             commentEditStateFlow.update { "" }
         }
@@ -337,15 +373,19 @@ class DetailViewModel @Inject constructor(
 
     private fun deleteProseComment(request : UpdateCommentVo){
         viewModelScope.launch {
+            showLoading()
             val result = deleteProseCommentUseCase(request)
-            if(result) reloadPage()
+            endLoading()
+            if(result) reloadPage() else emitEventFlow(DetailEvent.DeleteProseErrorEvent)
         }
     }
 
     private fun deleteDiscussionComment(request : UpdateCommentVo){
         viewModelScope.launch {
+            showLoading()
             val result = deleteDiscussionCommentUseCase(request)
-            if(result) reloadPage()
+            endLoading()
+            if(result) reloadPage() else emitEventFlow(DetailEvent.DeleteDiscussionErrorEvent)
         }
     }
 
@@ -362,6 +402,48 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             val result = addMyOwnBookProseUseCase(request)
             if(result) SelectedMyOwnBook.updateInfo(MyBookVo())
+        }
+    }
+
+    private fun sendLikeFcmMessage(isLiked: Boolean){
+        val token = getFcmToken()
+        val title = getDetailTitle()
+        if(isLiked || token == UserInfo.info.token){
+            return
+        }
+        else{
+            fcmNotification.sendMessage(NotificationVo(token, NotificationVo.Notification(
+                body = "작가 ${UserInfo.info.nickName} 님이 작가님의 글에 좋은 마음을 남겼습니다!", title
+            )))
+        }
+    }
+
+    private fun getFcmToken() : String{
+        return when(detailType){
+            DetailType.PROSE -> proseVo.token
+            DetailType.DISCUSSION -> discussionVo.token
+            DetailType.BOOK -> ""
+        }
+    }
+
+    private fun getDetailTitle() : String{
+        return when(detailType){
+            DetailType.PROSE -> proseVo.title
+            DetailType.DISCUSSION -> discussionVo.title
+            DetailType.BOOK -> ""
+        }
+    }
+
+    private fun sendCommentFcmMessage(){
+        val token = getFcmToken()
+        val title = getDetailTitle()
+        if(token == UserInfo.info.token){
+            return
+        }
+        else{
+            fcmNotification.sendMessage(NotificationVo(token, NotificationVo.Notification(
+                body = "작가 ${UserInfo.info.nickName} 님이 작가님의 글에 좋은 글귀를 남겼습니다!", title
+            )))
         }
     }
 }

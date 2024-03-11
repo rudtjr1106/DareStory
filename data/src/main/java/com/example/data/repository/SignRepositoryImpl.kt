@@ -1,8 +1,8 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.DataUserInfo
 import com.example.data.EndPoints
+import com.example.domain.model.vo.AppInfoResponseVo
 import com.example.domain.model.vo.LoginVo
 import com.example.domain.model.vo.UserVo
 import com.example.domain.repository.SignRepository
@@ -102,6 +102,7 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
         val updatedData = mapOf(request.nickName to userVo)
         authDbRef.updateChildren(updatedData).addOnCompleteListener { task ->
             if(task.isSuccessful){
+                userVo?.let { it1 -> DataUserInfo.updateInfo(it1) }
                 it.resume(true)
             }
             else{
@@ -178,11 +179,25 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
                         userInfo = user!!
                     }
                 }
+                DataUserInfo.updateInfo(userInfo)
                 it.resume(userInfo)
             }
 
             override fun onCancelled(error: DatabaseError) {
                 it.resume(userInfo)
+            }
+        })
+    }
+
+    override suspend fun checkAppInfo(): AppInfoResponseVo = suspendCoroutine { coroutineScope ->
+        db.getReference(EndPoints.APP).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val appInfo = snapshot.getValue(AppInfoResponseVo::class.java)
+                appInfo?.let { coroutineScope.resume(it) }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                coroutineScope.resume(AppInfoResponseVo())
             }
         })
     }

@@ -1,6 +1,9 @@
 package com.example.darestory.ui.main.home.detail.wrtie
 
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -53,7 +56,28 @@ class ProseWriteFragment : BaseFragment<FragmentProseWriteBinding, ProseWritePag
             ProseWriteEvent.SuccessUploadEvent -> showSuccessDialog()
             ProseWriteEvent.ToastEmptyContentEvent -> showContentErrorToast()
             ProseWriteEvent.ToastEmptyTitleEvent -> showTitleErrorToast()
+            ProseWriteEvent.ErrorUploadEvent -> showUploadErrorToast()
+            ProseWriteEvent.FocusEditTextEvent -> focusEditTextAuthorSay()
+            ProseWriteEvent.DeleteProseEvent -> showDeleteProseErrorDialog()
         }
+    }
+
+    private fun focusEditTextAuthorSay(){
+        binding.editTextAuthorSayInput.requestFocus()
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.editTextAuthorSayInput, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun showDeleteProseErrorDialog(){
+        commonDialog
+            .setTitle(R.string.dialog_delete_prose_error_title)
+            .setDescription(R.string.dialog_delete_prose_error_content)
+            .setPositiveButton(R.string.word_confirm){
+                findNavController().popBackStack()
+                commonDialog.dismiss()
+            }
+            .showOnlyPositive()
+            .show()
     }
 
     private fun showSuccessDialog(){
@@ -73,6 +97,10 @@ class ProseWriteFragment : BaseFragment<FragmentProseWriteBinding, ProseWritePag
 
     private fun showTitleErrorToast(){
         DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_check_write_title).show()
+    }
+
+    private fun showUploadErrorToast(){
+        DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_upload_fail).show()
     }
 
     private fun bindEditText() {

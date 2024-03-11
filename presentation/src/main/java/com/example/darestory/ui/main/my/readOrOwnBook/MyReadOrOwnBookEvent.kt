@@ -6,4 +6,5 @@ sealed class MyReadOrOwnBookEvent : Event{
     object GoToBackEvent : MyReadOrOwnBookEvent()
     object GoToResultSearchEvent : MyReadOrOwnBookEvent()
     object GoToMyOwnBookWriteEvent : MyReadOrOwnBookEvent()
+    object ErrorUploadEvent : MyReadOrOwnBookEvent()
 }

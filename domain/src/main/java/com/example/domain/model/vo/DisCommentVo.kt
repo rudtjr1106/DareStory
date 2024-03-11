@@ -5,5 +5,6 @@ data class DisCommentVo(
     val content : String = "",
     val date : String = "",
     val replyComment : HashMap<String, CommentVo> = hashMapOf(),
+    val token : String = "",
     val writer : String = ""
 )

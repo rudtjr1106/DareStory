@@ -94,6 +94,7 @@
                 android:id="@+id/constraint_layout_author_say"
                 app:layout_constraintTop_toBottomOf="@id/edit_text_content_input"
                 android:layout_marginTop="16dp"
+                android:onClick="@{()->vm.onClickAuthorSay()}"
                 android:paddingBottom="12dp"
                 android:background="@drawable/bg_rectangle_empty_gray_600"
                 android:layout_marginHorizontal="16dp"

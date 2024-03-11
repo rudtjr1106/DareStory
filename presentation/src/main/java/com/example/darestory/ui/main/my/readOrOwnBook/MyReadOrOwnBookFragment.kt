@@ -10,9 +10,11 @@ import com.example.darestory.databinding.FragmentMyReadOrOwnBookBinding
 import com.example.darestory.ui.common.BookDetailDialog
 import com.example.darestory.ui.main.my.readOrOwnBook.adapter.MyReadOrOwnBookAdapter
 import com.example.darestory.ui.main.search.result.adapter.ResultSearchAdapter
+import com.example.darestory.util.DareToast
 import com.example.darestory.util.SelectedBook
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.ReadOrOwnType
+import com.example.domain.model.enums.ToastType
 import com.example.domain.model.vo.BookVo
 import com.example.domain.model.vo.MyBookVo
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,6 +85,7 @@ class MyReadOrOwnBookFragment : BaseFragment<FragmentMyReadOrOwnBookBinding, MyR
             MyReadOrOwnBookEvent.GoToBackEvent -> findNavController().popBackStack()
             MyReadOrOwnBookEvent.GoToResultSearchEvent -> goToResultSearchBook()
             MyReadOrOwnBookEvent.GoToMyOwnBookWriteEvent -> goToMyOwnBookWrite()
+            MyReadOrOwnBookEvent.ErrorUploadEvent -> showUploadErrorToast()
         }
     }
 
@@ -110,6 +113,10 @@ class MyReadOrOwnBookFragment : BaseFragment<FragmentMyReadOrOwnBookBinding, MyR
     private fun goToMyOwnBookWrite(){
         val action = MyReadOrOwnBookFragmentDirections.actionMyReadOrOwnBookToMyOwnBookWrite()
         findNavController().navigate(action)
+    }
+
+    private fun showUploadErrorToast(){
+        DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_book_upload_fail).show()
     }
 
     private fun showBookDetailDialog(item : BookVo){

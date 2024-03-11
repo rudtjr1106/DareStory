@@ -47,8 +47,10 @@ class DiscussionWriteViewModel @Inject constructor(
 
     private fun getDiscussionDetail(discussionId: Int){
         viewModelScope.launch {
+            showLoading()
             val result = getDiscussionUseCase(discussionId)
-            if(result.discussionId != -1) successGetDiscussionDetail(result)
+            endLoading()
+            if(result.title.isNotEmpty()) successGetDiscussionDetail(result) else emitEventFlow(DiscussionWriteEvent.DeleteDiscussionEvent)
         }
     }
 
@@ -74,7 +76,7 @@ class DiscussionWriteViewModel @Inject constructor(
     fun onClickUploadBtn(){
         val titleTrim = titleStateFlow.value.trim()
         val contentTrim = contentStateFlow.value.trim()
-        if(titleTrim.isNotEmpty() && contentTrim.isNotEmpty()){
+        if(titleTrim.isNotEmpty() && contentTrim.isNotEmpty() && SelectedBook.book.title.isNotEmpty()){
             val request = when(type){
                 WriteType.EDIT -> getEditRequest()
                 WriteType.NEW -> getNewRequest()
@@ -83,7 +85,8 @@ class DiscussionWriteViewModel @Inject constructor(
             viewModelScope.launch {
                 showLoading()
                 val result = uploadDiscussionUseCase(request)
-                if(result) successUploadDiscussion()
+                endLoading()
+                if(result) successUploadDiscussion() else emitEventFlow(DiscussionWriteEvent.ErrorUploadEvent)
             }
         }
         checkEmpty()
@@ -95,6 +98,9 @@ class DiscussionWriteViewModel @Inject constructor(
         }
         else if(contentStateFlow.value.isEmpty()){
             emitEventFlow(DiscussionWriteEvent.ToastEmptyContentEvent)
+        }
+        else if(SelectedBook.book.title.isEmpty()){
+            emitEventFlow(DiscussionWriteEvent.ToastEmptyBookEvent)
         }
     }
 
@@ -112,6 +118,7 @@ class DiscussionWriteViewModel @Inject constructor(
             content = contentStateFlow.value,
             createdAt = TimeFormatter.getNowDateAndTime(),
             title = titleStateFlow.value,
+            token = UserInfo.info.token
         )
         return UploadDiscussionVo(
             type = type,
@@ -135,7 +142,6 @@ class DiscussionWriteViewModel @Inject constructor(
     }
 
     private fun successUploadDiscussion(){
-        endLoading()
         emitEventFlow(DiscussionWriteEvent.SuccessUploadEvent)
     }
 }

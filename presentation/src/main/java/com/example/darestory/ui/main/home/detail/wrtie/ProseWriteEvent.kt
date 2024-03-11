@@ -7,4 +7,7 @@ sealed class ProseWriteEvent : Event{
     object SuccessUploadEvent : ProseWriteEvent()
     object ToastEmptyTitleEvent : ProseWriteEvent()
     object ToastEmptyContentEvent : ProseWriteEvent()
+    object ErrorUploadEvent : ProseWriteEvent()
+    object FocusEditTextEvent : ProseWriteEvent()
+    object DeleteProseEvent : ProseWriteEvent()
 }

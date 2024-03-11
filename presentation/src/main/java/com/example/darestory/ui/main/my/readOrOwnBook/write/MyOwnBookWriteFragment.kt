@@ -47,6 +47,7 @@ class MyOwnBookWriteFragment : BaseFragment<FragmentMyOwnBookWriteBinding, MyOwn
             MyOwnBookWriteEvent.OnClickBackEvent -> findNavController().popBackStack()
             MyOwnBookWriteEvent.ToastEmptyContentEvent -> showContentErrorToast()
             MyOwnBookWriteEvent.ToastEmptyTitleEvent -> showTitleErrorToast()
+            MyOwnBookWriteEvent.ErrorUploadEvent -> showUploadErrorToast()
         }
     }
     private fun showContentErrorToast(){
@@ -55,6 +56,10 @@ class MyOwnBookWriteFragment : BaseFragment<FragmentMyOwnBookWriteBinding, MyOwn
 
     private fun showTitleErrorToast(){
         DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_check_write_title).show()
+    }
+
+    private fun showUploadErrorToast(){
+        DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_upload_fail).show()
     }
 
     private fun bindEditText() {

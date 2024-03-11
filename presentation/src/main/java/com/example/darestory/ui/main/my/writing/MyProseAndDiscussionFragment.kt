@@ -8,20 +8,26 @@ import com.example.darestory.R
 import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentMyProseAndDiscussionBinding
 import com.example.darestory.ui.common.CommonBottomSheet
+import com.example.darestory.ui.common.CommonDialog
 import com.example.darestory.ui.main.discussion.adapter.DiscussionAdapter
 import com.example.darestory.ui.main.home.adapter.HomeAdapter
 import com.example.darestory.ui.main.my.writing.adapter.MyProseAndDiscussionAdapter
 import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.SortType
+import com.example.domain.model.enums.WriteType
 import com.example.domain.model.vo.ProseVo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MyProseAndDiscussionFragment : BaseFragment<FragmentMyProseAndDiscussionBinding, MyProseAndDiscussionPageState, MyProseAndDiscussionViewModel>(
     FragmentMyProseAndDiscussionBinding::inflate
 ) {
+
+    @Inject
+    lateinit var commonDialog: CommonDialog
 
     override val viewModel: MyProseAndDiscussionViewModel by viewModels()
 
@@ -89,7 +95,47 @@ class MyProseAndDiscussionFragment : BaseFragment<FragmentMyProseAndDiscussionBi
     private fun sortEvent(event: MyProseAndDiscussionEvent){
         when(event){
             MyProseAndDiscussionEvent.GoToBackEvent -> findNavController().popBackStack()
+            MyProseAndDiscussionEvent.GoToDiscussionWriteEvent -> showGoToDiscussionWriteDialog()
+            MyProseAndDiscussionEvent.GoToProseWriteEvent -> showGoToProseWriteDialog()
         }
+    }
+
+    private fun showGoToDiscussionWriteDialog(){
+        commonDialog
+            .setTitle(R.string.dialog_my_discussion_empty_title)
+            .setDescription(R.string.dialog_my_discussion_empty_content)
+            .setNegativeButton(R.string.word_cancel){
+                commonDialog.dismiss()
+            }
+            .setPositiveButton(R.string.word_confirm){
+                goToDiscussionWritePage()
+                commonDialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showGoToProseWriteDialog(){
+        commonDialog
+            .setTitle(R.string.dialog_my_prose_empty_title)
+            .setDescription(R.string.dialog_my_prose_empty_content)
+            .setNegativeButton(R.string.word_cancel){
+                commonDialog.dismiss()
+            }
+            .setPositiveButton(R.string.word_confirm){
+                goToProseWritePage()
+                commonDialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun goToDiscussionWritePage(){
+        val action = MyProseAndDiscussionFragmentDirections.actionMyProseAndDiscussionWrite(0, WriteType.NEW)
+        findNavController().navigate(action)
+    }
+
+    private fun goToProseWritePage(){
+        val action = MyProseAndDiscussionFragmentDirections.actionMyProseAndProseWrite(0, WriteType.NEW)
+        findNavController().navigate(action)
     }
 
     private fun setTitle(type : DetailType, ownBookTitle : String){

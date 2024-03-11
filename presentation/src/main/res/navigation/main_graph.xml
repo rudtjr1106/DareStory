@@ -256,6 +256,14 @@
         <action
             android:id="@+id/action_my_prose_and_discussion_to_detail"
             app:destination="@id/detailFragment"/>
+
+        <action
+            android:id="@+id/action_my_prose_and_discussion_write"
+            app:destination="@id/discussionWriteFragment"/>
+
+        <action
+            android:id="@+id/action_my_prose_and_prose_write"
+            app:destination="@id/proseWriteFragment"/>
     </fragment>
 
     <fragment

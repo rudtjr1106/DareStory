@@ -15,4 +15,5 @@ sealed class MyEvent : Event {
     object GoToSendEmailEvent : MyEvent()
     object GoToHomeEvent : MyEvent()
     object GoToDiscussionEvent : MyEvent()
+    object ErrorMyInfoEvent : MyEvent()
 }

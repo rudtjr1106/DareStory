@@ -123,13 +123,17 @@ class SignUpProfileViewModel @Inject constructor(
             age = ageStateFlow.value,
             gender = genderStateFlow.value.type)
         viewModelScope.launch {
-            if(signUpUseCase(LoginVo(signUpVo.email, passwordStateFlow.value))) updateMyInfo(signUpVo) else DareLog.D("이메일 등록 실패")
+            val result = signUpUseCase(LoginVo(signUpVo.email, passwordStateFlow.value))
+            if(result) updateMyInfo(signUpVo)
         }
     }
 
     private fun updateMyInfo(request : UserVo){
         viewModelScope.launch {
-            if(signUpUseCase.addMyInfo(request)) onSuccessUpdateInfo() else DareLog.D("정보 업데이트 실패")
+            showLoading()
+            val result = signUpUseCase.addMyInfo(request)
+            endLoading()
+            if(result) onSuccessUpdateInfo()
         }
     }
 

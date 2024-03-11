@@ -4,4 +4,6 @@ import com.example.darestory.Event
 
 sealed class MyProseAndDiscussionEvent : Event {
     object GoToBackEvent : MyProseAndDiscussionEvent()
+    object GoToProseWriteEvent : MyProseAndDiscussionEvent()
+    object GoToDiscussionWriteEvent : MyProseAndDiscussionEvent()
 }
