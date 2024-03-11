@@ -73,7 +73,7 @@ class ProseWriteViewModel @Inject constructor(
             viewModelScope.launch {
                 showLoading()
                 val result = uploadProseUseCase(request)
-                if(result) successUploadProse()
+                if(result) successUploadProse() else emitEventFlow(ProseWriteEvent.ErrorUploadEvent)
             }
         }
         checkEmpty()

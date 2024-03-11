@@ -90,6 +90,13 @@ class CommonDialog@Inject constructor(@ActivityContext private val context: Cont
         return this
     }
 
+    fun showOnlyPositive(): CommonDialog {
+        binding.btnNo.apply {
+            visibility = View.GONE
+        }
+        return this
+    }
+
     fun setNegativeButton(text: CharSequence, onClickListener: (view: View) -> (Unit)): CommonDialog {
         binding.btnNo.apply {
             visibility = View.VISIBLE

@@ -11,5 +11,5 @@ object UserInfo {
         this.info = info
     }
 
-    const val APP_VERSION = "0.0.6"
+    const val APP_VERSION = "0.0.7"
 }

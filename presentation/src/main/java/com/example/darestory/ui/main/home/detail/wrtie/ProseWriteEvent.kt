@@ -7,4 +7,5 @@ sealed class ProseWriteEvent : Event{
     object SuccessUploadEvent : ProseWriteEvent()
     object ToastEmptyTitleEvent : ProseWriteEvent()
     object ToastEmptyContentEvent : ProseWriteEvent()
+    object ErrorUploadEvent : ProseWriteEvent()
 }

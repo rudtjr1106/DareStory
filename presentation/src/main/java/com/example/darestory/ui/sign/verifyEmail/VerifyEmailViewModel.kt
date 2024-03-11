@@ -21,7 +21,8 @@ class VerifyEmailViewModel @Inject constructor(
 
     fun sendEmailVerification(){
         viewModelScope.launch {
-            sendEmailVerificationUseCase(Unit)
+            val result = sendEmailVerificationUseCase(Unit)
+            if(!result) emitEventFlow(VerifyEmailEvent.ErrorSendEmailEvent)
         }
     }
 

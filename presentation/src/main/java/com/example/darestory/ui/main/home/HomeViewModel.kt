@@ -26,9 +26,9 @@ class HomeViewModel @Inject constructor(
 
     companion object{
         const val MAX_TODAY_PROSE = 5
-        const val DEFAULT_AUTHOR = "조경석"
+        const val DEFAULT_AUTHOR = "개발자"
         const val DEFAULT_TITLE = "이 글은 터치가 되지 않습니다."
-        const val DEFAULT_CONTENT = "개발자 조경석입니다."
+        const val DEFAULT_CONTENT = "이 앱을 통해 모든 작가님들이 안식을 찾으시면 좋겠습니다.\n찬 바람이 불어도 조금이라도 따듯하게 빛을 비춰주는 태양처럼 항상 자리를 지키겠습니다."
         const val DEVELOP_PROSE_ID = -100
         const val SPLIT_DATE = 0
     }
@@ -54,9 +54,7 @@ class HomeViewModel @Inject constructor(
     fun updateSortType(type: SortType){
         viewModelScope.launch {
             sortTypeStateFlow.update { type }
-            showLoading()
-            val result = getAllProseUseCase(Unit)
-            if(result.isNotEmpty()) successGetAllProse(result) else showDefaultPage()
+            getAllProse()
         }
     }
 
@@ -77,7 +75,6 @@ class HomeViewModel @Inject constructor(
         val allProseList = getAllProseList(emptyList())
         viewModelScope.launch {
             proseListStateFlow.update { todayProseList + allProseList}
-            endLoading()
         }
     }
 

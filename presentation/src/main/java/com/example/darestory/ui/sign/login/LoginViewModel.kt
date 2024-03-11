@@ -35,8 +35,10 @@ class LoginViewModel @Inject constructor(
 
     fun onLoginButtonClick(){
         viewModelScope.launch {
-            if(loginUseCase(LoginVo(email = emailStateFlow.value, password = passwordStateFlow.value))) goToMain()
-            else showLoginErrorToast()
+            showLoading()
+            val result = loginUseCase(LoginVo(email = emailStateFlow.value, password = passwordStateFlow.value))
+            endLoading()
+            if(result) goToMain() else showLoginErrorToast()
         }
     }
 

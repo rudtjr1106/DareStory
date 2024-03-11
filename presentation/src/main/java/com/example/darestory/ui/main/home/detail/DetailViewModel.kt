@@ -83,14 +83,18 @@ class DetailViewModel @Inject constructor(
 
     private fun getProseDetail(proseId : Int){
         viewModelScope.launch{
+            showLoading()
             val result = getProseUseCase(proseId)
-            if(result.title.isNotEmpty()) successGetProseDetail(result)
+            endLoading()
+            if(result.title.isNotEmpty()) successGetProseDetail(result) else emitEventFlow(DetailEvent.DeleteProseErrorEvent)
         }
     }
 
     private fun getDiscussionDetail(discussionId : Int){
         viewModelScope.launch{
+            showLoading()
             val result = getDiscussionUseCase(discussionId)
+            endLoading()
             if(result.title.isNotEmpty()) successGetDiscussionDetail(result)
         }
     }
@@ -205,10 +209,15 @@ class DetailViewModel @Inject constructor(
 
     private fun proseLikeBtn(request : LikeVo){
         viewModelScope.launch {
+            showLoading()
             val result = likeProseUseCase(request)
+            endLoading()
             if(result) {
                 sendLikeFcmMessage(request.isLiked)
                 reloadPage()
+            }
+            else{
+                emitEventFlow(DetailEvent.DeleteProseErrorEvent)
             }
         }
     }
@@ -246,16 +255,23 @@ class DetailViewModel @Inject constructor(
                     DetailType.DISCUSSION -> addDiscussionCommentUseCase(request)
                     DetailType.BOOK -> false
                 }
+                endLoading()
                 if(result) {
                     sendCommentFcmMessage()
                     successAddComment()
+                }
+                else{
+                    when(detailType){
+                        DetailType.PROSE -> emitEventFlow(DetailEvent.DeleteProseErrorEvent)
+                        DetailType.DISCUSSION -> {}
+                        DetailType.BOOK -> {}
+                    }
                 }
             }
         }
     }
 
     private fun successAddComment(){
-        endLoading()
         viewModelScope.launch {
             commentEditStateFlow.update { "" }
         }

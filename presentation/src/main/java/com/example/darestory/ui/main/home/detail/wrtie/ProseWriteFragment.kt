@@ -53,6 +53,7 @@ class ProseWriteFragment : BaseFragment<FragmentProseWriteBinding, ProseWritePag
             ProseWriteEvent.SuccessUploadEvent -> showSuccessDialog()
             ProseWriteEvent.ToastEmptyContentEvent -> showContentErrorToast()
             ProseWriteEvent.ToastEmptyTitleEvent -> showTitleErrorToast()
+            ProseWriteEvent.ErrorUploadEvent -> showUploadErrorToast()
         }
     }
 
@@ -73,6 +74,10 @@ class ProseWriteFragment : BaseFragment<FragmentProseWriteBinding, ProseWritePag
 
     private fun showTitleErrorToast(){
         DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_check_write_title).show()
+    }
+
+    private fun showUploadErrorToast(){
+        DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_upload_fail).show()
     }
 
     private fun bindEditText() {

@@ -26,8 +26,8 @@ class TodayProseViewPagerViewHolder(
     fun bind(item : ProseVo) {
         proseItem = item
         binding.apply {
-            textTitle.text = item.title
-            textContent.text = item.content
+            textTitle.text = item.title.replace("\\n", "\n")
+            textContent.text = item.content.replace("\\n", "\n")
             textAuthor.text = item.author
             textCommentNum.text = item.commentCount.toString()
             textLikeNum.text = item.likeCount.toString()

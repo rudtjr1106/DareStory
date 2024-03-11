@@ -93,6 +93,7 @@ class VerifyEmailFragment : BaseFragment<FragmentVerifyEmailBinding, PageState.D
             is VerifyEmailEvent.GoToUrl -> goToDomainUrl(event.url)
             is VerifyEmailEvent.ErrorVerify -> showErrorToast()
             is VerifyEmailEvent.GoToMain -> goToMain()
+            VerifyEmailEvent.ErrorSendEmailEvent -> showEmailSendErrorToast()
         }
     }
 
@@ -106,6 +107,13 @@ class VerifyEmailFragment : BaseFragment<FragmentVerifyEmailBinding, PageState.D
         context?.let {
             DareToast.createToast(ToastType.ERROR,
                 it, R.string.sign_up_email_verify_error_toast).show()
+        }
+    }
+
+    private fun showEmailSendErrorToast(){
+        context?.let {
+            DareToast.createToast(ToastType.ERROR,
+                it, R.string.login_error_send_password_toast).show()
         }
     }
 
