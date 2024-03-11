@@ -16,4 +16,7 @@ sealed class MyEvent : Event {
     object GoToHomeEvent : MyEvent()
     object GoToDiscussionEvent : MyEvent()
     object ErrorMyInfoEvent : MyEvent()
+    object GoToServiceNotionEvent : MyEvent()
+    object GoToPrivateNotionEvent : MyEvent()
+    object ShowAppVersionToastEvent : MyEvent()
 }

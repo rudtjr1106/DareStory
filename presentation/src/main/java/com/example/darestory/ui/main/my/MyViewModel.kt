@@ -119,4 +119,16 @@ class MyViewModel @Inject constructor(
     fun onClickDiscussion(){
         emitEventFlow(MyEvent.GoToDiscussionEvent)
     }
+
+    fun onClickServicePolicy(){
+        emitEventFlow(MyEvent.GoToServiceNotionEvent)
+    }
+
+    fun onClickPrivatePolicy(){
+        emitEventFlow(MyEvent.GoToPrivateNotionEvent)
+    }
+
+    fun onClickAppVersion(){
+        emitEventFlow(MyEvent.ShowAppVersionToastEvent)
+    }
 }

@@ -9,8 +9,11 @@ import com.example.darestory.base.BaseFragment
 import com.example.darestory.databinding.FragmentMyBinding
 import com.example.darestory.ui.common.CommonDialog
 import com.example.darestory.ui.sign.SignActivity
+import com.example.darestory.util.DareToast
+import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.DetailType
 import com.example.domain.model.enums.ReadOrOwnType
+import com.example.domain.model.enums.ToastType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -59,6 +62,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
             MyEvent.GoToDiscussionEvent -> goToDiscussionPage()
             MyEvent.GoToHomeEvent -> goToHomePage()
             MyEvent.ErrorMyInfoEvent -> showErrorMyInfoDialog()
+            MyEvent.GoToPrivateNotionEvent -> goToPrivateNotionPage()
+            MyEvent.GoToServiceNotionEvent -> goToServiceNotionPage()
+            MyEvent.ShowAppVersionToastEvent -> showAppVersionToast()
         }
     }
 
@@ -137,6 +143,24 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyPageState, MyViewModel>(
             TEXT_MAILTO, context?.getString(R.string.dare_story_email) ?: "", null)
         )
         startActivity(intent)
+    }
+
+    private fun goToPrivateNotionPage(){
+        startActivity(
+            Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.private_policy)))
+        )
+    }
+
+    private fun goToServiceNotionPage(){
+        startActivity(
+            Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.service_policy)))
+        )
+    }
+
+    private fun showAppVersionToast(){
+        context?.let {
+            DareToast.createToast(ToastType.COMPLETE, it, UserInfo.APP_VERSION).show()
+        }
     }
 
     override fun onStart() {
