@@ -2,6 +2,7 @@ package com.example.data.repository
 
 import com.example.data.DataUserInfo
 import com.example.data.EndPoints
+import com.example.domain.model.vo.AppInfoResponseVo
 import com.example.domain.model.vo.LoginVo
 import com.example.domain.model.vo.UserVo
 import com.example.domain.repository.SignRepository
@@ -184,6 +185,19 @@ class SignRepositoryImpl @Inject constructor() : SignRepository {
 
             override fun onCancelled(error: DatabaseError) {
                 it.resume(userInfo)
+            }
+        })
+    }
+
+    override suspend fun checkAppInfo(): AppInfoResponseVo = suspendCoroutine { coroutineScope ->
+        db.getReference(EndPoints.APP).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val appInfo = snapshot.getValue(AppInfoResponseVo::class.java)
+                appInfo?.let { coroutineScope.resume(it) }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                coroutineScope.resume(AppInfoResponseVo())
             }
         })
     }

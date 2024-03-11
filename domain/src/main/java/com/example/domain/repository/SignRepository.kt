@@ -1,5 +1,6 @@
 package com.example.domain.repository
 
+import com.example.domain.model.vo.AppInfoResponseVo
 import com.example.domain.model.vo.LoginVo
 import com.example.domain.model.vo.UserVo
 
@@ -17,4 +18,5 @@ interface SignRepository {
     suspend fun checkEmailVerified() : Boolean
     suspend fun sendPasswordResetEmail(request : String) : Boolean
     suspend fun checkAutoLogin() : UserVo
+    suspend fun checkAppInfo() : AppInfoResponseVo
 }
