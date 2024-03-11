@@ -92,6 +92,7 @@
             android:layout_marginStart="8dp"
             android:paddingHorizontal="8dp"
             android:gravity="center"
+            android:singleLine="true"
             android:maxLength="10"
             android:background="@drawable/bg_line_edit_text"
             android:hint="@string/word_nickname"

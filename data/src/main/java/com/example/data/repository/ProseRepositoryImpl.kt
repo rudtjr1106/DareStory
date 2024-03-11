@@ -268,7 +268,7 @@ class ProseRepositoryImpl @Inject constructor(
 
 
     override suspend fun update(request: ProseVo): Boolean = suspendCoroutine {
-        proseDbRef.child(request.proseId.toString())
+        proseDbRef.child(request.proseId.toString() + "번")
             .setValue(request)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
