@@ -139,6 +139,8 @@
 
     <!-- 다이얼로그 에러처리 -->
     <string name="dialog_server_error_title">서버 점검 중</string>
+    <string name="dialog_version_error_title">앱 버전</string>
+    <string name="dialog_version_error_content">앱 버전이 일치하지 않습니다.\n업데이트를 진행해주세요!</string>
 
     <!-- Toast 에러 -->
     <string name="toast_error_check_book">책을 선택해주세요.</string>

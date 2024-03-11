@@ -29,7 +29,7 @@ class SplashViewModel @Inject constructor(
 
     private fun checkAppServerOrVersion(result : AppInfoResponseVo){
         if(!result.server){
-            emitEventFlow(SplashEvent.ErrorServerEvent)
+            emitEventFlow(SplashEvent.ErrorServerEvent(result.serverTime))
         }
         else if(result.version != UserInfo.APP_VERSION){
             emitEventFlow(SplashEvent.ErrorVersionEvent)
@@ -39,7 +39,7 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    fun checkLogin(){
+    private fun checkLogin(){
         viewModelScope.launch{
             val result = checkAutoLoginUseCase(Unit)
             if(result.userUid.isNotEmpty()) goToMain(result) else goToLogin()

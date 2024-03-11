@@ -35,7 +35,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, PageState.Default, Sp
         binding.apply {
             vm = viewModel
             permissionCheck()
-            viewModel.checkLogin()
+            viewModel.checkAppInfo()
         }
     }
 
@@ -56,7 +56,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, PageState.Default, Sp
             SplashEvent.GoToLoginEvent -> goToLogin()
             SplashEvent.GoToMainEvent -> goToMain()
             is SplashEvent.ErrorServerEvent -> showServerErrorDialog(event.content)
-            SplashEvent.ErrorVersionEvent -> TODO()
+            SplashEvent.ErrorVersionEvent -> showVersionErrorDialog()
         }
     }
 
@@ -94,10 +94,19 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, PageState.Default, Sp
             .setDescription(errorContent)
             .setPositiveButton(R.string.word_confirm){
                 commonDialog.dismiss()
+                finish()
             }
+            .show()
     }
 
     private fun showVersionErrorDialog(){
-
+        commonDialog
+            .setTitle(R.string.dialog_version_error_title)
+            .setDescription(R.string.dialog_version_error_content)
+            .setPositiveButton(R.string.word_confirm){
+                commonDialog.dismiss()
+                finish()
+            }
+            .show()
     }
 }
