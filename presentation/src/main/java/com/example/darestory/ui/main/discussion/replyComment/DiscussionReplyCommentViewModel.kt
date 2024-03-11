@@ -84,8 +84,9 @@ class DiscussionReplyCommentViewModel @Inject constructor(
     private fun getReplyCommentList(map : HashMap<String, CommentVo>) : List<DiscussionCommentPageVo>{
         val list: MutableList<CommentVo> = mutableListOf()
         map.forEach { list.add(it.value) }
+        val sortedList = getSortedReplyCommentList(list)
         val mutableReplyList = mutableListOf<DiscussionCommentPageVo>()
-        list.forEach {
+        sortedList.forEach {
             val disCommentVo = DisCommentVo(
                 commentId = it.commentId,
                 content = it.content,
@@ -99,6 +100,10 @@ class DiscussionReplyCommentViewModel @Inject constructor(
             mutableReplyList.add(vo)
         }
         return mutableReplyList
+    }
+
+    private fun getSortedReplyCommentList(list : List<CommentVo>) : List<CommentVo>{
+        return list.sortedByDescending { it.date }.reversed()
     }
 
     private fun updateCommentList(list : List<DiscussionCommentPageVo>){
