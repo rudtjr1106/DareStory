@@ -42,14 +42,15 @@ class MyProseAndDiscussionViewModel @Inject constructor(
     fun getMyData(type : DetailType, ownBookTitle : String){
         viewModelScope.launch {
             typeStateFlow.update { type }
+            showLoading()
             when(type){
                 DetailType.PROSE -> {
                     val result = getMyProseUseCase(Unit)
-                    if(result.isNotEmpty()) successGetMyProseData(result)
+                    if(result.isNotEmpty()) successGetMyProseData(result) else emitEventFlow(MyProseAndDiscussionEvent.GoToProseWriteEvent)
                 }
                 DetailType.DISCUSSION -> {
                     val result = getMyDiscussionUseCase(Unit)
-                    if(result.isNotEmpty()) successGetMyDiscussionData(result)
+                    if(result.isNotEmpty()) successGetMyDiscussionData(result) else emitEventFlow(MyProseAndDiscussionEvent.GoToDiscussionWriteEvent)
                 }
                 DetailType.BOOK -> {
                     bookTitle = ownBookTitle
@@ -59,6 +60,7 @@ class MyProseAndDiscussionViewModel @Inject constructor(
                     )
                 }
             }
+            endLoading()
         }
     }
 

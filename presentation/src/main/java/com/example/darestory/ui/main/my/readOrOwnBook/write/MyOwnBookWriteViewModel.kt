@@ -37,7 +37,7 @@ class MyOwnBookWriteViewModel @Inject constructor(
             viewModelScope.launch {
                 showLoading()
                 val result = addMyOwnBookUseCase(request)
-                if(result) successAddMyOwnBook()
+                if(result) successAddMyOwnBook() else emitEventFlow(MyOwnBookWriteEvent.ErrorUploadEvent)
             }
         }
         checkEmpty()

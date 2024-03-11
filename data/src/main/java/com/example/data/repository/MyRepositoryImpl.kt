@@ -25,13 +25,17 @@ class MyRepositoryImpl @Inject constructor() : MyRepository {
     private val db = FirebaseDatabase.getInstance()
     private val myDbRef = db.getReference(EndPoints.AUTH)
     override suspend fun getMyInfo(request: String): UserVo = suspendCoroutine { coroutineScope ->
-        myDbRef.child(request).addListenerForSingleValueEvent(object :
-            ValueEventListener {
+        myDbRef.child(request).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val userVo = snapshot.getValue(UserVo::class.java)
-                userVo?.let {
-                    DataUserInfo.updateInfo(it)
-                    coroutineScope.resume(it)
+                if(snapshot.exists()){
+                    val userVo = snapshot.getValue(UserVo::class.java)
+                    userVo?.let {
+                        DataUserInfo.updateInfo(it)
+                        coroutineScope.resume(it)
+                    }
+                }
+                else{
+                    coroutineScope.resume(UserVo())
                 }
             }
 

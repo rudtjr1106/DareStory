@@ -101,7 +101,7 @@ class MyReadOrOwnBookViewModel @Inject constructor(
     fun addMyReadBook(){
         viewModelScope.launch {
             val result = addMyReadBookUseCase(SelectedBook.book)
-            if(result) successAddMyReadBook()
+            if(result) successAddMyReadBook() else emitEventFlow(MyReadOrOwnBookEvent.ErrorUploadEvent)
         }
     }
 

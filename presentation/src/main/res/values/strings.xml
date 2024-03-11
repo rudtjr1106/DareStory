@@ -146,6 +146,12 @@
     <string name="dialog_delete_prose_error_content">이 글은 삭제되었습니다.</string>
     <string name="dialog_delete_comment_error_title">존재하지 않는 댓글</string>
     <string name="dialog_delete_comment_error_content">이 댓글은 삭제되었습니다.</string>
+    <string name="dialog_my_info_error_title">정보 가져오기 오류</string>
+    <string name="dialog_my_info_error_content">정보를 불러오는데 실패했습니다.\n로그인 페이지로 이동합니다.</string>
+    <string name="dialog_my_prose_empty_title">산문이 없어요!</string>
+    <string name="dialog_my_prose_empty_content">지금 작가님만의 산문을 작성해주세요!</string>
+    <string name="dialog_my_discussion_empty_title">토론이 없어요!</string>
+    <string name="dialog_my_discussion_empty_content">지금 작가님만의 토론을 작성해주세요!</string>
 
     <!-- Toast 에러 -->
     <string name="toast_error_check_book">책을 선택해주세요.</string>
@@ -154,5 +160,6 @@
     <string name="toast_error_upload_fail">글 업로드에 실패하였습니다. 다시 시도해주세요.</string>
     <string name="toast_error_length_nick_name">2글자 이상, 10글자 이하인 닉네임만 가능합니다.</string>
     <string name="toast_error_duplicate_nick_name">중복된 닉네임 입니다.</string>
+    <string name="toast_error_book_upload_fail">책 추가에 실패하였습니다. 다시 시도해주세요.</string>
 
 </resources>

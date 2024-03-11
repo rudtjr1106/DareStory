@@ -37,7 +37,7 @@ class MyViewModel @Inject constructor(
             showLoading()
             val result = getMyInfoUseCase(UserInfo.info.nickName)
             endLoading()
-            if(result.nickName.isNotEmpty()) successGetMyInfo(result)
+            if(result.nickName.isNotEmpty()) successGetMyInfo(result) else emitEventFlow(MyEvent.ErrorMyInfoEvent)
         }
     }
 
