@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DareStory</string>
+    <string name="app_name">달의 이야기</string>
     <string name="input_email">이메일을 입력해 주세요.</string>
     <string name="input_password">비밀번호를 입력해 주세요.</string>
     <string name="find_password">비밀번호 찾기 |</string>
@@ -160,6 +160,6 @@
     <string name="toast_error_upload_fail">글 업로드에 실패하였습니다. 다시 시도해주세요.</string>
     <string name="toast_error_length_nick_name">2글자 이상, 10글자 이하인 닉네임만 가능합니다.</string>
     <string name="toast_error_duplicate_nick_name">중복된 닉네임 입니다.</string>
-    <string name="toast_error_book_upload_fail">책 추가에 실패하였습니다. 다시 시도해주세요.</string>
+    <string name="toast_error_book_upload_fail">책 추리에 실패하였습니다. 다시 시도해주세요.</string>
 
 </resources>
