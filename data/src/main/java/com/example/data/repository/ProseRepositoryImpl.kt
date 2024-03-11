@@ -281,7 +281,7 @@ class ProseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteProse(request: Int): Boolean = suspendCoroutine {
-        proseDbRef.child(request.toString()).removeValue()
+        proseDbRef.child(request.toString() + "번").removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     deleteMyProse(request) { isSuccess ->

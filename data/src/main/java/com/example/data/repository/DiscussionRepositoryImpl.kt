@@ -430,7 +430,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteDiscussion(request: Int): Boolean = suspendCoroutine {
-        discussionDbRef.child(request.toString()).removeValue()
+        discussionDbRef.child(request.toString() + "번").removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     deleteMyDiscussion(request){ isSuccess ->
