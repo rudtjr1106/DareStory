@@ -57,8 +57,13 @@ class ProseRepositoryImpl @Inject constructor(
         val proseId = request.toString()
         proseDbRef.child(proseId + "번").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val prose = snapshot.getValue(ProseVo::class.java)
-                    prose?.let { coroutineScope.resume(it) }
+                    if(snapshot.exists()){
+                        val prose = snapshot.getValue(ProseVo::class.java)
+                        prose?.let { coroutineScope.resume(it) }
+                    }
+                    else{
+                        coroutineScope.resume(ProseVo())
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -174,29 +179,40 @@ class ProseRepositoryImpl @Inject constructor(
     }
 
     private suspend fun deleteProseComment(request: UpdateCommentVo): Boolean = suspendCoroutine {
-        proseDbRef.child(request.id.toString() + "번").child(EndPoints.COMMENT)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (commentSnapshot in dataSnapshot.children) {
-                        val commentId =
-                            commentSnapshot.child(EndPoints.COMMENT_ID).getValue(Int::class.java)
-                        if (commentId == request.comment.commentId) {
-                            commentSnapshot.ref.removeValue().addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    it.resume(true)
-                                } else {
-                                    it.resume(false)
+        proseDbRef.child(request.id.toString() + "번").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    proseDbRef.child(request.id.toString() + "번").child(EndPoints.COMMENT)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                for (commentSnapshot in dataSnapshot.children) {
+                                    val commentId =
+                                        commentSnapshot.child(EndPoints.COMMENT_ID).getValue(Int::class.java)
+                                    if (commentId == request.comment.commentId) {
+                                        commentSnapshot.ref.removeValue().addOnCompleteListener { task ->
+                                            if (task.isSuccessful) {
+                                                it.resume(true)
+                                            } else {
+                                                it.resume(false)
+                                            }
+                                        }
+                                        break
+                                    }
                                 }
                             }
-                            break
-                        }
-                    }
-                }
 
-                override fun onCancelled(databaseError: DatabaseError) {
+                            override fun onCancelled(databaseError: DatabaseError) {
+                                it.resume(false)
+                            }
+                        })
+                } else {
                     it.resume(false)
                 }
-            })
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                it.resume(false)
+            }
+        })
     }
 
     override suspend fun upload(request: ProseVo): Boolean = suspendCoroutine { continuation ->

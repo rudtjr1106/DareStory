@@ -40,7 +40,6 @@ class DiscussionViewModel @Inject constructor(
     }
 
     private fun successGetAllDiscussion(result : List<DiscussionVo>){
-        endLoading()
         val sortedByTypeList = getSortedByType(result)
         val topViewList = getTopDiscussion()
         val discussionList = getDiscussionViewList(sortedByTypeList)
@@ -92,9 +91,7 @@ class DiscussionViewModel @Inject constructor(
     fun updateSortType(type: SortType){
         viewModelScope.launch {
             sortTypeStateFlow.update { type }
-            showLoading()
-            val result = getAllDiscussionUseCase(Unit)
-            successGetAllDiscussion(result)
+            getAllDiscussionList()
         }
     }
 

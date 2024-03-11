@@ -8,4 +8,6 @@ sealed class ProseWriteEvent : Event{
     object ToastEmptyTitleEvent : ProseWriteEvent()
     object ToastEmptyContentEvent : ProseWriteEvent()
     object ErrorUploadEvent : ProseWriteEvent()
+    object FocusEditTextEvent : ProseWriteEvent()
+    object DeleteProseEvent : ProseWriteEvent()
 }

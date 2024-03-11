@@ -10,4 +10,6 @@ sealed class DiscussionWriteEvent : Event {
     object ToastEmptyBookEvent : DiscussionWriteEvent()
     object GoToBookSearch : DiscussionWriteEvent()
     object SuccessGetDiscussionEvent : DiscussionWriteEvent()
+    object DeleteDiscussionEvent : DiscussionWriteEvent()
+    object ErrorUploadEvent : DiscussionWriteEvent()
 }

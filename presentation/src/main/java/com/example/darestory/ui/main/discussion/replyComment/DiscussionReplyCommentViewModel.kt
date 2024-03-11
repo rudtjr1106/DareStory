@@ -3,6 +3,7 @@ package com.example.darestory.ui.main.discussion.replyComment
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.FcmNotification
 import com.example.darestory.base.BaseViewModel
+import com.example.darestory.util.DareLog
 import com.example.darestory.util.TimeFormatter
 import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.BottomSheetMenuItemType
@@ -61,7 +62,7 @@ class DiscussionReplyCommentViewModel @Inject constructor(
             showLoading()
             val result = getReplyCommentUseCase(requestVo)
             endLoading()
-            if(result.writer.isNotEmpty()) successGetReplyComment(result)
+            if(result.writer.isNotEmpty()) successGetReplyComment(result) else emitEventFlow(DiscussionReplyCommentEvent.DeleteCommentErrorEvent)
         }
     }
 
@@ -146,7 +147,9 @@ class DiscussionReplyCommentViewModel @Inject constructor(
             comment = CommentVo(commentId = commentId)
         )
         viewModelScope.launch {
+            showLoading()
             val result = deleteDiscussionCommentUseCase(request)
+            endLoading()
             if(result) reloadPage()
         }
     }
@@ -159,7 +162,7 @@ class DiscussionReplyCommentViewModel @Inject constructor(
         )
         viewModelScope.launch {
             val result = deleteDiscussionReplyCommentUseCase(request)
-            if(result) reloadPage()
+            if(result) reloadPage() else emitEventFlow(DiscussionReplyCommentEvent.DeleteCommentErrorEvent)
         }
     }
 
@@ -187,6 +190,9 @@ class DiscussionReplyCommentViewModel @Inject constructor(
                 if(result) {
                     sendReplyCommentFcmMessage()
                     successAddComment()
+                }
+                else{
+                    emitEventFlow(DiscussionReplyCommentEvent.DeleteCommentErrorEvent)
                 }
             }
         }

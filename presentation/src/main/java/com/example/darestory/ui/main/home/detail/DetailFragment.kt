@@ -96,6 +96,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
             is DetailEvent.GoReportEvent -> goReportPage(event.who)
             DetailEvent.GoToMyOwnBookSelectEvent -> goToMyReadOrOwnBook()
             DetailEvent.DeleteProseErrorEvent -> showDeleteProseErrorDialog()
+            DetailEvent.DeleteDiscussionErrorEvent -> showDeleteDiscussionErrorDialog()
         }
     }
 
@@ -149,6 +150,18 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailPageState, Deta
     private fun showDeleteProseErrorDialog(){
         commonDialog
             .setTitle(R.string.dialog_delete_prose_error_title)
+            .setDescription(R.string.dialog_delete_prose_error_content)
+            .setPositiveButton(R.string.word_confirm){
+                findNavController().popBackStack()
+                commonDialog.dismiss()
+            }
+            .showOnlyPositive()
+            .show()
+    }
+
+    private fun showDeleteDiscussionErrorDialog(){
+        commonDialog
+            .setTitle(R.string.dialog_delete_discussion_error_title)
             .setDescription(R.string.dialog_delete_prose_error_content)
             .setPositiveButton(R.string.word_confirm){
                 findNavController().popBackStack()

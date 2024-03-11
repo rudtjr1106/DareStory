@@ -59,7 +59,25 @@ class DiscussionWriteFragment : BaseFragment<FragmentDiscussionWriteBinding, Dis
             DiscussionWriteEvent.ToastEmptyBookEvent -> showBookErrorToast()
             DiscussionWriteEvent.GoToBookSearch -> goToResultSearch()
             DiscussionWriteEvent.SuccessGetDiscussionEvent -> onResume()
+            DiscussionWriteEvent.DeleteDiscussionEvent -> showDeleteDiscussionErrorDialog()
+            DiscussionWriteEvent.ErrorUploadEvent -> showUploadErrorToast()
         }
+    }
+
+    private fun showDeleteDiscussionErrorDialog(){
+        commonDialog
+            .setTitle(R.string.dialog_delete_discussion_error_title)
+            .setDescription(R.string.dialog_delete_prose_error_content)
+            .setPositiveButton(R.string.word_confirm){
+                findNavController().popBackStack()
+                commonDialog.dismiss()
+            }
+            .showOnlyPositive()
+            .show()
+    }
+
+    private fun showUploadErrorToast(){
+        DareToast.createToast(ToastType.ERROR, requireContext(), R.string.toast_error_upload_fail).show()
     }
 
     private fun showSuccessDialog(){

@@ -95,7 +95,7 @@ class DetailViewModel @Inject constructor(
             showLoading()
             val result = getDiscussionUseCase(discussionId)
             endLoading()
-            if(result.title.isNotEmpty()) successGetDiscussionDetail(result)
+            if(result.title.isNotEmpty()) successGetDiscussionDetail(result)else emitEventFlow(DetailEvent.DeleteProseErrorEvent)
         }
     }
 
@@ -224,10 +224,15 @@ class DetailViewModel @Inject constructor(
 
     private fun discussionLikeBtn(request : LikeVo){
         viewModelScope.launch {
+            showLoading()
             val result = likeDiscussionUseCase(request)
+            endLoading()
             if(result) {
                 sendLikeFcmMessage(request.isLiked)
                 reloadPage()
+            }
+            else{
+                emitEventFlow(DetailEvent.DeleteDiscussionErrorEvent)
             }
         }
     }
@@ -263,7 +268,7 @@ class DetailViewModel @Inject constructor(
                 else{
                     when(detailType){
                         DetailType.PROSE -> emitEventFlow(DetailEvent.DeleteProseErrorEvent)
-                        DetailType.DISCUSSION -> {}
+                        DetailType.DISCUSSION -> emitEventFlow(DetailEvent.DeleteDiscussionErrorEvent)
                         DetailType.BOOK -> {}
                     }
                 }
@@ -368,15 +373,19 @@ class DetailViewModel @Inject constructor(
 
     private fun deleteProseComment(request : UpdateCommentVo){
         viewModelScope.launch {
+            showLoading()
             val result = deleteProseCommentUseCase(request)
-            if(result) reloadPage()
+            endLoading()
+            if(result) reloadPage() else emitEventFlow(DetailEvent.DeleteProseErrorEvent)
         }
     }
 
     private fun deleteDiscussionComment(request : UpdateCommentVo){
         viewModelScope.launch {
+            showLoading()
             val result = deleteDiscussionCommentUseCase(request)
-            if(result) reloadPage()
+            endLoading()
+            if(result) reloadPage() else emitEventFlow(DetailEvent.DeleteDiscussionErrorEvent)
         }
     }
 

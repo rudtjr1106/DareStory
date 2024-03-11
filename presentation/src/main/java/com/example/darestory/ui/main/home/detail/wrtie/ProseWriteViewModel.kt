@@ -41,10 +41,16 @@ class ProseWriteViewModel @Inject constructor(
         }
     }
 
+    fun onClickAuthorSay(){
+        emitEventFlow(ProseWriteEvent.FocusEditTextEvent)
+    }
+
     private fun getProseDetail(proseId: Int){
         viewModelScope.launch {
+            showLoading()
             val result = getProseUseCase(proseId)
-            if(result.proseId != -1) successGetProseDetail(result)
+            endLoading()
+            if(result.title.isNotEmpty()) successGetProseDetail(result) else emitEventFlow(ProseWriteEvent.DeleteProseEvent)
         }
     }
 
@@ -73,6 +79,7 @@ class ProseWriteViewModel @Inject constructor(
             viewModelScope.launch {
                 showLoading()
                 val result = uploadProseUseCase(request)
+                endLoading()
                 if(result) successUploadProse() else emitEventFlow(ProseWriteEvent.ErrorUploadEvent)
             }
         }
@@ -118,7 +125,6 @@ class ProseWriteViewModel @Inject constructor(
     }
 
     private fun successUploadProse(){
-        endLoading()
         emitEventFlow(ProseWriteEvent.SuccessUploadEvent)
     }
 

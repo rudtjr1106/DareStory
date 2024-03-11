@@ -142,7 +142,10 @@
     <string name="dialog_version_error_title">앱 버전</string>
     <string name="dialog_version_error_content">앱 버전이 일치하지 않습니다.\n업데이트를 진행해주세요!</string>
     <string name="dialog_delete_prose_error_title">존재하지 않는 산문</string>
+    <string name="dialog_delete_discussion_error_title">존재하지 않는 토론장</string>
     <string name="dialog_delete_prose_error_content">이 글은 삭제되었습니다.</string>
+    <string name="dialog_delete_comment_error_title">존재하지 않는 댓글</string>
+    <string name="dialog_delete_comment_error_content">이 댓글은 삭제되었습니다.</string>
 
     <!-- Toast 에러 -->
     <string name="toast_error_check_book">책을 선택해주세요.</string>

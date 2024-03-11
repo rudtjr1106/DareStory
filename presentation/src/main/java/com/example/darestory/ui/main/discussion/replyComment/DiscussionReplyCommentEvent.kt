@@ -8,4 +8,5 @@ sealed class DiscussionReplyCommentEvent : Event{
     data class ShowBottomSheetEvent(val type : BottomSheetType) : DiscussionReplyCommentEvent()
     object ShowCommentDeleteDialogEvent : DiscussionReplyCommentEvent()
     data class GoReportEvent(val who : String) : DiscussionReplyCommentEvent()
+    object DeleteCommentErrorEvent : DiscussionReplyCommentEvent()
 }
