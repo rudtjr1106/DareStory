@@ -46,6 +46,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             showLoading()
             val result = getAllProseUseCase(Unit)
+            endLoading()
             if(result.isNotEmpty()) successGetAllProse(result) else showDefaultPage()
         }
     }
@@ -65,7 +66,6 @@ class HomeViewModel @Inject constructor(
         val allProseList = getAllProseList(sortedByTypeList)
         viewModelScope.launch {
             proseListStateFlow.update { todayProseList + allProseList}
-            endLoading()
         }
     }
 
