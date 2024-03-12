@@ -70,6 +70,7 @@ class SignUpEmailPasswordFragment : BaseFragment<FragmentSignupEmailPasswordBind
             is SignUpEmailPasswordEvent.GoBack -> findNavController().popBackStack()
             is SignUpEmailPasswordEvent.GoToNext -> goToNextPage(event.email, event.password)
             is SignUpEmailPasswordEvent.OnClickSpinner -> onClickSpinner()
+            is SignUpEmailPasswordEvent.ShowEmailDuplicateErrorTextEvent -> showIconAndText()
         }
     }
 
@@ -155,6 +156,13 @@ class SignUpEmailPasswordFragment : BaseFragment<FragmentSignupEmailPasswordBind
         }, startIndex2, endIndex2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.textServicePersonalApp.text = spannableString
         binding.textServicePersonalApp.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    private fun showIconAndText(){
+        binding.apply {
+            imageErrorEmail.visibility = View.VISIBLE
+            textErrorEmail.visibility = View.VISIBLE
+        }
     }
 
     private fun goToPrivateNotionPage(){

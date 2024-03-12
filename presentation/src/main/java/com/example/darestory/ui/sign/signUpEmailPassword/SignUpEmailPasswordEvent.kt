@@ -6,4 +6,5 @@ sealed class SignUpEmailPasswordEvent : Event {
     data class GoToNext(val email : String, val password : String) : SignUpEmailPasswordEvent()
     object GoBack : SignUpEmailPasswordEvent()
     object OnClickSpinner : SignUpEmailPasswordEvent()
+    object ShowEmailDuplicateErrorTextEvent : SignUpEmailPasswordEvent()
 }

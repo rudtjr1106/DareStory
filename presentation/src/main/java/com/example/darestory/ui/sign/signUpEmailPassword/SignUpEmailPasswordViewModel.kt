@@ -80,7 +80,12 @@ class SignUpEmailPasswordViewModel @Inject constructor(
             emailDomainStateFlow.update { domain }
             checkEmailDuplicate()
             onEmailDomainChangedAfter()
+            showEmailErrorText()
         }
+    }
+
+    private fun showEmailErrorText(){
+        emitEventFlow(SignUpEmailPasswordEvent.ShowEmailDuplicateErrorTextEvent)
     }
 
     private fun onEmailDomainChangedAfter(){

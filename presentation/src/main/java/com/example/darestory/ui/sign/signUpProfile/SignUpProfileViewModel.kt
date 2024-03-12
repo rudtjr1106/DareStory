@@ -70,7 +70,7 @@ class SignUpProfileViewModel @Inject constructor(
     }
 
     private fun checkNickNameState(nickname : String){
-        val lengthTerms = nickname.length < MIN_NICKNAME || nickname.length > MAX_NICKNAME
+        val lengthTerms = nickname.trim().length < MIN_NICKNAME || nickname.trim().length > MAX_NICKNAME
         if(lengthTerms) updateNickNameState(NickNameError.LengthError)
         else if(nickNameList.contains(nickname)) updateNickNameState(NickNameError.DuplicateError)
         else updateNickNameState(NickNameError.NoError)
