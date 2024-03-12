@@ -72,7 +72,7 @@
                 android:layout_marginStart="15dp"
                 android:paddingStart="8dp"
                 android:paddingVertical="7dp"
-                android:textAppearance="@style/c3"
+                android:textAppearance="@style/body3"
                 android:textColorHint="@color/gray_400"
                 android:textColor="@color/gray_200"
                 android:hint="@string/home_prose_comment_hint"
@@ -85,8 +85,8 @@
 
             <ImageView
                 android:id="@+id/image_btn_regist_comment"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="@id/edit_text_comment_input"
+                app:layout_constraintBottom_toBottomOf="@id/edit_text_comment_input"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="21dp"
                 android:onClick="@{()->vm.onClickCommentAddButton()}"
