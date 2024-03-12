@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="com.example.darestory.ui.sign.verifyEmail.VerifyEmailViewModel" />
+            type="com.darestory.presentation.ui.sign.verifyEmail.VerifyEmailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

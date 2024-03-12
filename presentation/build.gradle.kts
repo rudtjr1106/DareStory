@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.darestory"
+    namespace = "com.darestory.presentation"
     compileSdk = 34
 
     defaultConfig {

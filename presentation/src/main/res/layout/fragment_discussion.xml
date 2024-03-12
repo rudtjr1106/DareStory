@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.example.darestory.ui.main.discussion.DiscussionViewModel" />
+            type="com.darestory.presentation.ui.main.discussion.DiscussionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

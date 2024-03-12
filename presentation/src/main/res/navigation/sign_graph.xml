@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.darestory.ui.sign.login.LoginFragment"
+        android:name="com.darestory.presentation.ui.sign.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/signUpEmailPasswordFragment"
-        android:name="com.example.darestory.ui.sign.signUpEmailPassword.SignUpEmailPasswordFragment"
+        android:name="com.darestory.presentation.ui.sign.signUpEmailPassword.SignUpEmailPasswordFragment"
         android:label="fragment_signup_email_password"
         tools:layout="@layout/fragment_signup_email_password">
 
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/signUpProfileFragment"
-        android:name="com.example.darestory.ui.sign.signUpProfile.SignUpProfileFragment"
+        android:name="com.darestory.presentation.ui.sign.signUpProfile.SignUpProfileFragment"
         android:label="fragment_signup_profile"
         tools:layout="@layout/fragment_signup_profile">
 
@@ -52,7 +52,7 @@
 
     <fragment
         android:id="@+id/verifyEmailFragment"
-        android:name="com.example.darestory.ui.sign.verifyEmail.VerifyEmailFragment"
+        android:name="com.darestory.presentation.ui.sign.verifyEmail.VerifyEmailFragment"
         android:label="fragment_certify_email"
         tools:layout="@layout/fragment_verify_email">
 

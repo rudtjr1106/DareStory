@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.example.domain.model.enums.GenderType"/>
+        <import type="com.darestory.domain.model.enums.GenderType"/>
         <variable
             name="vm"
-            type="com.example.darestory.ui.sign.signUpProfile.SignUpProfileViewModel" />
+            type="com.darestory.presentation.ui.sign.signUpProfile.SignUpProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

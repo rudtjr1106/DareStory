@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="com.example.darestory.ui.main.home.detail.wrtie.ProseWriteViewModel" />
+            type="com.darestory.presentation.ui.main.home.detail.wrtie.ProseWriteViewModel" />
     </data>
 
     <ScrollView

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vm"
-            type="com.example.darestory.ui.main.my.notice.NoticeViewModel" />
+            type="com.darestory.presentation.ui.main.my.notice.NoticeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

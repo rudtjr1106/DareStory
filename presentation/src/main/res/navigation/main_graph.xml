@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.darestory.ui.main.home.HomeFragment"
+        android:name="com.darestory.presentation.ui.main.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
 
@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/discussionFragment"
-        android:name="com.example.darestory.ui.main.discussion.DiscussionFragment"
+        android:name="com.darestory.presentation.ui.main.discussion.DiscussionFragment"
         android:label="fragment_discussion"
         tools:layout="@layout/fragment_discussion">
 
@@ -65,7 +65,7 @@
 
     <fragment
         android:id="@+id/myFragment"
-        android:name="com.example.darestory.ui.main.my.MyFragment"
+        android:name="com.darestory.presentation.ui.main.my.MyFragment"
         android:label="fragment_my"
         tools:layout="@layout/fragment_my">
 
@@ -93,13 +93,13 @@
 
     <fragment
         android:id="@+id/recentSearchFragment"
-        android:name="com.example.darestory.ui.main.search.recent.RecentSearchFragment"
+        android:name="com.darestory.presentation.ui.main.search.recent.RecentSearchFragment"
         android:label="fragment_recent_search"
         tools:layout="@layout/fragment_recent_search">
 
         <argument
             android:name="detailType"
-            app:argType="com.example.domain.model.enums.DetailType"/>
+            app:argType="com.darestory.domain.model.enums.DetailType"/>
 
         <action
             android:id="@+id/action_recent_to_result_search"
@@ -109,7 +109,7 @@
 
     <fragment
         android:id="@+id/resultSearchFragment"
-        android:name="com.example.darestory.ui.main.search.result.ResultSearchFragment"
+        android:name="com.darestory.presentation.ui.main.search.result.ResultSearchFragment"
         android:label="fragment_result_search"
         tools:layout="@layout/fragment_result_search">
 
@@ -120,7 +120,7 @@
 
         <argument
             android:name="detailType"
-            app:argType="com.example.domain.model.enums.DetailType"/>
+            app:argType="com.darestory.domain.model.enums.DetailType"/>
 
         <action
             android:id="@+id/action_result_to_detail"
@@ -130,7 +130,7 @@
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.darestory.ui.main.home.detail.DetailFragment"
+        android:name="com.darestory.presentation.ui.main.home.detail.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail">
 
@@ -140,7 +140,7 @@
 
         <argument
             android:name="detailType"
-            app:argType="com.example.domain.model.enums.DetailType"/>
+            app:argType="com.darestory.domain.model.enums.DetailType"/>
 
         <action
             android:id="@+id/action_detail_to_discussion_reply_comment"
@@ -165,7 +165,7 @@
 
     <fragment
         android:id="@+id/discussionReplyCommentFragment"
-        android:name="com.example.darestory.ui.main.discussion.replyComment.DiscussionReplyCommentFragment"
+        android:name="com.darestory.presentation.ui.main.discussion.replyComment.DiscussionReplyCommentFragment"
         android:label="fragment_discussion_reply_comment"
         tools:layout="@layout/fragment_discussion_reply_comment">
 
@@ -185,7 +185,7 @@
 
     <fragment
         android:id="@+id/proseWriteFragment"
-        android:name="com.example.darestory.ui.main.home.detail.wrtie.ProseWriteFragment"
+        android:name="com.darestory.presentation.ui.main.home.detail.wrtie.ProseWriteFragment"
         android:label="fragment_prose_write"
         tools:layout="@layout/fragment_prose_write">
 
@@ -195,13 +195,13 @@
 
         <argument
             android:name="proseWriteType"
-            app:argType="com.example.domain.model.enums.WriteType"/>
+            app:argType="com.darestory.domain.model.enums.WriteType"/>
 
     </fragment>
 
     <fragment
         android:id="@+id/reportFragment"
-        android:name="com.example.darestory.ui.main.report.ReportFragment"
+        android:name="com.darestory.presentation.ui.main.report.ReportFragment"
         android:label="fragment_report"
         tools:layout="@layout/fragment_report">
 
@@ -214,7 +214,7 @@
 
     <fragment
         android:id="@+id/discussionWriteFragment"
-        android:name="com.example.darestory.ui.main.discussion.write.DiscussionWriteFragment"
+        android:name="com.darestory.presentation.ui.main.discussion.write.DiscussionWriteFragment"
         android:label="fragment_discussion_write"
         tools:layout="@layout/fragment_discussion_write">
 
@@ -224,7 +224,7 @@
 
         <argument
             android:name="discussionWriteType"
-            app:argType="com.example.domain.model.enums.WriteType"/>
+            app:argType="com.darestory.domain.model.enums.WriteType"/>
 
         <argument
             android:name="userName"
@@ -240,13 +240,13 @@
 
     <fragment
         android:id="@+id/myProseAndDiscussionFragment"
-        android:name="com.example.darestory.ui.main.my.writing.MyProseAndDiscussionFragment"
+        android:name="com.darestory.presentation.ui.main.my.writing.MyProseAndDiscussionFragment"
         android:label="fragment_my_prose_and_discussion"
         tools:layout="@layout/fragment_my_prose_and_discussion">
 
         <argument
             android:name="type"
-            app:argType="com.example.domain.model.enums.DetailType"/>
+            app:argType="com.darestory.domain.model.enums.DetailType"/>
 
         <argument
             android:name="ownBookName"
@@ -268,13 +268,13 @@
 
     <fragment
         android:id="@+id/myReadOrOwnBookFragment"
-        android:name="com.example.darestory.ui.main.my.readOrOwnBook.MyReadOrOwnBookFragment"
+        android:name="com.darestory.presentation.ui.main.my.readOrOwnBook.MyReadOrOwnBookFragment"
         android:label="fragment_my_read_or_own_book"
         tools:layout="@layout/fragment_my_read_or_own_book">
 
         <argument
             android:name="type"
-            app:argType="com.example.domain.model.enums.ReadOrOwnType"/>
+            app:argType="com.darestory.domain.model.enums.ReadOrOwnType"/>
 
         <action
             android:id="@+id/action_my_read_or_own_book_to_result_search"
@@ -291,14 +291,14 @@
 
     <fragment
         android:id="@+id/myOwnBookWriteFragment"
-        android:name="com.example.darestory.ui.main.my.readOrOwnBook.write.MyOwnBookWriteFragment"
+        android:name="com.darestory.presentation.ui.main.my.readOrOwnBook.write.MyOwnBookWriteFragment"
         android:label="fragment_my_own_book_write"
         tools:layout="@layout/fragment_my_own_book_write">
     </fragment>
 
     <fragment
         android:id="@+id/noticeFragment"
-        android:name="com.example.darestory.ui.main.my.notice.NoticeFragment"
+        android:name="com.darestory.presentation.ui.main.my.notice.NoticeFragment"
         android:label="fragment_notice"
         tools:layout="@layout/fragment_notice">
 
@@ -309,7 +309,7 @@
 
     <fragment
         android:id="@+id/noticeDetailFragment"
-        android:name="com.example.darestory.ui.main.my.notice.detail.NoticeDetailFragment"
+        android:name="com.darestory.presentation.ui.main.my.notice.detail.NoticeDetailFragment"
         android:label="fragment_notice_detail"
         tools:layout="@layout/fragment_notice_detail">
 

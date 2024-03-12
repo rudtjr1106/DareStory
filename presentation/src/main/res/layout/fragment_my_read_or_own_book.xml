@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vm"
-            type="com.example.darestory.ui.main.my.readOrOwnBook.MyReadOrOwnBookViewModel" />
+            type="com.darestory.presentation.ui.main.my.readOrOwnBook.MyReadOrOwnBookViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

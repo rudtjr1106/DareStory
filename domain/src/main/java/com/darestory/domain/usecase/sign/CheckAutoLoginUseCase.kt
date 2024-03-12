@@ -1,0 +1,14 @@
+package com.darestory.domain.usecase.sign
+
+import com.darestory.domain.base.UseCase
+import com.darestory.domain.model.vo.UserVo
+import com.darestory.domain.repository.SignRepository
+import javax.inject.Inject
+
+class CheckAutoLoginUseCase @Inject constructor(
+    private val signRepository: SignRepository
+) : UseCase<Unit, UserVo>() {
+    override suspend operator fun invoke(request: Unit): UserVo{
+        return signRepository.checkAutoLogin()
+    }
+}
