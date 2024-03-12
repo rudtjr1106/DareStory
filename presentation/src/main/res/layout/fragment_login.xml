@@ -17,10 +17,10 @@
 
         <ImageView
             android:id="@+id/image_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="160dp"
+            android:layout_height="30dp"
             android:layout_marginTop="96dp"
-            android:background="@drawable/img_app_logo"
+            android:background="@drawable/ic_app_logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -45,6 +45,7 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/bg_line_edit_text"
             android:text="@={vm.uiState.email}"
+            android:singleLine="true"
             android:afterTextChanged="@{()->vm.onEmailChangedAfter()}"
             android:hint="@string/input_email"
             android:textAppearance="@style/body1"
@@ -95,6 +96,7 @@
             android:layout_marginEnd="16dp"
             android:text="@={vm.uiState.password}"
             android:inputType="textPassword"
+            android:singleLine="true"
             android:afterTextChanged="@{()->vm.onPasswordChangedAfter()}"
             android:background="@drawable/bg_line_edit_text"
             android:hint="@string/input_password"

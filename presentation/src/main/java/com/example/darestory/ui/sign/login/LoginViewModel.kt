@@ -45,9 +45,11 @@ class LoginViewModel @Inject constructor(
     private fun goToMain(){
         viewModelScope.launch {
             val result = checkAutoLoginUseCase(Unit)
-            UserInfo.updateInfo(result)
+            if(result.nickName.isNotEmpty()){
+                UserInfo.updateInfo(result)
+                emitEventFlow(LoginEvent.GoToMainEvent)
+            }
         }
-        emitEventFlow(LoginEvent.GoToMainEvent)
     }
 
     private fun showLoginErrorToast(){
