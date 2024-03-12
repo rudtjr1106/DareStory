@@ -3,13 +3,11 @@ package com.example.darestory.ui.main.discussion.replyComment
 import androidx.lifecycle.viewModelScope
 import com.example.darestory.FcmNotification
 import com.example.darestory.base.BaseViewModel
-import com.example.darestory.util.DareLog
 import com.example.darestory.util.TimeFormatter
 import com.example.darestory.util.UserInfo
 import com.example.domain.model.enums.BottomSheetMenuItemType
 import com.example.domain.model.enums.BottomSheetType
 import com.example.domain.model.enums.CommentType
-import com.example.domain.model.enums.DetailType
 import com.example.domain.model.vo.CommentRequestVo
 import com.example.domain.model.vo.CommentVo
 import com.example.domain.model.vo.DisCommentVo
