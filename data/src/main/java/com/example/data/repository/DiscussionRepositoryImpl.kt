@@ -128,7 +128,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun update(request: DiscussionVo): Boolean = suspendCoroutine {
-        discussionDbRef.child(request.discussionId.toString())
+        discussionDbRef.child(request.discussionId.toString() + "번")
             .setValue(request)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -430,7 +430,7 @@ class DiscussionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteDiscussion(request: Int): Boolean = suspendCoroutine {
-        discussionDbRef.child(request.toString()).removeValue()
+        discussionDbRef.child(request.toString() + "번").removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     deleteMyDiscussion(request){ isSuccess ->
