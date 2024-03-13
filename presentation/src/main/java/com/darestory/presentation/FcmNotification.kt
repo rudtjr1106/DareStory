@@ -15,8 +15,6 @@ import java.io.IOException
 class FcmNotification : FirebaseMessagingService() {
     val JSON = MediaType.parse("application/json; charset=utf-8")
     val url = "https://fcm.googleapis.com/fcm/send"
-    val serverKey =
-        "AAAAOEg7Lbs:APA91bHh4OLhsjtPuYVok8lv2_pofFcC82ENeRyUiBW8c__Q0RI75wBA1O_stz95P1VTcZtwGwxh2BB7ZM-_DGsXXHciqFQ5mQrKKQxa34AYQHDkD7UfGEEykfcmeEQGawxBnWrjGbCa"
     private var okHttpClient = OkHttpClient()
     private var gson: Gson = Gson()
 
@@ -54,7 +52,7 @@ class FcmNotification : FirebaseMessagingService() {
         val request = Request
             .Builder()
             .addHeader("Content-Type", "application/json")
-            .addHeader("Authorization", "key=$serverKey")
+            .addHeader("Authorization", "key=${BuildConfig.fcm_server_key}")
             .url(url)
             .post(body)
             .build()

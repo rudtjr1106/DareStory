@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -11,10 +14,19 @@ android {
     namespace = "com.darestory.presentation"
     compileSdk = 34
 
+    // local.properties 파일에서 FCM 서버 키를 읽어와서 설정
+    val localPropsFile = rootProject.file("local.properties")
+    val localProps = Properties()
+    if (localPropsFile.exists()) {
+        localProps.load(FileInputStream(localPropsFile))
+    }
+
     defaultConfig {
+        buildConfigField("String", "fcm_server_key", localProps.getProperty("fcm_server_key"))
         minSdk = 24
         targetSdk = 34
-
+        versionCode = 1
+        versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
