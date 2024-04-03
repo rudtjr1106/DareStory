@@ -33,7 +33,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, PageState.Default, Sp
 
         binding.apply {
             vm = viewModel
-            permissionCheck()
             viewModel.checkAppInfo()
         }
     }
@@ -69,22 +68,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, PageState.Default, Sp
         val intent = Intent(this, SignActivity::class.java)
         startActivity(intent)
         finish()
-    }
-
-    private fun permissionCheck() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val permissionCheck = ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.POST_NOTIFICATIONS
-            )
-            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
-                    PERMISSION_REQUEST_CODE
-                )
-            }
-        }
     }
 
     private fun showServerErrorDialog(errorContent : String){

@@ -69,7 +69,7 @@ class SignUpEmailPasswordFragment : BaseFragment<FragmentSignupEmailPasswordBind
             is SignUpEmailPasswordEvent.GoBack -> findNavController().popBackStack()
             is SignUpEmailPasswordEvent.GoToNext -> goToNextPage(event.email, event.password)
             is SignUpEmailPasswordEvent.OnClickSpinner -> onClickSpinner()
-            is SignUpEmailPasswordEvent.ShowEmailDuplicateErrorTextEvent -> showIconAndText()
+            is SignUpEmailPasswordEvent.ShowEmailDuplicateErrorTextEvent -> showIconAndText(event.isDuplicate)
         }
     }
 
@@ -157,10 +157,16 @@ class SignUpEmailPasswordFragment : BaseFragment<FragmentSignupEmailPasswordBind
         binding.textServicePersonalApp.movementMethod = LinkMovementMethod.getInstance()
     }
 
-    private fun showIconAndText(){
+    private fun showIconAndText(isDuplicate : Boolean){
         binding.apply {
-            imageErrorEmail.visibility = View.VISIBLE
-            textErrorEmail.visibility = View.VISIBLE
+            if(isDuplicate){
+                imageErrorEmail.visibility = View.VISIBLE
+                textErrorEmail.visibility = View.VISIBLE
+            }
+            else{
+                imageErrorEmail.visibility = View.GONE
+                textErrorEmail.visibility = View.GONE
+            }
         }
     }
 
