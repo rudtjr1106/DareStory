@@ -25,7 +25,7 @@ android {
         buildConfigField("String", "fcm_server_key", localProps.getProperty("fcm_server_key"))
         minSdk = 24
         targetSdk = 34
-        versionCode = 2
+        versionCode = 3
         versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
