@@ -414,7 +414,7 @@ class DetailViewModel @Inject constructor(
             return
         }
         else{
-            fcmNotification.sendMessage(NotificationVo(token, NotificationVo.Notification(
+            fcmNotification.sendMessage(NotificationVo(token, NotificationVo.Data(
                 body = "작가 ${UserInfo.info.nickName} 님이 작가님의 글에 좋은 마음을 남겼습니다!", title
             )))
         }
@@ -443,7 +443,7 @@ class DetailViewModel @Inject constructor(
             return
         }
         else{
-            fcmNotification.sendMessage(NotificationVo(token, NotificationVo.Notification(
+            fcmNotification.sendMessage(NotificationVo(token, NotificationVo.Data(
                 body = "작가 ${UserInfo.info.nickName} 님이 작가님의 글에 좋은 글귀를 남겼습니다!", title
             )))
         }

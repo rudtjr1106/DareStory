@@ -83,6 +83,7 @@ dependencies {
     //힐트
     implementation(Google.HILT_ANDROID)
     implementation(Google.HILT_CORE)
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
     kapt(Google.HILT_COMPILER)
 
     implementation("com.github.zhpanvip:viewpagerindicator:1.2.3")

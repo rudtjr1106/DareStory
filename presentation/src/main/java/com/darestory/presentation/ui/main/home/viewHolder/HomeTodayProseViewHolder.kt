@@ -12,7 +12,11 @@ import com.darestory.presentation.ui.main.home.adapter.TodayProseViewPagerAdapte
 import com.darestory.presentation.util.UserInfo
 import com.darestory.presentation.util.px
 import com.darestory.domain.model.enums.SortType
+import com.darestory.domain.model.vo.NotificationVo
 import com.darestory.domain.model.vo.ProseVo
+import com.darestory.presentation.FcmNotification
+import com.darestory.presentation.util.DareLog
+import com.google.firebase.messaging.FirebaseMessaging
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 
@@ -33,6 +37,9 @@ class HomeTodayProseViewHolder (
 
     init {
         binding.apply {
+            imageLogo.setOnClickListener {
+
+            }
             imageBtnSearch.setOnClickListener {
                 listener.onClickSearch()
             }

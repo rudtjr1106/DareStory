@@ -213,7 +213,7 @@ class DiscussionReplyCommentViewModel @Inject constructor(
             return
         }
         else{
-            fcmNotification.sendMessage(NotificationVo(commentVo.token, NotificationVo.Notification(
+            fcmNotification.sendMessage(NotificationVo(commentVo.token, NotificationVo.Data(
                 body = "작가 ${UserInfo.info.nickName} 님이 작가님의 의견에 답변을 남겼습니다!", commentVo.content
             )))
         }

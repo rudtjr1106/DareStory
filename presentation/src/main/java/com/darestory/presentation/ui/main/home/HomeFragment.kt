@@ -1,8 +1,13 @@
 package com.darestory.presentation.ui.main.home
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Build
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +18,10 @@ import com.darestory.presentation.ui.main.home.adapter.HomeAdapter
 import com.darestory.domain.model.enums.DetailType
 import com.darestory.domain.model.enums.WriteType
 import com.darestory.domain.model.enums.SortType
+import com.darestory.domain.model.vo.NotificationVo
+import com.darestory.presentation.FcmNotification
+import com.darestory.presentation.util.DareLog
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -22,14 +31,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
 ) {
     override val viewModel: HomeViewModel by viewModels()
 
-    companion object{
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+
+    companion object {
         const val SHOW_SCROLL_UL_ICON_NUM = 20
     }
 
-    private val homeAdapter : HomeAdapter by lazy {
+    private val homeAdapter: HomeAdapter by lazy {
         HomeAdapter(object : HomeAdapter.HomeDelegate {
             override fun onClickSearch() {
-                viewModel.goToRecentSearchPage()
+                FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                    DareLog.D(token)
+                    val fcm = FcmNotification()
+                    fcm.sendMessage(
+                        NotificationVo(
+                            to = "fcm 키",
+                            data = NotificationVo.Data(
+                                title = "알람 테스트",
+                                body = "알람테스트쓰쓰쓰쓰"
+                            )
+                        )
+                    )
+                }
             }
 
             override fun onClickProse(proseId: Int) {
@@ -48,8 +71,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun requestAlarmPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.SCHEDULE_EXACT_ALARM)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            DareLog.D("이게 뭘까 요총스")
+            requestPermissionLauncher.launch(Manifest.permission.SCHEDULE_EXACT_ALARM)
+        } else {
+            DareLog.D("이게 뭘까 종료래")
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun initView() {
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+                if (isGranted) {
+                    DareLog.D("권한 있구요")
+                } else {
+                    DareLog.D("권한 없구요")
+                }
+            }
+
         binding.apply {
             vm = viewModel
             recyclerHome.apply {
@@ -60,6 +104,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
             bindRecyclerListener()
 
             viewModel.getAllProse()
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                requestAlarmPermission()
+            } else {
+                DareLog.D("이게 뭘까 12 이하래")
+            }
         }
     }
 
@@ -68,7 +118,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
 
         repeatOnStarted(viewLifecycleOwner) {
             launch {
-                viewModel.uiState.proseList.collect{
+                viewModel.uiState.proseList.collect {
                     homeAdapter.submitList(it)
                 }
             }
@@ -80,8 +130,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
         }
     }
 
-    private fun sortEvent(event : HomeEvent){
-        when(event){
+    private fun sortEvent(event: HomeEvent) {
+        when (event) {
             is HomeEvent.GoToDetailPageEvent -> goToDetailPage(event.proseId, event.proseType)
             is HomeEvent.GoToWriteProseEvent -> goToWriteProsePage()
             is HomeEvent.GoToRecentSearchPageEvent -> goToRecentSearchPage()
@@ -91,22 +141,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
         }
     }
 
-    private fun goToDetailPage(proseId : Int, proseType : DetailType){
+    private fun goToDetailPage(proseId: Int, proseType: DetailType) {
         val action = HomeFragmentDirections.actionHomeToDetail(proseId, proseType)
         findNavController().navigate(action)
     }
 
-    private fun goToWriteProsePage(){
+    private fun goToWriteProsePage() {
         val action = HomeFragmentDirections.actionHomeToProseWrite(proseId = -1, proseWriteType = WriteType.NEW)
         findNavController().navigate(action)
     }
 
-    private fun goToRecentSearchPage(){
+    private fun goToRecentSearchPage() {
         val action = HomeFragmentDirections.actionHomeToProseRecentSearch(detailType = DetailType.PROSE)
         findNavController().navigate(action)
     }
 
-    private fun bindRecyclerListener(){
+    private fun bindRecyclerListener() {
         binding.apply {
             recyclerHome.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -115,26 +165,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
                     val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
                     if (lastVisibleItemPosition >= SHOW_SCROLL_UL_ICON_NUM) {
                         binding.imageBtnScrollUp.visibility = View.VISIBLE
-                    }
-                    else{
+                    } else {
                         binding.imageBtnScrollUp.visibility = View.GONE
                     }
                 }
             })
-
         }
     }
 
-    private fun scrollUp(){
+    private fun scrollUp() {
         binding.recyclerHome.smoothScrollToPosition(0)
     }
 
-    private fun goToDiscussion(){
+    private fun goToDiscussion() {
         val action = HomeFragmentDirections.actionHomeToDiscussion()
         findNavController().navigate(action)
     }
 
-    private fun goToMy(){
+    private fun goToMy() {
         val action = HomeFragmentDirections.actionHomeToMy()
         findNavController().navigate(action)
     }

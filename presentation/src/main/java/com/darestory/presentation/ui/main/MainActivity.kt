@@ -1,7 +1,10 @@
 package com.darestory.presentation.ui.main
 
+import android.Manifest
+import android.Manifest.permission.SCHEDULE_EXACT_ALARM
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -12,6 +15,7 @@ import com.darestory.presentation.R
 import com.darestory.presentation.base.BaseActivity
 import com.darestory.presentation.databinding.ActivityMainBinding
 import com.darestory.presentation.ui.splash.SplashActivity
+import com.darestory.presentation.util.DareLog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
