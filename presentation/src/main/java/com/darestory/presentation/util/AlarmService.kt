@@ -73,8 +73,10 @@ class AlarmService : Service() {
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setCustomContentView(notificationLayout)
             .setAutoCancel(true)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent) // 알림 터치 시
+            .setDeleteIntent(stopPendingIntent)
             .build()
 
         checkPermission()
