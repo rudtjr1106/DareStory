@@ -15,6 +15,7 @@ import com.darestory.presentation.R
 import com.darestory.presentation.base.BaseActivity
 import com.darestory.presentation.databinding.ActivityMainBinding
 import com.darestory.presentation.ui.splash.SplashActivity
+import com.darestory.presentation.util.AlarmService
 import com.darestory.presentation.util.DareLog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,7 +31,9 @@ class MainActivity :
     private lateinit var navController: NavController
 
     override fun initView() {
-
+        if (intent.getBooleanExtra("STOP_ALARM", false)) {
+            AlarmService.stopAlarm()
+        }
         binding.apply {
             vm = viewModel
             permissionCheck()

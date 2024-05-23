@@ -45,7 +45,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomePageState, HomeViewMo
                     val fcm = FcmNotification()
                     fcm.sendMessage(
                         NotificationVo(
-                            to = "fcm 키",
+                            to = "cEgKT5W1RSmZDXDlO9zUpS:APA91bEe-6ILZpLJ_4qbBN-86spZeqdcZwgDYxIDon-A3ElPGVdzuMVrwBXRafcBnP6F4WVqtTPljFM2y-OOfgGxfyaEJhZE3tAr2Ilg2-6oFiGONNVRuQT9tFu_X_lCqcxcSgx92M9q",
                             data = NotificationVo.Data(
                                 title = "알람 테스트",
                                 body = "알람테스트쓰쓰쓰쓰"

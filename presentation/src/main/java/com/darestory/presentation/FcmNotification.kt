@@ -33,27 +33,6 @@ class FcmNotification : FirebaseMessagingService() {
         setAlarm(this, title, body)
     }
 
-    private fun sendNotification(title: String?, body: String?) {
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        val channelId = "channel_id"
-        val channelName = "Channel Name"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setContentTitle(title)
-            .setContentText(body)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setAutoCancel(true)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-        val notificationId = 1
-        notificationManager.notify(notificationId, notificationBuilder.build())
-    }
-
     fun sendMessage(notification: NotificationVo) {
 
         val body = RequestBody.create(JSON, gson?.toJson(notification)!!)
