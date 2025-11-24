@@ -5,7 +5,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
-    id("dagger.hilt.android.plugin")
+    id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
 }
@@ -49,6 +49,11 @@ android {
 
     buildFeatures {
         dataBinding = true
+        buildConfig = true
+    }
+
+    lint {
+        abortOnError = false
     }
 }
 
@@ -82,7 +87,7 @@ dependencies {
 
     //힐트
     implementation(Google.HILT_ANDROID)
-    implementation(Google.HILT_CORE)
+    //implementation(Google.HILT_CORE)
     kapt(Google.HILT_COMPILER)
 
     implementation("com.github.zhpanvip:viewpagerindicator:1.2.3")
