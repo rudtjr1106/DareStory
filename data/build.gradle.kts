@@ -55,7 +55,7 @@ dependencies {
 
     // ROOM Database 사용
     implementation(AndroidX.ROOM_RUNTIME)
-    annotationProcessor(AndroidX.ROOM_COMPILER)
+    //annotationProcessor(AndroidX.ROOM_COMPILER)
     kapt(AndroidX.ROOM_COMPILER)
     implementation(AndroidX.ROOM)
 

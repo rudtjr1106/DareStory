@@ -2,7 +2,7 @@ object Versions {
     const val GRADLE = "8.5.0"
 
     /* [ Kotlin } */
-    const val KOTLIN_VERSION = "1.9.20"
+    const val KOTLIN_VERSION = "1.9.23"
     const val K_STDLIB = "1.9.20"
     const val K_COROUTINES_CORE = "1.7.3"
     const val K_COROUTINES = "1.7.3"
